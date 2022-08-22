@@ -1,6 +1,5 @@
 <template>
-  <div>page1
-
+  <div>page2
     <a-input v-model:value="value" placeholder="Basic usage" />
   </div>
 

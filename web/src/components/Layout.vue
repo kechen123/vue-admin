@@ -4,82 +4,45 @@
       <div class="logo" />
     </a-layout-header>
     <a-layout>
-      <a-layout-sider width="200" style="background: #fff">
-        <a-menu
-          v-model:selectedKeys="selectedKeys2"
-          v-model:openKeys="openKeys"
-          mode="inline"
-          :style="{ height: '100%', borderRight: 0 }">
-          <a-sub-menu key="sub1">
-            <template #title>
-              <span>
-                <user-outlined />
-                subnav 1
-              </span>
-            </template>
-            <a-menu-item key="1">option1</a-menu-item>
-            <a-menu-item key="2">option2</a-menu-item>
-            <a-menu-item key="3">option3</a-menu-item>
-            <a-menu-item key="4">option4</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub2">
-            <template #title>
-              <span>
-                <laptop-outlined />
-                subnav 2
-              </span>
-            </template>
-            <a-menu-item key="5">option5</a-menu-item>
-            <a-menu-item key="6">option6</a-menu-item>
-            <a-menu-item key="7">option7</a-menu-item>
-            <a-menu-item key="8">option8</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub3">
-            <template #title>
-              <span>
-                <notification-outlined />
-                subnav 3
-              </span>
-            </template>
-            <a-menu-item key="9">option9</a-menu-item>
-            <a-menu-item key="10">option10</a-menu-item>
-            <a-menu-item key="11">option11</a-menu-item>
-            <a-menu-item key="12">option12</a-menu-item>
-          </a-sub-menu>
-        </a-menu>
+      <a-layout-sider width="200" class="sider" style="background: #fff">
+        <Suspense>
+          <template v-slot:default>
+            <Menu />
+          </template>
+          <template v-slot:fallback>
+            <div>loading...</div>
+          </template>
+        </Suspense>
       </a-layout-sider>
-      <a-layout style="padding: 0 24px 24px">
-        <a-breadcrumb style="margin: 16px 0">
+      <a-layout>
+        <a-breadcrumb class="breadcrumb">
           <a-breadcrumb-item>Home</a-breadcrumb-item>
           <a-breadcrumb-item>List</a-breadcrumb-item>
           <a-breadcrumb-item>App</a-breadcrumb-item>
         </a-breadcrumb>
-        <a-layout-content
-          :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }">
-          <router-view></router-view>
+        <Tabs />
+        <a-layout-content class="content">
+          <router-view v-slot="{ Component }">
+            <template v-if="Component">
+              <Transition name="fade" mode="out-in">
+                <keep-alive>
+                  <Suspense>
+                    <component :is="Component" :key="$route.fullPath" />
+                    <template #fallback>
+                      正在加载...
+                    </template>
+                  </Suspense>
+                </keep-alive>
+              </Transition>
+            </template>
+          </router-view>
         </a-layout-content>
       </a-layout>
     </a-layout>
   </a-layout>
 </template>
-<script lang="ts">
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons-vue';
-import { defineComponent, ref } from 'vue';
-export default defineComponent({
-  components: {
-    UserOutlined,
-    LaptopOutlined,
-    NotificationOutlined,
-  },
-  setup() {
-    return {
-      selectedKeys1: ref<string[]>(['2']),
-      selectedKeys2: ref<string[]>(['1']),
-      collapsed: ref<boolean>(false),
-      openKeys: ref<string[]>(['sub1']),
-    };
-  },
-});
+<script setup lang="ts" >
+const Menu = defineAsyncComponent(() => import('./Menu.vue'))
 </script>
 <style>
 .layout {
@@ -87,7 +50,7 @@ export default defineComponent({
   height: 100%;
 }
 
-#components-layout-demo-top-side-2 .logo {
+.logo {
   float: left;
   width: 120px;
   height: 31px;
@@ -95,12 +58,68 @@ export default defineComponent({
   background: rgba(255, 255, 255, 0.3);
 }
 
-.ant-row-rtl #components-layout-demo-top-side-2 .logo {
-  float: right;
-  margin: 16px 0 16px 24px;
-}
 
 .site-layout-background {
   background: #fff;
+}
+
+.breadcrumb {
+  background: #fff;
+  padding: 16px 0 16px 24px;
+}
+
+.content {
+  background: #fff;
+  padding: 24px;
+  margin: 0;
+  min-height: 280px;
+  margin: 16px 24px;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+/* .fade-enter-active {
+  animation: anim 1s ease;
+} */
+
+/* .fade-leave-active {
+  animation: leaveAnim 1s ease;
+} */
+
+@keyframes anim {
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes leaveAnim {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-500px);
+  }
 }
 </style>

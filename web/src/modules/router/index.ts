@@ -1,31 +1,22 @@
-import {
-  createRouter,
-  createWebHashHistory,
-  createWebHistory,
-  RouteRecordRaw,
-  RouteLocationNormalized,
-  NavigationGuardNext
-} from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import { loadView, loadComponents } from '@/app'
 import baseRoutes from './base'
-
-interface Check {
-  to: RouteLocationNormalized
-  from: RouteLocationNormalized
-  next?: NavigationGuardNext
-}
-
-type CheckFun = (check: Check) => any
+import { Auth, NotCheckRouter } from './auth'
 
 const customRoutes = [
   {
     path: 'Base',
-    name: 'Base',
+    name: 'base',
     layout: ''
   },
   {
     path: 'Page1',
-    name: 'Page1',
+    name: 'page1',
+    layout: 'Layout'
+  },
+  {
+    path: 'Page2',
+    name: 'page2',
     layout: 'Layout'
   }
 ]
@@ -61,26 +52,6 @@ const routes = async () => {
   }
 }
 
-const checkLogin: CheckFun = ({ to, from }) => {
-  let login = true
-  if (!login) {
-    return { name: 'login' }
-  } else {
-    return false
-  }
-}
-
-const checkAuth: CheckFun = ({ to, from }) => {
-  let auth = true
-  if (!auth) {
-    return { name: 'login' }
-  } else {
-    return false
-  }
-}
-const notCheckRouter = ['login', '404']
-const checkFun = [checkLogin, checkAuth]
-
 const router = createRouter({
   history: createWebHashHistory(),
   routes: baseRoutes
@@ -90,11 +61,11 @@ await routes()
 
 router.beforeEach(async (to, from) => {
   let b = false
-  for (let n of checkFun) {
-    if (notCheckRouter.indexOf(to.name?.toString() || '') > -1) {
+  for (let fn of Auth) {
+    if (NotCheckRouter.indexOf(to.name?.toString() || '') > -1) {
       break
     }
-    b = await n({ to, from })
+    b = await fn({ to, from, router })
     if (b) {
       break
     }

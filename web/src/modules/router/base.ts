@@ -5,6 +5,11 @@ export default [
     component: () => import('@/views/Home.vue')
   },
   {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/NotFind.vue')
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('@/views/Login.vue')

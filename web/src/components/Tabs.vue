@@ -1,0 +1,152 @@
+<template>
+  <div class="tabs">
+    <div class="list">
+      <template v-for="(item, i) in tabData.list">
+        <div class="item" :class="[item === tabData.active ? 'active' : '']" @click.stop="tabClick(item)">
+          <div class="label">{{ item }}</div>
+          <div class="actions">
+            <div class="bar">
+              <div class="icon" @click.stop="delPage(item)">
+                <close-outlined />
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { CloseOutlined } from '@ant-design/icons-vue';
+import { useTabsStore } from '@/modules/store/tabs'
+import { useRouter } from 'vue-router'
+
+type Tab = {
+  active: string
+  list: Array<string>
+}
+const tabStore = useTabsStore()
+const router = useRouter()
+const tabData = reactive<Tab>({
+  list: [],
+  active: ''
+})
+
+const tabClick = (item: string) => {
+  router.push(item)
+  tabStore.addTab(item)
+};
+const delPage = (item: string) => {
+  tabStore.delTab(item)
+};
+
+watch(() => tabStore.active, (val) => {
+  const name = router.currentRoute.value.path.split('/')[1].toLowerCase()
+  if (val === name) {
+    router.push(val)
+  }
+})
+watchEffect(() => {
+  tabData.list = tabStore.list
+  tabData.active = tabStore.active
+})
+</script>
+
+<style scoped lang="less">
+.tabs {
+  position: relative;
+  overflow: hidden;
+  background-color: #FFF;
+  border-top: solid 1px #E8E8E8;
+
+  .list {
+    display: flex;
+    height: 35px;
+    overflow: hidden;
+    padding-left: 24px;
+
+    .item {
+      width: 120px;
+      min-width: fit-content;
+      min-width: -moz-fit-content;
+      flex-shrink: 0;
+      position: relative;
+      display: flex;
+      white-space: nowrap;
+      cursor: pointer;
+      height: 100%;
+      box-sizing: border-box;
+      padding-left: 10px;
+      left: auto;
+      color: rgba(0, 0, 0, 0.85);
+      background-color: #FFF;
+      border-right: solid 1px #E8E8E8;
+
+      .label {
+        white-space: nowrap;
+        flex: 1;
+        margin-top: auto;
+        margin-bottom: auto;
+        line-height: 35px;
+        display: flex;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .actions {
+        margin-top: auto;
+        margin-bottom: auto;
+        width: 28px;
+
+        .bar {
+          white-space: nowrap;
+          display: flex;
+          margin: 0 auto;
+          padding: 0;
+          height: 100%;
+          width: 100%;
+          align-items: center;
+          justify-content: center;
+
+          .icon {
+            width: 20px;
+            height: 20px;
+            padding: 2px;
+            color: inherit;
+            border-radius: 5px;
+            opacity: 0;
+
+            &:hover {
+              background-color: rgba(90, 93, 94, 0.31);
+              color: #FFF;
+              opacity: 1;
+            }
+
+            >* {
+              color: inherit;
+              display: block;
+            }
+          }
+
+        }
+      }
+
+      &:hover {
+        .actions .bar .icon {
+          opacity: 1;
+        }
+      }
+    }
+
+    .active {
+      background-color: #1890ff;
+      color: #FFF;
+
+      .actions .bar .icon {
+        opacity: 1;
+      }
+    }
+  }
+}
+</style>
