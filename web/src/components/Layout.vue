@@ -4,6 +4,7 @@
     <el-container>
       <el-header>
         <div class="logo"></div>
+        <el-switch v-model="isDark" :change="toggleDark" />
       </el-header>
       <el-container>
         <el-aside width="200px">
@@ -40,13 +41,17 @@
   </div>
 </template>
 <script setup lang="ts" >
+import { useDark, useToggle } from '@vueuse/core'
 const Menu = defineAsyncComponent(() => import('./Menu.vue'))
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 <style>
 .layout {
   width: 100%;
   height: 100vh;
-  background-color: var(--el-bg-color-page);
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-primary);
 }
 
 .layout .el-container {
@@ -56,13 +61,12 @@ const Menu = defineAsyncComponent(() => import('./Menu.vue'))
 
 .layout .el-header {
   position: relative;
-  background-color: var(--el-color-primary-light-7);
+  background-color: var(--el-fill-color);
   color: var(--el-text-color-primary);
 }
 
 .layout .el-aside {
-  color: var(--el-text-color-primary);
-  background: var(--el-color-primary-light-8);
+  background: var(--el-fill-color-light);
 }
 
 .layout .el-menu {

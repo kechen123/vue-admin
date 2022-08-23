@@ -34,6 +34,7 @@ declare module '@vue/runtime-core' {
     ElMenu: typeof import('element-plus/es')['ElMenu']
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     HelloWorld: typeof import('./../src/components/HelloWorld.vue')['default']
     Layout: typeof import('./../src/components/Layout.vue')['default']
     'Layout copy': typeof import('./../src/components/Layout copy.vue')['default']
