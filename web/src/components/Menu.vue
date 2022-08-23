@@ -12,6 +12,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import SubMenu from '@/common/SubMenu.vue';
+import { storeToRefs } from 'pinia'
 import { useTabsStore } from '@/modules/store/tabs'
 interface Menu {
   title: string;
@@ -19,8 +20,9 @@ interface Menu {
   icon?: string;
   children?: Menu[];
 }
-
-const tabStore = useTabsStore()
+const tabsStore = useTabsStore()
+const { active } = storeToRefs(tabsStore)
+const { addTab } = tabsStore;
 const router = useRouter()
 const selectedKeys = ref<string[]>([])
 const openKeys = ref<string[]>(['sub1'])
@@ -117,10 +119,10 @@ const menu = ref<Menu[]>([
 ])
 const changeMenu = (e: any) => {
   router.push(e.key)
-  tabStore.addTab(e.key)
+  addTab(e.key)
 }
 watchEffect(() => {
-  selectedKeys.value = [tabStore.active]
+  selectedKeys.value = [active.value]
 })
 </script>
 

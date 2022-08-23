@@ -1,52 +1,59 @@
-//https://juejin.cn/post/7049196967770980389
-
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 
-type Tab = {
-  active: string
-  list: Array<string>
-}
+//https://juejin.cn/post/7057439040911441957
 
-export const useTabsStore = defineStore({
-  id: 'tabs', // id必填，且需要唯一
-  state: () => {
-    return <Tab>{
-      active: 'home',
-      list: []
-    }
-  },
-  getters: {
-    fullName: (state) => {
-      return state.active + '丰'
-    }
-  },
-  actions: {
-    addTab(name: string) {
-      this.active = name
-      if (this.list.includes(name)) return
-      this.list.push(name)
-    },
-    setActive(name: string) {
-      if (!this.list.includes(name)) return
-      this.active = name
-    },
-    delTab(name: string) {
-      if (!this.list.includes(name)) return
-      let i = this.list.indexOf(name) - 1
-      i = i < 0 ? 0 : i
-      console.log(this.list)
-      this.list = this.list.filter((item) => item !== name)
-      console.log(this.list)
-      this.active = this.list[i]
-    },
-    //异步 action
-    async login(account: string, pwd: string) {
-      // const { data } = await api.login(account, pwd)
-      //this.setData(data) // 调用另一个 action 的方法
-      // return data
-    },
-    setData(data: any) {
-      console.log(data)
-    }
+export const useTabsStore = defineStore('tabs', () => {
+  const router = useRouter()
+  const matched = router.currentRoute.value.matched
+  const name = router.currentRoute.value.path.split('/')[1].toLowerCase()
+
+  const active = ref<string>(
+    (() => {
+      if (matched.length > 1) {
+        return name
+      }
+      return ''
+    })()
+  )
+
+  let list = reactive<Array<string>>(
+    (() => {
+      if (matched.length > 1) {
+        return [name]
+      }
+      return []
+    })()
+  )
+
+  const addTab = (name: string): void => {
+    active.value = name
+    if (list.includes(name)) return
+    list.push(name)
   }
+
+  const setActive = (name: string): void => {
+    if (!list.includes(name)) return
+    active.value = name
+  }
+
+  const delTab = (name: string): void => {
+    if (!list.includes(name)) return
+    let i = list.indexOf(name) - 1
+    i = i < 0 ? 0 : i
+    list = list.filter((item) => item !== name)
+    active.value = list[i]
+  }
+
+  return { active, list, addTab, setActive, delTab }
 })
+
+//use
+
+// import { storeToRefs } from 'pinia'
+// import { useMainStore } from '@/store/index'
+
+// // hooks一样来使用
+// const useMainStore = useMainStore()
+// const { count } = storeToRefs(useMainStore)
+// const { increment } = useMainStore

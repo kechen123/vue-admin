@@ -13,7 +13,6 @@
             <div>正在加载...</div>
           </template>
         </Suspense>
-        <!-- <Menu /> -->
       </a-layout-sider>
       <a-layout>
         <a-breadcrumb class="breadcrumb">

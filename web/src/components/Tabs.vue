@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import { CloseOutlined } from '@ant-design/icons-vue';
+import { storeToRefs } from 'pinia'
 import { useTabsStore } from '@/modules/store/tabs'
 import { useRouter } from 'vue-router'
 
@@ -26,7 +27,9 @@ type Tab = {
   active: string
   list: Array<string>
 }
-const tabStore = useTabsStore()
+const tabsStore = useTabsStore()
+const { active, list } = storeToRefs(tabsStore)
+const { delTab, addTab } = tabsStore;
 const router = useRouter()
 const tabData = reactive<Tab>({
   list: [],
@@ -35,21 +38,21 @@ const tabData = reactive<Tab>({
 
 const tabClick = (item: string) => {
   router.push(item)
-  tabStore.addTab(item)
+  addTab(item)
 };
 const delPage = (item: string) => {
-  tabStore.delTab(item)
+  delTab(item)
 };
 
-watch(() => tabStore.active, (val) => {
+watch(() => active.value, (val) => {
   const name = router.currentRoute.value.path.split('/')[1].toLowerCase()
   if (val === name) {
     router.push(val)
   }
 })
 watchEffect(() => {
-  tabData.list = tabStore.list
-  tabData.active = tabStore.active
+  tabData.list = list.value
+  tabData.active = active.value
 })
 </script>
 
@@ -66,7 +69,6 @@ watchEffect(() => {
     height: 35px;
     overflow-x: auto;
     overflow-y: hidden;
-    padding-left: 24px;
 
     .item {
       width: 120px;
