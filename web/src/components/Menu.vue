@@ -5,7 +5,7 @@
     mode="inline"
     @click="changeMenu"
     :style="{ height: '100%', borderRight: 0 }">
-    <SubMenu :menu="menu" />
+    <SubMenu v-for="item in menu" :menu="item" />
   </a-menu>
 </template>
 

@@ -10,9 +10,10 @@
             <Menu />
           </template>
           <template v-slot:fallback>
-            <div>loading...</div>
+            <div>正在加载...</div>
           </template>
         </Suspense>
+        <!-- <Menu /> -->
       </a-layout-sider>
       <a-layout>
         <a-breadcrumb class="breadcrumb">
@@ -88,7 +89,7 @@ const Menu = defineAsyncComponent(() => import('./Menu.vue'))
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.15s ease;
 }
 
 /* .fade-enter-active {

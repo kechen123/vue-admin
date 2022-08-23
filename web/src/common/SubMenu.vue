@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <template v-for="(item) in menu">
     <template v-if="item.children">
       <a-sub-menu :key="item.path">
@@ -13,10 +13,23 @@
     </template>
     <a-menu-item v-else :key="item.path">{{ item.title }}</a-menu-item>
   </template>
+</template> -->
+<template>
+  <template v-if="menu.children && menu.children.length > 0">
+    <a-sub-menu :key="menu.path">
+      <template #title>
+        <span>
+          {{ menu.title }}
+        </span>
+      </template>
+
+      <SubMenu v-for="item in menu.children" :menu="item" />
+    </a-sub-menu>
+  </template>
+  <a-menu-item v-else :key="menu.path">{{ menu.title }}</a-menu-item>
 </template>
 
 <script setup lang="ts" name="SubMenu">
-import * as Icon from '@ant-design/icons-vue';
 
 interface Menu {
   title: string;
@@ -25,12 +38,12 @@ interface Menu {
   children?: Menu[];
 }
 
-const getIcon = (icon?: string) => {
-  // @ts-ignore
-  return Icon[icon ?? 'UserOutlined'] ?? Icon['UserOutlined']
-};
+// const getIcon = (icon?: string) => {
+//   // @ts-ignore
+//   return Icon[icon ?? 'UserOutlined'] ?? Icon['UserOutlined']
+// };
 defineProps<{
-  menu: Menu[]
+  menu: Menu
 }>()
 </script>
 

@@ -59,11 +59,13 @@ watchEffect(() => {
   overflow: hidden;
   background-color: #FFF;
   border-top: solid 1px #E8E8E8;
+  user-select: none;
 
   .list {
     display: flex;
     height: 35px;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     padding-left: 24px;
 
     .item {
@@ -148,5 +150,29 @@ watchEffect(() => {
       }
     }
   }
+
+  .list::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+
+  .list:hover::-webkit-scrollbar {
+    width: 12px;
+    height: 4px;
+  }
+
+  .list::-webkit-scrollbar-thumb:hover {
+    background: #333;
+  }
+
+  .list::-webkit-scrollbar-thumb {
+    background: rgba(51, 51, 51, 0.4);
+  }
+
+  .list::-webkit-scrollbar-track {
+    border-radius: 0;
+    background: transparent;
+  }
+
 }
 </style>
