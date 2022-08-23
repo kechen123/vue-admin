@@ -1,45 +1,43 @@
+
 <template>
-  <a-layout class="layout">
-    <a-layout-header class="header">
-      <div class="logo" />
-    </a-layout-header>
-    <a-layout>
-      <a-layout-sider width="200" class="sider" style="background: #fff">
-        <Suspense>
-          <template v-slot:default>
-            <Menu />
-          </template>
-          <template v-slot:fallback>
-            <div>正在加载...</div>
-          </template>
-        </Suspense>
-      </a-layout-sider>
-      <a-layout>
-        <a-breadcrumb class="breadcrumb">
-          <a-breadcrumb-item>Home</a-breadcrumb-item>
-          <a-breadcrumb-item>List</a-breadcrumb-item>
-          <a-breadcrumb-item>App</a-breadcrumb-item>
-        </a-breadcrumb>
-        <Tabs />
-        <a-layout-content class="content">
-          <router-view v-slot="{ Component }">
-            <template v-if="Component">
-              <Transition name="fade" mode="out-in">
-                <keep-alive>
-                  <Suspense>
-                    <component :is="Component" :key="$route.fullPath" />
-                    <template #fallback>
-                      正在加载...
-                    </template>
-                  </Suspense>
-                </keep-alive>
-              </Transition>
+  <div class="layout">
+    <el-container>
+      <el-header>
+        <div class="logo"></div>
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <Suspense>
+            <template v-slot:default>
+              <Menu />
             </template>
-          </router-view>
-        </a-layout-content>
-      </a-layout>
-    </a-layout>
-  </a-layout>
+            <template v-slot:fallback>
+              <div>正在加载...</div>
+            </template>
+          </Suspense>
+        </el-aside>
+        <el-container>
+          <el-main>
+            <router-view v-slot="{ Component }">
+              <template v-if="Component">
+                <Transition name="fade" mode="out-in">
+                  <keep-alive>
+                    <Suspense>
+                      <component :is="Component" :key="$route.fullPath" />
+                      <template #fallback>
+                        正在加载...
+                      </template>
+                    </Suspense>
+                  </keep-alive>
+                </Transition>
+              </template>
+            </router-view>
+          </el-main>
+          <el-footer>Footer</el-footer>
+        </el-container>
+      </el-container>
+    </el-container>
+  </div>
 </template>
 <script setup lang="ts" >
 const Menu = defineAsyncComponent(() => import('./Menu.vue'))
@@ -47,33 +45,40 @@ const Menu = defineAsyncComponent(() => import('./Menu.vue'))
 <style>
 .layout {
   width: 100%;
+  height: 100vh;
+  background-color: var(--el-bg-color-page);
+}
+
+.layout .el-container {
+  width: 100%;
   height: 100%;
 }
 
-.logo {
-  float: left;
-  width: 120px;
-  height: 31px;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+.layout .el-header {
+  position: relative;
+  background-color: var(--el-color-primary-light-7);
+  color: var(--el-text-color-primary);
 }
 
-
-.site-layout-background {
-  background: #fff;
+.layout .el-aside {
+  color: var(--el-text-color-primary);
+  background: var(--el-color-primary-light-8);
 }
 
-.breadcrumb {
-  background: #fff;
-  padding: 16px 0 16px 24px;
+.layout .el-menu {
+  border-right: none;
 }
 
-.content {
-  background: #fff;
-  padding: 24px;
-  margin: 0;
-  min-height: 280px;
-  margin: 16px 24px;
+.layout .el-main {
+  padding: 0;
+}
+
+.layout .toolbar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  right: 20px;
 }
 
 .fade-enter-from,

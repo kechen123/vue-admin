@@ -1,12 +1,10 @@
 <template>
-  <a-menu
-    v-model:selectedKeys="selectedKeys"
-    v-model:openKeys="openKeys"
-    mode="inline"
-    @click="changeMenu"
+  <el-menu
+    :default-active="openKeys"
+    @select="changeMenu"
     :style="{ height: '100%', borderRight: 0 }">
     <SubMenu v-for="item in menu" :menu="item" />
-  </a-menu>
+  </el-menu>
 </template>
 
 <script setup lang="ts">
@@ -24,13 +22,12 @@ const tabsStore = useTabsStore()
 const { active } = storeToRefs(tabsStore)
 const { addTab } = tabsStore;
 const router = useRouter()
-const selectedKeys = ref<string[]>([])
-const openKeys = ref<string[]>(['sub1'])
+const openKeys = ref<string>('home1-1-1')
 const menu = ref<Menu[]>([
   {
     title: 'subnav 1',
     path: 'sub1',
-    icon: 'MenuUnfoldOutlined',
+    icon: 'location',
     children: [
       {
         title: 'option 1',
@@ -73,7 +70,7 @@ const menu = ref<Menu[]>([
   {
     title: 'subnav 2',
     path: 'sub2',
-    icon: 'LaptopOutlined',
+    icon: 'CirclePlus',
     children: [
       {
         title: 'option5',
@@ -117,12 +114,13 @@ const menu = ref<Menu[]>([
     ]
   }
 ])
-const changeMenu = (e: any) => {
-  router.push(e.key)
-  addTab(e.key)
+const changeMenu = (index: string, indexPath: string[]) => {
+  console.log(index, indexPath)
+  router.push(index)
+  addTab(index)
 }
 watchEffect(() => {
-  selectedKeys.value = [active.value]
+  openKeys.value = active.value
 })
 </script>
 
