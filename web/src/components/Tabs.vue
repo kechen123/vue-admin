@@ -62,14 +62,15 @@ watchEffect(() => {
   position: relative;
   overflow: hidden;
   background-color: var(--el-fill-color);
-  box-shadow: var(--el-box-shadow);
   user-select: none;
 
   .list {
     display: flex;
     height: 35px;
+    // padding: 6px;
     overflow-x: auto;
     overflow-y: hidden;
+    border-bottom: var(--border);
 
     .item {
       width: 120px;
@@ -83,10 +84,12 @@ watchEffect(() => {
       height: 100%;
       box-sizing: border-box;
       padding-left: 10px;
+      // margin-right: 4px;
       left: auto;
       color: var(--el-button-text-color);
-      background-color: var(--tabs-btn-bg-color);
-      border-right: var(--el-border);
+      border-right: var(--border);
+      // border: var(--tabs-btn-border);
+      // border-radius: 2px;
 
 
       .label {
