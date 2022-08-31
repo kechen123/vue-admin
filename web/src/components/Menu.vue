@@ -25,79 +25,62 @@ const router = useRouter()
 const openKeys = ref<string>('home1-1-1')
 const menu = ref<Menu[]>([
   {
-    title: 'subnav 1',
+    title: '无限层级',
     path: 'sub1',
     icon: 'location',
     children: [
+
       {
-        title: 'option 1',
+        title: 'page1',
+        path: '/Page1'
+      },
+      {
+        title: 'page2',
+        path: '/Page2'
+      },
+      {
+        title: 'basePage',
+        path: '/BasePage/Index'
+      },
+      {
+        title: 'test',
+        path: '/BasePage/Test/Index'
+      }
+    ]
+  },
+  {
+    title: '页面配置',
+    path: 'sub2',
+    icon: 'location',
+  },
+  {
+    title: 'subnav 3',
+    path: 'basePage',
+    icon: 'NotificationOutlined',
+    children: [
+      {
+        title: '一层',
         path: '1',
         children: [
           {
-            title: 'option1-1',
+            title: '二层',
             path: '1-1',
             children: [
               {
-                title: 'home1-1-1',
+                title: '三层',
                 path: 'home'
               }
             ]
           },
           {
-            title: 'option1-2',
+            title: '二层-2',
             path: '1-2'
           },
           {
-            title: 'option1-3',
+            title: '二层-3',
             path: '1-3'
           }
         ]
-      },
-      {
-        title: 'option2',
-        path: 'page1'
-      },
-      {
-        title: 'option3',
-        path: 'page2'
-      },
-      {
-        title: 'option4',
-        path: '4'
-      }
-    ]
-  },
-  {
-    title: 'subnav 2',
-    path: 'sub2',
-    icon: 'CirclePlus',
-    children: [
-      {
-        title: 'option5',
-        path: '5'
-      },
-      {
-        title: 'option6',
-        path: '6'
-      },
-      {
-        title: 'option7',
-        path: '7'
-      },
-      {
-        title: 'option8',
-        path: '8'
-      }
-    ]
-  },
-  {
-    title: 'subnav 3',
-    path: 'sub3',
-    icon: 'NotificationOutlined',
-    children: [
-      {
-        title: 'option9',
-        path: '9'
       },
       {
         title: 'option10',

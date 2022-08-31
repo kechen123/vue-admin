@@ -3,11 +3,13 @@
     <div class="list">
       <template v-for="(item, i) in tabData.list">
         <div class="item" :class="[item === tabData.active ? 'active' : '']" @click.stop="tabClick(item)">
-          <div class="label">{{ item }}</div>
+          <div class="label">{{  item  }}</div>
           <div class="actions">
             <div class="bar">
               <div class="icon" @click.stop="delPage(item)">
-                <close-outlined />
+                <el-icon>
+                  <CloseBold />
+                </el-icon>
               </div>
             </div>
           </div>
@@ -18,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { CloseOutlined } from '@ant-design/icons-vue';
 import { storeToRefs } from 'pinia'
 import { useTabsStore } from '@/modules/store/tabs'
 import { useRouter } from 'vue-router'
@@ -60,8 +61,8 @@ watchEffect(() => {
 .tabs {
   position: relative;
   overflow: hidden;
-  background-color: #FFF;
-  border-top: solid 1px #E8E8E8;
+  background-color: var(--el-fill-color);
+  box-shadow: var(--el-box-shadow);
   user-select: none;
 
   .list {
@@ -83,9 +84,10 @@ watchEffect(() => {
       box-sizing: border-box;
       padding-left: 10px;
       left: auto;
-      color: rgba(0, 0, 0, 0.85);
-      background-color: #FFF;
-      border-right: solid 1px #E8E8E8;
+      color: var(--el-button-text-color);
+      background-color: var(--tabs-btn-bg-color);
+      border-right: var(--el-border);
+
 
       .label {
         white-space: nowrap;
@@ -137,6 +139,9 @@ watchEffect(() => {
       }
 
       &:hover {
+        color: var(--el-button-hover-text-color);
+        background-color: var(--tabs-btn-bg-color-hover);
+
         .actions .bar .icon {
           opacity: 1;
         }
@@ -144,8 +149,8 @@ watchEffect(() => {
     }
 
     .active {
-      background-color: #1890ff;
-      color: #FFF;
+      color: var(--el-button-hover-text-color);
+      background-color: var(--tabs-btn-bg-color-hover);
 
       .actions .bar .icon {
         opacity: 1;

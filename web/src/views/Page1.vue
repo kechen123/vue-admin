@@ -1,7 +1,7 @@
 <template>
   <div>page1
 
-    <el-input v-model:value="value" placeholder="Basic usage" />
+    <el-input v-model="value" placeholder="Basic usage" />
   </div>
 
 </template>

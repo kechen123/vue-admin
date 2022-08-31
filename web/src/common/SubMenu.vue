@@ -6,14 +6,21 @@
           <component :is="menu.icon"></component>
         </el-icon>
         <span>
-          {{ menu.title }}
+          {{  menu.title  }}
         </span>
       </template>
 
       <SubMenu v-for="item in menu.children" :menu="item" />
     </el-sub-menu>
   </template>
-  <el-menu-item v-else :index="menu.path">{{ menu.title }}</el-menu-item>
+  <el-menu-item v-else :index="menu.path">
+    <el-icon>
+      <component :is="menu.icon"></component>
+    </el-icon>
+    <span>
+      {{  menu.title  }}
+    </span>
+  </el-menu-item>
 </template>
 
 <script setup lang="ts" name="SubMenu">
@@ -30,5 +37,5 @@ defineProps<{
 }>()
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 </style>

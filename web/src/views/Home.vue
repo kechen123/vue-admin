@@ -1,7 +1,7 @@
 <template>
-  <a-button type="primary" @click="btnClick('/login')">login</a-button>
-  <a-button type="primary" @click="btnClick('/base')">base</a-button>
-  <a-button type="primary" @click="btnClick('/page1')">layout page1</a-button>
+  <el-button type="primary" @click="btnClick('/login')">login</el-button>
+  <el-button type="primary" @click="btnClick('/base')">base</el-button>
+  <el-button type="primary" @click="btnClick('/page1')">layout page1</el-button>
 </template>
 
 <script lang="ts">

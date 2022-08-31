@@ -18,9 +18,18 @@ const customRoutes = [
     path: 'Page2',
     name: 'page2',
     layout: 'Layout'
+  },
+  {
+    path: 'BasePage/Index',
+    name: 'basePage',
+    layout: 'Layout'
+  },
+  {
+    path: 'BasePage/Test/Index',
+    name: 'test',
+    layout: 'Layout'
   }
 ]
-
 const routes = async () => {
   for (const n of customRoutes) {
     const { path, name, layout } = n
@@ -58,6 +67,8 @@ const router = createRouter({
 })
 
 await routes()
+
+console.log(router.getRoutes())
 
 router.beforeEach(async (to, from) => {
   let b = false

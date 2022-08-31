@@ -3,8 +3,7 @@
   <div class="layout">
     <el-container>
       <el-header>
-        <div class="logo"></div>
-        <el-switch v-model="isDark" :change="toggleDark" />
+        <Header />
       </el-header>
       <el-container>
         <el-aside width="200px">
@@ -18,7 +17,9 @@
           </Suspense>
         </el-aside>
         <el-container>
+          <Tabs />
           <el-main>
+
             <router-view v-slot="{ Component }">
               <template v-if="Component">
                 <Transition name="fade" mode="out-in">
@@ -41,49 +42,39 @@
   </div>
 </template>
 <script setup lang="ts" >
-import { useDark, useToggle } from '@vueuse/core'
-const Menu = defineAsyncComponent(() => import('./Menu.vue'))
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
+
 </script>
-<style>
+<style lang="less">
 .layout {
   width: 100%;
   height: 100vh;
   background-color: var(--el-bg-color);
   color: var(--el-text-color-primary);
+
+  .el-header {
+    position: relative;
+    z-index: 9999;
+    background-color: var(--el-fill-color);
+    color: var(--el-text-color-primary);
+    border-bottom: var(--el-border);
+  }
+
+  .el-aside {
+    background: var(--el-fill-color-light);
+
+    .el-menu {
+      border-right: none;
+      padding: 0;
+    }
+  }
+
+  .el-container {
+    width: 100%;
+    height: 100%;
+    background-color: var(--el-bg-color-page);
+  }
 }
 
-.layout .el-container {
-  width: 100%;
-  height: 100%;
-}
-
-.layout .el-header {
-  position: relative;
-  background-color: var(--el-fill-color);
-  color: var(--el-text-color-primary);
-}
-
-.layout .el-aside {
-  background: var(--el-fill-color-light);
-}
-
-.layout .el-menu {
-  border-right: none;
-}
-
-.layout .el-main {
-  padding: 0;
-}
-
-.layout .toolbar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  right: 20px;
-}
 
 .fade-enter-from,
 .fade-leave-to {
