@@ -53,7 +53,7 @@
 
   .el-header {
     position: relative;
-    z-index: 9999;
+    z-index: 9;
     background-color: var(--el-bg-color);
     color: var(--el-text-color-primary);
     border-bottom: var(--el-border);

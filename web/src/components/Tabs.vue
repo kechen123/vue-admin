@@ -1,21 +1,23 @@
 <template>
   <div class="tabs">
-    <div class="list">
-      <template v-for="(item, i) in tabData.list">
-        <div class="item" :class="[item === tabData.active ? 'active' : '']" @click.stop="tabClick(item)">
-          <div class="label">{{ item }}</div>
-          <div class="actions">
-            <div class="bar">
-              <div class="icon" @click.stop="delPage(item)">
-                <el-icon>
-                  <CloseBold />
-                </el-icon>
+    <el-scrollbar>
+      <div class="list">
+        <template v-for="(item, i) in tabData.list">
+          <div class="item" :class="[item === tabData.active ? 'active' : '']" @click.stop="tabClick(item)">
+            <div class="label">{{ item }}</div>
+            <div class="actions">
+              <div class="bar">
+                <div class="icon" @click.stop="delPage(item)">
+                  <el-icon>
+                    <CloseBold />
+                  </el-icon>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </template>
-    </div>
+        </template>
+      </div>
+    </el-scrollbar>
   </div>
 </template>
 
@@ -68,8 +70,8 @@ watchEffect(() => {
     display: flex;
     height: 35px;
     // padding: 6px;
-    overflow-x: auto;
-    overflow-y: hidden;
+    // overflow-x: auto;
+    // overflow-y: hidden;
     border-bottom: var(--el-border);
 
     .item {
@@ -84,13 +86,9 @@ watchEffect(() => {
       height: 100%;
       box-sizing: border-box;
       padding-left: 10px;
-      // margin-right: 4px;
       left: auto;
-      color: var(--el-button-text-color);
+      color: var(--el-text-color-primary);
       border-right: var(--el-border);
-      // border: var(--tabs-btn-border);
-      // border-radius: 2px;
-
 
       .label {
         white-space: nowrap;
