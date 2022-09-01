@@ -42,6 +42,7 @@ declare module '@vue/runtime-core' {
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElSwitch: typeof import('element-plus/es')['ElSwitch']
+    Footer: typeof import('./../src/components/Footer.vue')['default']
     Header: typeof import('./../src/components/Header.vue')['default']
     HelloWorld: typeof import('./../src/components/HelloWorld.vue')['default']
     Layout: typeof import('./../src/components/Layout.vue')['default']

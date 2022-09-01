@@ -10,9 +10,9 @@ interface Check {
 type CheckFun = (check: Check) => any
 
 const checkLegal: CheckFun = ({ to, from, router }) => {
-  console.log(router?.hasRoute('basePage'))
-  console.log(router?.hasRoute('BasePage/Index'))
-  console.log(to)
+  // console.log(router?.hasRoute('basePage'))
+  // console.log(router?.hasRoute('BasePage/Index'))
+  // console.log(to)
 
   if (router && router.hasRoute(to.name as string)) {
     return true

@@ -6,7 +6,7 @@
           <component :is="menu.icon"></component>
         </el-icon>
         <span>
-          {{  menu.title  }}
+          {{ menu.title }}
         </span>
       </template>
 
@@ -18,7 +18,7 @@
       <component :is="menu.icon"></component>
     </el-icon>
     <span>
-      {{  menu.title  }}
+      {{ menu.title }}
     </span>
   </el-menu-item>
 </template>

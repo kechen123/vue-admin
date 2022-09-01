@@ -3,11 +3,11 @@
     <el-scrollbar>
       <div class="list">
         <template v-for="(item, i) in tabData.list">
-          <div class="item" :class="[item === tabData.active ? 'active' : '']" @click.stop="tabClick(item)">
-            <div class="label">{{ item }}</div>
+          <div class="item" :class="[item.name === tabData.active ? 'active' : '']" @click.stop="tabClick(item)">
+            <div class="label">{{ item.name }}</div>
             <div class="actions">
               <div class="bar">
-                <div class="icon" @click.stop="delPage(item)">
+                <div class="icon" @click.stop="delPage(item.name)">
                   <el-icon>
                     <CloseBold />
                   </el-icon>
@@ -26,24 +26,33 @@ import { storeToRefs } from 'pinia'
 import { useTabsStore } from '@/modules/store/tabs'
 import { useRouter } from 'vue-router'
 
-type Tab = {
+
+interface Tab {
+  name: string
+  path: string
+}
+
+interface Tabs {
   active: string
-  list: Array<string>
+  list: Array<Tab>
 }
 const tabsStore = useTabsStore()
 const { active, list } = storeToRefs(tabsStore)
 const { delTab, addTab } = tabsStore;
 const router = useRouter()
-const tabData = reactive<Tab>({
+const tabData = reactive<Tabs>({
   list: [],
   active: ''
 })
 
-const tabClick = (item: string) => {
-  router.push(item)
+const tabClick = (item: Tab) => {
+  console.log('click');
+
+  router.push(item.path)
   addTab(item)
 };
 const delPage = (item: string) => {
+  console.log('del');
   delTab(item)
 };
 

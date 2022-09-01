@@ -97,10 +97,26 @@ const menu = ref<Menu[]>([
     ]
   }
 ])
-const changeMenu = (index: string, indexPath: string[]) => {
-  console.log(index, indexPath)
-  router.push(index)
-  addTab(index)
+
+const findNode = (func: (node: any) => boolean, tree: any) => {
+  for (const node of tree) {
+    if (func(node)) return node
+    if (node.children) {
+      const res = findNode(func, node.children) as any
+      if (res) return res
+    }
+  }
+  return null
+}
+const changeMenu = (index: string, indexPath: string[], item: any, item1: any) => {
+  const node = findNode((node) => { return node.path === index }, menu.value)
+  if (node) {
+    router.push(index)
+    addTab({
+      name: node.title,
+      path: node.path
+    })
+  }
 }
 watchEffect(() => {
   openKeys.value = active.value

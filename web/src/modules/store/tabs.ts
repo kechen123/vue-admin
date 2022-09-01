@@ -1,48 +1,69 @@
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 
+interface Tab {
+  name: string
+  path: string
+}
+
+type Tabs = Array<Tab>
+
 //https://juejin.cn/post/7057439040911441957
 
 export const useTabsStore = defineStore('tabs', () => {
   const router = useRouter()
   const matched = router.currentRoute.value.matched
-  const name = router.currentRoute.value.path.split('/')[1].toLowerCase()
-
+  const routerVal = router.currentRoute.value
   const active = ref<string>(
     (() => {
       if (matched.length > 1) {
-        return name
+        const name: any = routerVal.name
+        if (name) {
+          return name
+        }
       }
-      return ''
+      return null
     })()
   )
 
-  let list = reactive<Array<string>>(
+  let list = reactive<Tabs>(
     (() => {
       if (matched.length > 1) {
-        return [name]
+        const name: any = routerVal.name
+        const path = routerVal.path
+        if (name && path) {
+          return [
+            {
+              name,
+              path
+            }
+          ]
+        }
       }
       return []
     })()
   )
 
-  const addTab = (name: string): void => {
-    active.value = name
-    if (list.includes(name)) return
-    list.push(name)
+  const addTab = (tab: Tab): void => {
+    active.value = tab.name
+    if (list.find((val) => val.name === tab.name)) return
+    list.push(tab)
   }
 
   const setActive = (name: string): void => {
-    if (!list.includes(name)) return
+    if (!list.find((val) => val.name === name)) return
     active.value = name
   }
 
   const delTab = (name: string): void => {
-    if (!list.includes(name)) return
-    let i = list.indexOf(name) - 1
-    i = i < 0 ? 0 : i
-    list = list.filter((item) => item !== name)
-    active.value = list[i]
+    let index = list.findIndex((item) => item.name === name)
+    if (index < 0) return
+    list.splice(index, 1)
+    if (index > list.length - 1) {
+      index = list.length - 1
+    }
+    active.value = list[index].name
+    router.push(list[index].path)
   }
 
   return { active, list, addTab, setActive, delTab }
