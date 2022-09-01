@@ -3,7 +3,7 @@
     <div class="list">
       <template v-for="(item, i) in tabData.list">
         <div class="item" :class="[item === tabData.active ? 'active' : '']" @click.stop="tabClick(item)">
-          <div class="label">{{  item  }}</div>
+          <div class="label">{{ item }}</div>
           <div class="actions">
             <div class="bar">
               <div class="icon" @click.stop="delPage(item)">
@@ -61,7 +61,7 @@ watchEffect(() => {
 .tabs {
   position: relative;
   overflow: hidden;
-  background-color: var(--el-fill-color);
+  background-color: var(--el-bg-color);
   user-select: none;
 
   .list {
@@ -70,7 +70,7 @@ watchEffect(() => {
     // padding: 6px;
     overflow-x: auto;
     overflow-y: hidden;
-    border-bottom: var(--border);
+    border-bottom: var(--el-border);
 
     .item {
       width: 120px;
@@ -87,7 +87,7 @@ watchEffect(() => {
       // margin-right: 4px;
       left: auto;
       color: var(--el-button-text-color);
-      border-right: var(--border);
+      border-right: var(--el-border);
       // border: var(--tabs-btn-border);
       // border-radius: 2px;
 
@@ -119,16 +119,14 @@ watchEffect(() => {
           justify-content: center;
 
           .icon {
-            width: 20px;
-            height: 20px;
             padding: 2px;
             color: inherit;
             border-radius: 5px;
             opacity: 0;
 
             &:hover {
-              background-color: rgba(90, 93, 94, 0.31);
-              color: #FFF;
+              background-color: var(--el-color-primary-light-3);
+              color: var(--el-text-color-primary);
               opacity: 1;
             }
 
@@ -142,9 +140,6 @@ watchEffect(() => {
       }
 
       &:hover {
-        color: var(--el-button-hover-text-color);
-        background-color: var(--tabs-btn-bg-color-hover);
-
         .actions .bar .icon {
           opacity: 1;
         }
@@ -152,8 +147,7 @@ watchEffect(() => {
     }
 
     .active {
-      color: var(--el-button-hover-text-color);
-      background-color: var(--tabs-btn-bg-color-hover);
+      background-color: var(--el-color-primary-light-9);
 
       .actions .bar .icon {
         opacity: 1;

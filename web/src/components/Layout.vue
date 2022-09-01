@@ -48,19 +48,19 @@
 .layout {
   width: 100%;
   height: 100vh;
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-primary);
 
   .el-header {
     position: relative;
     z-index: 9999;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    border-bottom: var(--border);
+    background-color: var(--el-bg-color);
+    color: var(--el-text-color-primary);
+    border-bottom: var(--el-border);
   }
 
   .el-aside {
-    background: var(--bg-color);
+    background: var(--el-bg-color);
 
     .el-menu {
       border-right: none;
@@ -71,7 +71,7 @@
   .el-container {
     width: 100%;
     height: 100%;
-    background-color: var(--main-color);
+    background-color: var(--el-bg-color-page);
   }
 }
 
