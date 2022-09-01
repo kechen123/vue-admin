@@ -32,19 +32,23 @@ const menu = ref<Menu[]>([
 
       {
         title: 'page1',
+        icon: 'location',
         path: '/Page1'
       },
       {
         title: 'page2',
+        icon: 'location',
         path: '/Page2'
       },
       {
         title: 'basePage',
-        path: '/BasePage/Index'
+        icon: 'location',
+        path: '/BasePage'
       },
       {
         title: 'test',
-        path: '/BasePage/Test/Index'
+        icon: 'location',
+        path: '/Test'
       }
     ]
   },
@@ -56,42 +60,50 @@ const menu = ref<Menu[]>([
   {
     title: 'subnav 3',
     path: 'basePage',
-    icon: 'NotificationOutlined',
+    icon: 'location',
     children: [
       {
         title: '一层',
         path: '1',
+        icon: 'location',
         children: [
           {
             title: '二层',
             path: '1-1',
+            icon: 'location',
             children: [
               {
                 title: '三层',
+                icon: 'location',
                 path: 'home'
               }
             ]
           },
           {
             title: '二层-2',
+            icon: 'location',
             path: '1-2'
           },
           {
             title: '二层-3',
+            icon: 'location',
             path: '1-3'
           }
         ]
       },
       {
         title: 'option10',
+        icon: 'location',
         path: '10'
       },
       {
         title: 'option11',
+        icon: 'location',
         path: '11'
       },
       {
         title: 'option12',
+        icon: 'location',
         path: '12'
       }
     ]

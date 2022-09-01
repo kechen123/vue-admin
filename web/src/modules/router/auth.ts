@@ -12,10 +12,15 @@ type CheckFun = (check: Check) => any
 const checkLegal: CheckFun = ({ to, from, router }) => {
   // console.log(router?.hasRoute('basePage'))
   // console.log(router?.hasRoute('BasePage/Index'))
-  // console.log(to)
+  console.log(from)
 
   if (router && router.hasRoute(to.name as string)) {
     return true
+  } else if (
+    (!to.name || (to.name && (to.name as string).indexOf('404') === -1)) &&
+    from.matched.length > 1
+  ) {
+    return (from.matched[0].name as string) + '404'
   }
   return { name: '404' }
 }

@@ -5,8 +5,8 @@ import { Auth, NotCheckRouter } from './auth'
 
 const customRoutes = [
   {
-    path: 'Base',
-    name: 'base',
+    path: 'Base', //组件路径
+    name: 'base', //跳转路径
     layout: ''
   },
   {
@@ -21,12 +21,17 @@ const customRoutes = [
   },
   {
     path: 'BasePage/Index',
-    name: 'basePage',
+    name: 'BasePage',
     layout: 'Layout'
   },
   {
     path: 'BasePage/Test/Index',
-    name: 'test',
+    name: 'Test',
+    layout: 'Layout'
+  },
+  {
+    path: 'NotFind',
+    name: 'Layout404',
     layout: 'Layout'
   }
 ]
@@ -38,7 +43,7 @@ const routes = async () => {
       continue
     }
     let component: any = {
-      path: '/' + path,
+      path: '/' + name,
       name,
       component: plugin
     }

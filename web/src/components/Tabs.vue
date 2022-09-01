@@ -46,13 +46,10 @@ const tabData = reactive<Tabs>({
 })
 
 const tabClick = (item: Tab) => {
-  console.log('click');
-
   router.push(item.path)
   addTab(item)
 };
 const delPage = (item: string) => {
-  console.log('del');
   delTab(item)
 };
 
