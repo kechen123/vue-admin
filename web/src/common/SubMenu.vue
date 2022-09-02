@@ -9,7 +9,6 @@
           {{ menu.title }}
         </span>
       </template>
-
       <SubMenu v-for="item in menu.children" :menu="item" />
     </el-sub-menu>
   </template>

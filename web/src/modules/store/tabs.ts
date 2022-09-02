@@ -14,15 +14,18 @@ export const useTabsStore = defineStore('tabs', () => {
   const router = useRouter()
   const matched = router.currentRoute.value.matched
   const routerVal = router.currentRoute.value
-  const active = ref<string>(
+  const active = ref<Tab>(
     (() => {
+      let name: any = '',
+        path = ''
       if (matched.length > 1) {
-        const name: any = routerVal.name
-        if (name) {
-          return name
-        }
+        name = routerVal.name
+        path = routerVal.path
       }
-      return null
+      return {
+        name,
+        path
+      }
     })()
   )
 
@@ -45,14 +48,14 @@ export const useTabsStore = defineStore('tabs', () => {
   )
 
   const addTab = (tab: Tab): void => {
-    active.value = tab.name
+    active.value = tab
     if (list.find((val) => val.name === tab.name)) return
     list.push(tab)
   }
 
-  const setActive = (name: string): void => {
-    if (!list.find((val) => val.name === name)) return
-    active.value = name
+  const setActive = (tab: Tab): void => {
+    if (!list.find((val) => val.name === tab.name)) return
+    active.value = tab
   }
 
   const delTab = (name: string): void => {
@@ -62,7 +65,7 @@ export const useTabsStore = defineStore('tabs', () => {
     if (index > list.length - 1) {
       index = list.length - 1
     }
-    active.value = list[index].name
+    active.value = list[index]
     router.push(list[index].path)
   }
 

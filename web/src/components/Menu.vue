@@ -18,11 +18,12 @@ interface Menu {
   icon?: string;
   children?: Menu[];
 }
+
 const tabsStore = useTabsStore()
 const { active } = storeToRefs(tabsStore)
 const { addTab } = tabsStore;
 const router = useRouter()
-const openKeys = ref<string>('home1-1-1')
+const openKeys = ref<string>()
 const menu = ref<Menu[]>([
   {
     title: '无限层级',
@@ -130,8 +131,9 @@ const changeMenu = (index: string, indexPath: string[], item: any, item1: any) =
     })
   }
 }
+
 watchEffect(() => {
-  openKeys.value = active.value
+  openKeys.value = active.value.path
 })
 </script>
 

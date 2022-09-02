@@ -3,7 +3,7 @@
     <el-scrollbar>
       <div class="list">
         <template v-for="(item, i) in tabData.list">
-          <div class="item" :class="[item.name === tabData.active ? 'active' : '']" @click.stop="tabClick(item)">
+          <div class="item" :class="[item.name === tabData.active.name ? 'active' : '']" @click.stop="tabClick(item)">
             <div class="label">{{ item.name }}</div>
             <div class="actions">
               <div class="bar">
@@ -33,7 +33,7 @@ interface Tab {
 }
 
 interface Tabs {
-  active: string
+  active: Tab
   list: Array<Tab>
 }
 const tabsStore = useTabsStore()
@@ -42,7 +42,10 @@ const { delTab, addTab } = tabsStore;
 const router = useRouter()
 const tabData = reactive<Tabs>({
   list: [],
-  active: ''
+  active: {
+    name: '',
+    path: ''
+  }
 })
 
 const tabClick = (item: Tab) => {
@@ -55,7 +58,7 @@ const delPage = (item: string) => {
 
 watch(() => active.value, (val) => {
   const name = router.currentRoute.value.path.split('/')[1].toLowerCase()
-  if (val === name) {
+  if (val.name === name) {
     router.push(val)
   }
 })
@@ -152,6 +155,7 @@ watchEffect(() => {
 
     .active {
       background-color: var(--el-color-primary-light-9);
+      height: 36px;
 
       .actions .bar .icon {
         opacity: 1;
