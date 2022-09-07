@@ -1,12 +1,6 @@
 <template>
   <el-form :inline="true" :model="props.searchParam" class="base-form-search">
     <el-form-item :label="item.label" :key="i" v-for="(item, i) in props.searchArr">
-
-      <!-- <BaseFormSearchItem v-if="item.slot && item.type === 'custom'" :item="item" v-model="formInline[item.id]">
-        <template v-slot:[item.slot]>
-          <slot :name="item.slot" v-bind="{ item, formInline[item.id] }"></slot>
-        </template>
-      </BaseFormSearchItem> -->
       <template v-if="item.slot && item.type === 'custom'">
         <slot :name="item.slot" v-bind="{ item, value: props.searchParam[item.id] }"></slot>
       </template>

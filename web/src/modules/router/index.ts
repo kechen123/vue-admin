@@ -35,10 +35,12 @@ const customRoutes = [
     layout: 'Layout'
   }
 ]
+
 const routes = async () => {
   for (const n of customRoutes) {
     const { path, name, layout } = n
     const plugin = await loadView.apply(null, [path])
+
     if (!plugin) {
       continue
     }

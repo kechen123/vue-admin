@@ -4,7 +4,7 @@
       <header>
         <BaseFormSearch :searchArr="searchArr" :searchParam="searchParam" @search="search">
           <template #InputText="{ item, value }">
-            <el-input @input="(val: string) => change(val, item)" />
+            <el-input @input="(val: string) => change(val, item, value)" />
           </template>
         </BaseFormSearch>
       </header>
@@ -48,7 +48,7 @@ const searchArr: Array<Search> = [
   },
 ]
 const searchParam = reactive<{ [key: string]: any }>({})
-const change = (val: string, item: Search) => {
+const change = (val: string, item: Search, value: string) => {
   console.log(val);
   searchParam[item.id] = val
 
