@@ -19,7 +19,6 @@
         <el-container>
           <Tabs />
           <el-main>
-
             <router-view v-slot="{ Component }">
               <template v-if="Component">
                 <Transition name="fade" mode="out-in">
@@ -93,13 +92,14 @@
   transition: opacity 0.15s ease;
 }
 
-/* .fade-enter-active {
+.fade-enter-active {
   animation: anim 1s ease;
-} */
+}
 
-/* .fade-leave-active {
-  animation: leaveAnim 1s ease;
-} */
+.fade-leave-active {
+  animation: fadeOutLeft 1s ease;
+}
+
 
 @keyframes anim {
   0% {
