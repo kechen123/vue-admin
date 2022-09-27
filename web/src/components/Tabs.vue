@@ -1,31 +1,27 @@
 <template>
   <div class="tabs">
-    <el-scrollbar>
-      <div class="list">
+    <n-scrollbar x-scrollable>
+      <div class="container ">
         <template v-for="(item, i) in tabData.list">
           <div class="item" :class="[item.name === tabData.active.name ? 'active' : '']" @click.stop="tabClick(item)">
-            <div class="label">{{ item.name }}</div>
-            <div class="actions">
-              <div class="bar">
-                <div class="icon" @click.stop="delPage(item.name)">
-                  <el-icon>
-                    <CloseBold />
-                  </el-icon>
-                </div>
-              </div>
-            </div>
+            <span class="name">
+              {{item.name}}
+            </span>
+            <i-material-symbols:close class="close" @click.stop="delPage(item.name)" />
           </div>
         </template>
       </div>
-    </el-scrollbar>
+    </n-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useThemeVars } from 'naive-ui'
 import { storeToRefs } from 'pinia'
-import { useTabsStore } from '@/modules/store/tabs'
+import { useTabsStore } from '@/store/tabs'
 import { useRouter } from 'vue-router'
 
+const themeVars = ref(useThemeVars())
 
 interface Tab {
   name: string
@@ -52,6 +48,7 @@ const tabClick = (item: Tab) => {
   router.push(item.path)
   addTab(item)
 };
+
 const delPage = (item: string) => {
   delTab(item)
 };
@@ -68,123 +65,50 @@ watchEffect(() => {
 })
 </script>
 
-<style scoped lang="less">
+<style scoped>
 .tabs {
-  position: relative;
-  overflow: hidden;
-  background-color: var(--el-bg-color);
-  user-select: none;
+  @apply relative overflow-hidden select-none;
+  background-color: #fff;
+}
 
-  .list {
-    display: flex;
-    height: 35px;
-    // padding: 6px;
-    // overflow-x: auto;
-    // overflow-y: hidden;
-    border-bottom: var(--el-border);
 
-    .item {
-      width: 120px;
-      min-width: fit-content;
-      min-width: -moz-fit-content;
-      flex-shrink: 0;
-      position: relative;
-      display: flex;
-      white-space: nowrap;
-      cursor: pointer;
-      height: 100%;
-      box-sizing: border-box;
-      padding-left: 10px;
-      left: auto;
-      color: var(--el-text-color-primary);
-      border-right: var(--el-border);
+.container {
+  @apply flex items-center h-8
+}
 
-      .label {
-        white-space: nowrap;
-        flex: 1;
-        margin-top: auto;
-        margin-bottom: auto;
-        line-height: 35px;
-        display: flex;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+.item {
+  /* bg-green-100/70 */
+  @apply relative flex items-center pl-4 pr-5 mt-[2px] h-full cursor-pointer hover: bg-light-400/20 hover:text-green-400 rounded-sm
+}
 
-      .actions {
-        margin-top: auto;
-        margin-bottom: auto;
-        width: 28px;
 
-        .bar {
-          white-space: nowrap;
-          display: flex;
-          margin: 0 auto;
-          padding: 0;
-          height: 100%;
-          width: 100%;
-          align-items: center;
-          justify-content: center;
+.active {
+  /* text-green-400 bg-green-100/70 */
+  @apply bg-light-400 text-green-400;
+}
 
-          .icon {
-            padding: 2px;
-            color: inherit;
-            border-radius: 5px;
-            opacity: 0;
+.name {
+  @apply mr-2
+}
 
-            &:hover {
-              background-color: var(--el-color-primary-light-3);
-              color: var(--el-text-color-primary);
-              opacity: 1;
-            }
+.close {
+  @apply absolute right-2 box-border h-4 w-4 rounded-sm hover: text-light-200 hover:bg-green-400
+}
 
-            >* {
-              color: inherit;
-              display: block;
-            }
-          }
-
-        }
-      }
-
-      &:hover {
-        .actions .bar .icon {
-          opacity: 1;
-        }
-      }
-    }
-
-    .active {
-      background-color: var(--el-color-primary-light-9);
-      height: 36px;
-
-      .actions .bar .icon {
-        opacity: 1;
-      }
-    }
+@variants dark {
+  .tabs {
+    @apply text-gray-400;
+    background-color: rgb(24, 24, 28);
   }
 
-  .list::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
+  .active {
+    /* bg-green-300/20 */
+    @apply bg-dark-400 text-green-500;
   }
 
-  .list:hover::-webkit-scrollbar {
-    width: 12px;
-    height: 4px;
+  .item {
+    /* bg-green-300/20 */
+    @apply flex items-center pl-6 pr-6 h-full cursor-pointer hover: bg-dark-400
   }
-
-  .list::-webkit-scrollbar-thumb:hover {
-    background: #333;
-  }
-
-  .list::-webkit-scrollbar-thumb {
-    background: rgba(51, 51, 51, 0.4);
-  }
-
-  .list::-webkit-scrollbar-track {
-    border-radius: 0;
-    background: transparent;
-  }
-
 }
 </style>
