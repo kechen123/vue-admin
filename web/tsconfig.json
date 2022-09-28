@@ -16,9 +16,9 @@
       "vite-plugin-use-modules/client",
       "vite-plugin-vue-meta-layouts/client"
     ],
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["src/*"]
     }
   },
   "include": [
