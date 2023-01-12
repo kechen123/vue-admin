@@ -36,7 +36,7 @@ export const useTabsStore = defineStore('tabs', () => {
         const node = findNode((node) => {
           return node.routePath === routerVal.path
         }, menu)
-        console.log(node)
+        // console.log(node)
         if (node) {
           name = node.routeName
           path = node.routePath

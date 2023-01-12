@@ -3,54 +3,62 @@ import { transformAuthRouteToMenu } from '@/utils/common/menu'
 
 interface State {
   isInitAuthRoute: boolean
+  menuJson: AuthRoute.Route[]
   menus: GlobalMenuOption[]
+  breadcrumb: AuthRoute.Route[]
 }
 const menu: AuthRoute.Route[] = [
   {
     id: '1-1',
-    path: '/test',
-    name: '且听风吟',
-    icon: 'vscode-icons:file-type-config'
+    path: '/',
+    name: '首页',
+    icon: 'system-uicons:home-door'
   },
   {
     id: '2',
-    name: '1973年的弹珠玩具',
-    icon: 'vscode-icons:file-type-csharp',
+    name: '系统管理',
+    icon: 'system-uicons:settings',
     children: [
       {
         id: '2-1',
-        name: '鼠',
-        icon: 'vscode-icons:file-type-jenkins',
-        path: '/'
+        name: '用户管理',
+        icon: 'system-uicons:users',
+        path: '/system/user'
+      },
+      {
+        id: '2-2',
+        name: '权限管理',
+        icon: 'system-uicons:users',
+        path: '/system/auth'
       }
     ]
   },
   {
     id: '3',
     name: '寻羊冒险记',
-    icon: 'vscode-icons:file-type-jenkins',
+    icon: 'system-uicons:alarm-clock',
     disabled: true,
-    path: '/plugin'
+    path: '/test'
   },
   {
     id: '4',
     name: '舞，舞，舞',
-    icon: 'vscode-icons:file-type-jenkins',
+    icon: 'system-uicons:arrow-up-circle',
     children: [
       {
         id: '4-1',
         name: '人物',
-        icon: 'simple-icons:vite',
+        icon: 'system-uicons:arrow-up-circle',
         children: [
           {
             name: '叙事者',
-            icon: 'simple-icons:vite',
+            icon: 'system-uicons:arrow-up-circle',
             id: '4-1-1',
             path: '/plugin'
           },
           {
             name: '羊男',
-            icon: 'simple-icons:vite',
+            icon: 'system-uicons:arrow-up-circle',
             id: '4-1-2',
             path: '/plugin'
           }
@@ -59,12 +67,12 @@ const menu: AuthRoute.Route[] = [
       {
         id: '4-2',
         name: '饮品',
-        icon: 'simple-icons:vite',
+        icon: 'system-uicons:camera-noflash',
         children: [
           {
             name: '威士忌',
             id: '4-2-1',
-            icon: 'simple-icons:vite',
+            icon: 'system-uicons:chat-add',
             path: '/plugin'
           }
         ]
@@ -72,11 +80,11 @@ const menu: AuthRoute.Route[] = [
       {
         id: '4-3',
         name: '食物',
-        icon: 'simple-icons:vite',
+        icon: 'system-uicons:chat-add',
         children: [
           {
             name: '三明治',
-            icon: 'simple-icons:vite',
+            icon: 'system-uicons:chat-add',
             id: '4-3-1',
             path: '/plugin'
           }
@@ -85,7 +93,7 @@ const menu: AuthRoute.Route[] = [
       {
         id: '4-4',
         name: '过去增多，未来减少',
-        icon: 'simple-icons:vite',
+        icon: 'system-uicons:directions',
         path: '/plugin'
       }
     ]
@@ -95,7 +103,9 @@ const menu: AuthRoute.Route[] = [
 export const useMenuStore = defineStore('router', () => {
   const state = reactive<State>({
     isInitAuthRoute: false,
-    menus: []
+    menuJson: menu,
+    menus: [],
+    breadcrumb: []
   })
 
   const initMenu = async () => {
@@ -107,7 +117,10 @@ export const useMenuStore = defineStore('router', () => {
     }
   }
 
-  return { state, initMenu }
+  const setBreadcrumb = async (list: AuthRoute.Route[]) => {
+    state.breadcrumb = list
+  }
+  return { state, initMenu, setBreadcrumb }
 })
 
 //use

@@ -29,7 +29,9 @@
 							<Transition name="fade" mode="out-in">
 								<keep-alive>
 									<Suspense>
-										<component :is="Component" :key="$route.fullPath" />
+										<div>
+											<component :is="Component" :key="$route.fullPath" />
+										</div>
 										<template #fallback>
 											正在加载...
 										</template>
@@ -53,6 +55,7 @@
 import { useSystemStore } from '@/store/system'
 const systemStore = useSystemStore()
 const { state } = storeToRefs(systemStore)
+
 </script>
 <style>
 .fade-enter-from,

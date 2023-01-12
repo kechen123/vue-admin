@@ -7,18 +7,18 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Counter: typeof import('./../../src/components/counter.vue')['default']
     Header: typeof import('./../../src/components/header/index.vue')['default']
     HeaderBreadcrumb: typeof import('./../../src/components/header/breadcrumb.vue')['default']
     HeaderLogo: typeof import('./../../src/components/header/logo.vue')['default']
     HeaderMenu: typeof import('./../../src/components/header/menu.vue')['default']
-    Hello: typeof import('./../../src/components/hello.vue')['default']
     'IMaterialSymbols:close': typeof import('~icons/material-symbols/close')['default']
-    'IMdi:accountBoxMultiple': typeof import('~icons/mdi/account-box-multiple')['default']
     'IMdi:accountEditOutline': typeof import('~icons/mdi/account-edit-outline')['default']
     'IMdi:formatIndentDecrease': typeof import('~icons/mdi/format-indent-decrease')['default']
     'IMdi:formatIndentIncrease': typeof import('~icons/mdi/format-indent-increase')['default']
-    Menu: typeof import('./../../src/components/menu.vue')['default']
+    'ISystemUicons:expandWidth': typeof import('~icons/system-uicons/expand-width')['default']
+    'ISystemUicons:jumpBackward': typeof import('~icons/system-uicons/jump-backward')['default']
+    'ISystemUicons:jumpForward': typeof import('~icons/system-uicons/jump-forward')['default']
+    Menu: typeof import('./../../src/components/Menu.vue')['default']
     NAvatar: typeof import('naive-ui')['NAvatar']
     NBreadcrumb: typeof import('naive-ui')['NBreadcrumb']
     NBreadcrumbItem: typeof import('naive-ui')['NBreadcrumbItem']
@@ -32,11 +32,8 @@ declare module '@vue/runtime-core' {
     NMenu: typeof import('naive-ui')['NMenu']
     NPopover: typeof import('naive-ui')['NPopover']
     NScrollbar: typeof import('naive-ui')['NScrollbar']
-    NTab: typeof import('naive-ui')['NTab']
-    NTabs: typeof import('naive-ui')['NTabs']
-    NTag: typeof import('naive-ui')['NTag']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Tabs: typeof import('./../../src/components/tabs.vue')['default']
+    Tabs: typeof import('./../../src/components/Tabs.vue')['default']
   }
 }

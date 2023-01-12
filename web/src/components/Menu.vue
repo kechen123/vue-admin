@@ -17,10 +17,13 @@ const handleUpdateValue = (key: string, item: MenuOption) => {
 		name: routeName as string,
 		path: routePath as string
 	})
+
 	router.push(routePath as RouteLocationRaw)
 }
 // @ts-ignore
 const menu = ref<GlobalMenuOption[]>(menuStore.state.menus)
+console.log('menu>>>>>>>>>>', menu);
+
 </script>
 
 <template>

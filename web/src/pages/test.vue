@@ -7,11 +7,11 @@ setTimeout(() => {
 
 <template>
 	<div>
-		{{data}}
+		{{ data }}
 	</div>
 
 </template>
-
+<!-- <route> { meta: { layout: 'custom' } } </route> -->
 <style>
 
 </style>

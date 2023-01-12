@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import { darkTheme, lightTheme } from 'naive-ui'
 const { isDark } = useDarks()
-console.log(isDark.value)
+// console.log(isDark.value)
 
 const theme = ref()
 watchEffect(() => {
