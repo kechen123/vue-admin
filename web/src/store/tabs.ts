@@ -5,6 +5,7 @@ import { useMenuStore } from '@/store/router'
 interface Tab {
   name: string
   path: string
+  key: string
 }
 
 type Tabs = Array<Tab>
@@ -31,20 +32,22 @@ export const useTabsStore = defineStore('tabs', () => {
   const active = ref<Tab>(
     (() => {
       let name: any = '',
-        path = ''
+        path = '',
+        key = ''
       if (matched.length > 1) {
         const node = findNode((node) => {
           return node.routePath === routerVal.path
         }, menu)
-        // console.log(node)
         if (node) {
           name = node.routeName
           path = node.routePath
+          key = node.key
         }
       }
       return {
         name,
-        path
+        path,
+        key
       }
     })()
   )
@@ -59,6 +62,7 @@ export const useTabsStore = defineStore('tabs', () => {
           return [
             {
               name: node.routeName,
+              key: node.key,
               path: node.routePath
             }
           ]

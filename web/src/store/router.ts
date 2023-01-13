@@ -54,13 +54,13 @@ const menu: AuthRoute.Route[] = [
             name: '叙事者',
             icon: 'system-uicons:arrow-up-circle',
             id: '4-1-1',
-            path: '/plugin'
+            path: '/aaa'
           },
           {
             name: '羊男',
             icon: 'system-uicons:arrow-up-circle',
             id: '4-1-2',
-            path: '/plugin'
+            path: '/bbb'
           }
         ]
       },
@@ -73,7 +73,7 @@ const menu: AuthRoute.Route[] = [
             name: '威士忌',
             id: '4-2-1',
             icon: 'system-uicons:chat-add',
-            path: '/plugin'
+            path: '/ccc'
           }
         ]
       },
@@ -86,7 +86,7 @@ const menu: AuthRoute.Route[] = [
             name: '三明治',
             icon: 'system-uicons:chat-add',
             id: '4-3-1',
-            path: '/plugin'
+            path: '/ddd'
           }
         ]
       },
@@ -94,7 +94,7 @@ const menu: AuthRoute.Route[] = [
         id: '4-4',
         name: '过去增多，未来减少',
         icon: 'system-uicons:directions',
-        path: '/plugin'
+        path: '/eee'
       }
     ]
   }

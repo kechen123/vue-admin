@@ -5,7 +5,7 @@
         <template v-for="(item, i) in tabData.list">
           <div class="item" :class="[item.name === tabData.active.name ? 'active' : '']" @click.stop="tabClick(item)">
             <span class="name">
-              {{item.name}}
+              {{ item.name }}
             </span>
             <i-material-symbols:close class="close" @click.stop="delPage(item.name)" />
           </div>
@@ -67,8 +67,12 @@ watchEffect(() => {
 
 <style scoped>
 .tabs {
+  --n-border-color: rgb(239, 239, 245);
+  --n-bg-color: #fff;
   @apply relative overflow-hidden select-none;
-  background-color: #fff;
+  background-color: var(--n-bg-color);
+
+  border-bottom: solid 1px var(--n-border-color);
 }
 
 
@@ -98,7 +102,8 @@ watchEffect(() => {
 @variants dark {
   .tabs {
     @apply text-gray-400;
-    background-color: rgb(24, 24, 28);
+    --n-bg-color: rgb(24, 24, 28);
+    --n-border-color: rgba(255, 255, 255, 0.09);
   }
 
   .active {

@@ -7,14 +7,20 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    copy: typeof import('./../../src/components/header/logo copy.vue')['default']
     Header: typeof import('./../../src/components/header/index.vue')['default']
     HeaderBreadcrumb: typeof import('./../../src/components/header/breadcrumb.vue')['default']
     HeaderLogo: typeof import('./../../src/components/header/logo.vue')['default']
+    HeaderLogo1: typeof import('./../../src/components/header/logo1.vue')['default']
     HeaderMenu: typeof import('./../../src/components/header/menu.vue')['default']
+    'IIc:baselineFormatIndentDecrease': typeof import('~icons/ic/baseline-format-indent-decrease')['default']
+    'IIc:baselineFormatIndentIncrease': typeof import('~icons/ic/baseline-format-indent-increase')['default']
     'IMaterialSymbols:close': typeof import('~icons/material-symbols/close')['default']
     'IMdi:accountEditOutline': typeof import('~icons/mdi/account-edit-outline')['default']
     'IMdi:formatIndentDecrease': typeof import('~icons/mdi/format-indent-decrease')['default']
     'IMdi:formatIndentIncrease': typeof import('~icons/mdi/format-indent-increase')['default']
+    'ISystemUicons:chevronLeftDouble': typeof import('~icons/system-uicons/chevron-left-double')['default']
+    'ISystemUicons:chevronRightDouble': typeof import('~icons/system-uicons/chevron-right-double')['default']
     'ISystemUicons:expandWidth': typeof import('~icons/system-uicons/expand-width')['default']
     'ISystemUicons:jumpBackward': typeof import('~icons/system-uicons/jump-backward')['default']
     'ISystemUicons:jumpForward': typeof import('~icons/system-uicons/jump-forward')['default']
@@ -26,6 +32,7 @@ declare module '@vue/runtime-core' {
     NDropdown: typeof import('naive-ui')['NDropdown']
     NIcon: typeof import('naive-ui')['NIcon']
     NLayout: typeof import('naive-ui')['NLayout']
+    NLayoutContent: typeof import('naive-ui')['NLayoutContent']
     NLayoutFooter: typeof import('naive-ui')['NLayoutFooter']
     NLayoutHeader: typeof import('naive-ui')['NLayoutHeader']
     NLayoutSider: typeof import('naive-ui')['NLayoutSider']

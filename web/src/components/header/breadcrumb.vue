@@ -5,10 +5,10 @@
 		<div class="flex items-center justify-center w-11 h-full  cursor-pointer hover:bg-[#f6f6f6] dark:hover:bg-[#333]"
 			@click="systemStore.changeCollapse()">
 			<n-icon v-if="state.collapse" size="22">
-				<i-system-uicons:expand-width />
+				<i-ic:baseline-format-indent-increase />
 			</n-icon>
 			<n-icon v-else size="22">
-				<i-system-uicons:expand-width />
+				<i-ic:baseline-format-indent-decrease />
 			</n-icon>
 		</div>
 		<n-breadcrumb>

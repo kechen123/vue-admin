@@ -1,27 +1,31 @@
 <template>
-	<n-layout class="h-screen" embedded>
-		<n-layout-header bordered>
-			<Header />
-		</n-layout-header>
-		<n-layout position="absolute" style="top: 50px; bottom: 64px" has-sider>
-			<n-layout-sider
-				bordered
-				collapse-mode="width"
-				:collapsed-width="state.siderMinWidth"
-				:width="state.siderMaxWidth"
-				:collapsed="state.collapse"
-				@collapse="systemStore.changeCollapse(true)"
-				@expand="systemStore.changeCollapse(false)">
-				<Suspense>
-					<template #default>
-						<Menu :collapsed="state.collapse" />
-					</template>
-					<template #fallback>
-						<div>正在加载...</div>
-					</template>
-				</Suspense>
-			</n-layout-sider>
-			<n-layout :native-scrollbar="false" class="bg-light-400 dark:bg-dark-400">
+	<n-layout class="h-screen" has-sider>
+		<n-layout-sider
+			bordered
+			collapse-mode="width"
+			:collapsed-width="state.siderMinWidth"
+			:width="state.siderMaxWidth"
+			:collapsed="state.collapse"
+			@collapse="systemStore.changeCollapse(true)"
+			@expand="systemStore.changeCollapse(false)">
+			<div class="cursor-pointer h-12 w-full flex flex-auto items-center justify-between">
+				<HeaderLogo v-if="!state.collapse" />
+				<HeaderLogo1 v-else />
+			</div>
+			<Suspense>
+				<template #default>
+					<Menu :collapsed="state.collapse" />
+				</template>
+				<template #fallback>
+					<div>正在加载...</div>
+				</template>
+			</Suspense>
+		</n-layout-sider>
+		<n-layout>
+			<n-layout-header bordered>
+				<Header />
+			</n-layout-header>
+			<n-layout-content>
 				<Tabs />
 				<section class="p-6">
 					<router-view v-slot="{ Component }">
@@ -41,7 +45,7 @@
 						</template>
 					</router-view>
 				</section>
-			</n-layout>
+			</n-layout-content>
 		</n-layout>
 		<n-layout-footer
 			position="absolute"

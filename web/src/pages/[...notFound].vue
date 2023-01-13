@@ -6,7 +6,7 @@ const back = () => router.push('/')
 </script>
 
 <template>
-	<div class="flex flex-wrap h-screen text-center justify-around items-center">
+	<div class=" columns-2 h-screen text-center ">
 		<div class="font-blod desc">
 			<div class="text-7xl code">404</div>
 			<div class="text-3xl content">The Page</div>
@@ -37,6 +37,7 @@ const back = () => router.push('/')
 	margin: 0 5px;
 	max-width: 100%;
 	max-height: 100%;
+	display: block;
 }
 
 .desc {
