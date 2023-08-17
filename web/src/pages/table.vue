@@ -96,7 +96,7 @@ const tableData = ref<TableDataType[]>([])
 const selectionData = ref<TableDataType[]>([])
 const pagination = reactive<Pagination>({
   page: 1,
-  size: 2,
+  size: 10,
   total: 0
 })
 const formId = ref('')
