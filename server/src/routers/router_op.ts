@@ -1,6 +1,7 @@
 import * as Router from 'koa-router'
 import * as jwt from 'jsonwebtoken'
 import BaseDao from '../db/baseDao'
+import AuthDao from '../dao/auth'
 import * as fs from 'fs'
 import * as path from 'path'
 import * as moment from 'moment'
@@ -9,25 +10,34 @@ import * as fetch from 'node-fetch'
 let router = new Router()
 const config = G.CONFIGS.jwt
 
+
+
+
 export default (() => {
   let process = async (ctx, next) => {
     let { command } = ctx.params
     switch (command) {
       case 'login':
-        let rs = await new BaseDao('users').retrieve({ username: ctx.request.body.username, password: ctx.request.body.password })
-        if (rs.status === G.STCODES.SUCCESS) {
-          let user = rs.data[0]
-          let token = jwt.sign(
-            {
-              userid: user.id,
-              username: user.username,
-            },
-            config.secret,
-            {
-              expiresIn: config.expires_max,
-            }
-          )
-          ctx.body = G.jsResponse(G.STCODES.SUCCESS, 'login success.', { token, u_id: user.id, u_name: user.username })
+        let UserRs = await new BaseDao('users').retrieve({ username: ctx.request.body.username, password: ctx.request.body.password })
+        if (UserRs.status === G.STCODES.SUCCESS) {
+          let user = UserRs.data[0]
+          let ars = await new AuthDao('').create({ id: user.id })
+          if(ars.status === G.STCODES.SUCCESS) {
+            let roles = ars.data
+            let token = jwt.sign(
+              {
+                userid: user.id,
+                username: user.username,
+              },
+              config.secret,
+              {
+                expiresIn: config.expires_max,
+              }
+            )
+            ctx.body = G.jsResponse(G.STCODES.SUCCESS, 'login success.', { token, u_id: user.id, u_name: user.username,roles })
+          }else {
+            ctx.body = G.jsResponse(G.STCODES.QUERYEMPTY, 'The AuthDao is missing.')
+          }
         } else {
           ctx.body = G.jsResponse(G.STCODES.QUERYEMPTY, 'The user is missing.')
         }

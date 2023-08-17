@@ -237,7 +237,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 - fields, 定义查询结果字段，支持数组和逗号分隔字符串两种形式
     ```
-    查询示例：  /rs/users?username=white&age=22&fields=["username","age"]
+    查询示例：  /rs/users?username=white&age=22&fields=id,name,age
     生成sql：   SELECT username,age FROM users  WHERE username = ?  and age = ?
     ```
 - page, 分页参数，第几页
