@@ -15,22 +15,21 @@
         <el-table-column type="selection" align="center" fixed />
         <el-table-column fixed prop="name" label="名称" width="100" />
         <el-table-column fixed prop="age" label="年龄" width="100" />
-        <el-table-column prop="type_name" label="类型" width="100">
+        <el-table-column prop="type" label="类型" width="100">
           <template #default="scope">
-            <el-tag>{{ scope.row.type_name }}</el-tag>
+            <el-tag>{{ scope.row.type }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="email" label="邮箱" width="200" show-overflow-tooltip />
-        <el-table-column prop="user_status" label="状态" width="100">
+        <el-table-column prop="status" label="状态" width="100">
           <template #default="scope">
-            <el-tag>{{ scope.row.user_status }}</el-tag>
+            <el-tag>{{ scope.row.status }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="address" label="地址" width="200" show-overflow-tooltip />
+        <el-table-column prop="create_user" label="创建人" width="100" />
         <el-table-column prop="update_time" label="更新时间" width="200" />
         <el-table-column prop="create_time" label="创建时间" width="200" />
-        <el-table-column prop="create_user" label="创建人" width="100" />
-        <el-table-column prop="update_time" label="操作时间" width="200" />
         <el-table-column label="操作" width="80" fixed="right" align="center">
           <template #default="scope">
             <div class="operate">
@@ -80,7 +79,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :loading="btnLoading" @click="saveBtnClick(ruleFormRef)">保存</el-button>
-          <el-button>取消</el-button>
+          <el-button @click="dialogTableVisible = false ">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>

@@ -38,13 +38,6 @@ const emit = defineEmits(['getPageData'])
 const { searchData } = useSearch()
 
 
-watch(() => searchData.create_time, (newVal, oldVal) => {
-  if (newVal !== oldVal) {
-    newVal[0] = newVal[0] ? newVal[0] + ' 00:00:00' : ''
-    newVal[1] = newVal[1] ? newVal[1] + ' 23:59:59' : ''
-  }
-})
-
 const querySearch = () => {
   emit('getPageData', searchData)
 }

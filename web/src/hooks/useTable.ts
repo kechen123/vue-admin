@@ -78,7 +78,7 @@ export function useTable(
     })
   }
   const getTypeList = () => {
-    axios.get('/rs/user_type').then((res: any) => {
+    axios.get('/rs/type').then((res: any) => {
       if (res.status === 200) {
         typeList.value = res.data.map((item: any) => {
           return {
@@ -87,18 +87,18 @@ export function useTable(
           }
         })
       } else {
-        console.log('error /rs/type_list!')
+        console.log('error /rs/type!')
       }
     })
   }
 
   const getStatusList = () => {
-    axios.get('/rs/user_status').then((res: any) => {
+    axios.get('/rs/status').then((res: any) => {
       if (res.status === 200) {
         statusList.value = res.data.map((item: any) => {
           return {
             value: item.id,
-            label: item.status
+            label: item.name
           }
         })
       } else {
@@ -176,6 +176,13 @@ export function useSearch() {
     type: '',
     status: '',
     create_time: []
+  })
+
+  watch(() => searchData.create_time, (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+      newVal[0] = newVal[0] ? newVal[0] + ' 00:00:00' : ''
+      newVal[1] = newVal[1] ? newVal[1] + ' 23:59:59' : ''
+    }
   })
 
   return {
