@@ -4,9 +4,9 @@
       <el-icon v-if="item.icon"><MIcon :iconName="item.icon" /> </el-icon>
       <span>{{ item.name }}</span>
     </template>
-    <SubItem :item="item1"  v-for="item1 in item.children" />
+    <SubItem :item="item1" v-for="item1 in item.children" />
   </el-sub-menu>
-  <el-menu-item v-else :index="item.path" >
+  <el-menu-item v-else :index="item.path">
     <template #title>
       <el-icon v-if="item.icon"><MIcon :iconName="item.icon" /> </el-icon>
       <span>{{ item.name }}</span>
@@ -27,8 +27,7 @@ interface Props {
   level?: Number
 }
 
-const {item} = defineProps<Props>()
-
+const { item } = defineProps<Props>()
 </script>
 
 <style scoped></style>

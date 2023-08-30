@@ -17,7 +17,8 @@
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
             <div class="user">
-              <UserLogo class="head" />
+              <img src="@/assets/user.jpg" />
+              <span>柯大晨</span>
               <el-icon class="el-icon--right">
                 <arrow-down />
               </el-icon>
@@ -25,8 +26,12 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item v-for="(item, index) in dropdownList" :key="item.path" :command="item.path"
-                :divided="index == dropdownList.length - 1">
+              <el-dropdown-item
+                v-for="(item, index) in dropdownList"
+                :key="item.path"
+                :command="item.path"
+                :divided="index == dropdownList.length - 1"
+              >
                 <el-icon :size="16">
                   <MIcon :iconName="item.icon" />
                 </el-icon>
@@ -96,6 +101,13 @@ const handleCommand = (command: string | number | object) => {
         .user {
           display: flex;
           align-items: center;
+          gap: 10px;
+
+          img {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+          }
 
           .head {
             width: 34px;

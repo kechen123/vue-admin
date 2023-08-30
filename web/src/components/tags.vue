@@ -3,7 +3,11 @@
     <el-scrollbar>
       <div class="container">
         <template v-for="item in tagsStore.tags">
-          <div class="item" :class="[item.name === tagsStore.active.name ? 'active' : '']" @click.stop="tagClick(item)">
+          <div
+            class="item"
+            :class="[item.name === tagsStore.active.name ? 'active' : '']"
+            @click.stop="tagClick(item)"
+          >
             <span class="name">
               {{ item.name }}
             </span>
@@ -24,14 +28,16 @@ const route = useRoute()
 const router = useRouter()
 const tagsStore = useTagsStore()
 
-
 watch(route, () => {
   setTags(route)
 })
 
-watch(() => tagsStore.active.path, (newVal) => {
-  router.push(newVal)
-})
+watch(
+  () => tagsStore.active.path,
+  (newVal) => {
+    router.push(newVal)
+  }
+)
 
 const tagClick = (item: any) => {
   tagsStore.changeTag(item.path)
@@ -61,6 +67,7 @@ const setTags = (route: any) => {
   background-color: #fff;
   overflow: hidden;
   position: relative;
+  // height: 32px;
 
   &::after {
     content: '';

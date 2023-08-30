@@ -23,21 +23,23 @@
   </el-container>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="less">
 .layout-container {
   height: 100vh;
   background-color: var(--bg);
 
-
   .sidebar {
     background-color: var(--sidebar-bg-color);
     width: var(--sidebar-width);
     transition: all 0.3s ease-in-out;
     transform: translateX(0);
-    border-right: var(--sidebar-border);
+    // border-right: var(--sidebar-border);
+    box-shadow: var(--border);
+    :deep(.el-menu-item) {
+      border-radius: 10px;
+    }
   }
 
   .header {
