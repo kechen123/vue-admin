@@ -37,9 +37,7 @@
     transform: translateX(0);
     // border-right: var(--sidebar-border);
     box-shadow: var(--border);
-    :deep(.el-menu-item) {
-      border-radius: 10px;
-    }
+
   }
 
   .header {

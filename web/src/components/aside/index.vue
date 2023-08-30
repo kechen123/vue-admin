@@ -33,7 +33,7 @@ watch(
   --el-menu-text-color: var(--sidebar-color);
   --el-menu-hover-bg-color: var(--sidebar-hover-bg-color);
   --el-menu-active-color: var(--sidebar-active-color);
-  padding: 20px;
+  /* padding: 20px 0; */
 }
 
 .el-menu-vertical:not(.el-menu--collapse) {
@@ -41,15 +41,5 @@ watch(
   min-height: 400px;
   border: none;
 }
-.el-menu-vertical {
-  .el-menu-item,
-  .el-sub-menu__title {
-    border-radius: 10px;
-    color: #74798c;
-  }
-  .el-menu-item.is-active {
-    background: #0054fe;
-    color: #fff;
-  }
-}
+
 </style>
