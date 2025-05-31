@@ -14,7 +14,8 @@
         </el-icon>
       </li>
       <li>
-        <el-switch v-model="isDark" :active-action-icon="Moon" :inactive-action-icon="Sunny" />
+        <el-switch v-model="value" :active-action-icon="Moon" :inactive-action-icon="Sunny" @pointerdown="onPointerDown"
+          @change="triggerTransition" />
       </li>
       <li>
         <el-dropdown @command="handleCommand">
@@ -45,10 +46,15 @@
 </template>
 
 <script setup lang="ts">
+
 import { Moon, Sunny } from '@element-plus/icons-vue'
 import UserLogo from '@/assets/svg/user.svg'
-const isDark = useDark()
-const router = useRouter()
+import { useThemeTransition } from '@/hooks/useThemeTransition'
+
+const { isDark, onPointerDown, triggerTransition } = useThemeTransition()
+const value = ref(isDark.value)
+
+
 const dropdownList = ref([
   {
     label: '个人中心',
@@ -76,10 +82,7 @@ const handleCommand = (command: string | number | object) => {
   }
 }
 
-watch(isDark, (val) => {
-  console.log('count 变了:', val)
-  useToggle(val)
-})
+
 </script>
 
 <style scoped lang="less">
@@ -97,16 +100,15 @@ watch(isDark, (val) => {
       padding: 0 20px;
       display: flex;
       align-items: center;
-      color: var(--top-bar-text);
       cursor: pointer;
 
       .el-dropdown-link {
         outline: 0;
-        color: var(--top-bar-text);
 
         .user {
           display: flex;
           align-items: center;
+          user-select: none;
           gap: 10px;
 
           img {

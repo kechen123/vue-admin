@@ -94,6 +94,8 @@ const setTags = (route: any) => {
       }
 
       &:hover {
+        background-color: var(--tag-item-hover-bg);
+
         .close {
           opacity: 1;
         }
@@ -109,7 +111,7 @@ const setTags = (route: any) => {
         cursor: pointer;
 
         &:hover {
-          color: var(--tab-btn-hover-text-color);
+          color: var(--tag-btn-hover-text-color);
           background-color: var(--tag-btn-bg);
         }
       }

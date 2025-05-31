@@ -23,6 +23,7 @@
 </template>
 
 <script setup lang="ts">
+
 import * as echarts from 'echarts';
 import axios from '@/utils/http/axios'
 import Empty from '@/assets/svg/empty-box.svg'
@@ -199,10 +200,14 @@ const initBar = (series: []) => {
     margin: 0 auto;
     width: 100%;
 
+
+
     .box-card {
       width: 100%;
       display: flex;
       align-items: center;
+
+      --el-card-bg-color: var(--gray-90);
 
       .card {
         display: flex;
@@ -262,10 +267,8 @@ const initBar = (series: []) => {
   }
 }
 </style>
-<route lang="json">
-{
+<route lang="json">{
   "meta": {
     "requiresAuth": false
   }
-}
-</route>
+}</route>

@@ -1,80 +1,97 @@
-body {
-  // 亮色主题
-  --bg-color: #ffffff;
-  --border-color: #dcdfe6;
-  --text-color: #303133;
-
-  --header-bg: #ffffff;
-  --header-text-color: #303133;
-  --header-border-color: #ebeef5;
-
-  --sidebar-bg: #f9f9f9;
-  --sidebar-text-color: #000000;
-  --sidebar-hover-bg: #e2e2e2;
-  --sidebar-hover-text-color: #ffffff;
-  --sidebar-active-bg: #0e0d0d;
-  --sidebar-active-text-color: #ffffff;
-  --sidebar-border-color: #ebeef5;
-
-  --submenu-bg: #ffffff;
-  --submenu-text-color: #606266;
-  --submenu-hover-bg: #f2f6fc;
-
-  --tag-bg: #ffffff;
-  --tag-item-bg: #f1f3f5;
-  --tag-active-item-bg: #ffffff;
-  --tag-text-color: #484949;
-  --tag-active-text-color: #333333;
-  --tag-active-border-color: #333333;
-  --tag-border-color: #ebeef5;
-  --tag-btn-bg: #d1cfcf;
-  --tag-btn-text-color: #5d5e5e;
-  --tab-btn-hover-text-color: #5d5e5e;
-
-  --main-bg: #ffffff;
-  --main-text-color: #303133;
-  --main-border-color: #ebeef5;
+:root {
+  /* 亮色灰阶（Gray scale） */
+  --gray-100: #ffffff;
+  --gray-90: #f5f5f5;
+  --gray-80: #e0e0e0;
+  --gray-70: #c2c2c2;
+  --gray-60: #a3a3a3;
+  --gray-50: #858585;
+  --gray-40: #666666;
+  --gray-30: #484848;
+  --gray-20: #2a2a2a;
+  --gray-10: #121212;
 }
 
-.dark body {
-  --bg-color: #121212;
-  --border-color: #2c2c2c;
-  --text-color: #f0f0f0;
+.dark {
+  --gray-100: #121212;
+  --gray-90: #1e1e1e;
+  --gray-80: #2a2a2a;
+  --gray-70: #3a3a3a;
+  --gray-60: #4d4d4d;
+  --gray-50: #666666;
+  --gray-40: #888888;
+  --gray-30: #b0b0b0;
+  --gray-20: #d0d0d0;
+  --gray-10: #ffffff;
 
-  --header-bg: #1a1a1a;
-  --header-text-color: #ffffff;
-  --header-border-color: #2a2a2a;
+  --primary: var(--gray-10); /* 白作为主色 */
 
-  --sidebar-bg: #1c1c1c;
-  --sidebar-text-color: #dddddd;
-  --sidebar-hover-bg: #333333;
-  --sidebar-hover-text-color: #ffffff;
-  --sidebar-active-bg: #ffffff;
-  --sidebar-active-text-color: #000000;
-  --sidebar-border-color: #2a2a2a;
+  --el-color-primary: var(--primary);
+  --el-color-primary-light-3: rgba(255, 255, 255, 0.7); /* gray-10 */
+  --el-color-primary-light-5: rgba(255, 255, 255, 0.5);
+  --el-color-primary-light-7: rgba(255, 255, 255, 0.3);
+  --el-color-primary-light-8: rgba(255, 255, 255, 0.2);
+  --el-color-primary-light-9: rgba(255, 255, 255, 0.1);
+  --el-color-primary-dark-2: #d0d0d0;
+}
+:root,
+.dark {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, fill 0.3s ease,
+    stroke 0.3s ease;
+}
 
-  --submenu-bg: #1e1e1e;
-  --submenu-text-color: #bbbbbb;
-  --submenu-hover-bg: #2a2a2a;
+body {
+  --primary: var(--gray-10); /* 主色为黑 */
+  --el-color-primary: var(--primary);
+  --el-color-primary-light-3: rgba(18, 18, 18, 0.7); /* gray-10 */
+  --el-color-primary-light-5: rgba(18, 18, 18, 0.5);
+  --el-color-primary-light-7: rgba(18, 18, 18, 0.3);
+  --el-color-primary-light-8: rgba(18, 18, 18, 0.2);
+  --el-color-primary-light-9: rgba(18, 18, 18, 0.1);
+  --el-color-primary-dark-2: #000000;
 
-  --tag-bg: #1a1a1a;
-  --tag-item-bg: #1a1a1a;
-  --tag-active-item-bg: #1e1e1e;
-  --tag-text-color: #cccccc;
-  --tag-active-text-color: #ffffff;
-  --tag-active-border-color: #ffffff;
-  --tag-border-color: #3a3a3a;
-  --tag-btn-bg: #3a3a3a;
-  --tag-btn-text-color: #bbbbbb;
-  --tab-btn-hover-text-color: #ffffff;
+  --el-color-primary: var(--gray-80);
+  /* UI变量自动从灰阶派生 ↓ */
+  --bg-color: var(--gray-100);
+  --border-color: var(--gray-80);
+  --text-color: var(--gray-30);
 
-  --main-bg: #181818;
-  --main-text-color: #f5f5f5;
-  --main-border-color: #2d2d2d;
+  --header-bg: var(--gray-100);
+  --header-text-color: var(--gray-30);
+  --header-border-color: var(--gray-80);
+
+  --sidebar-bg: var(--gray-100);
+  --sidebar-text-color: var(--gray-10);
+  --sidebar-hover-bg: var(--gray-70);
+  --sidebar-hover-text-color: var(--gray-100);
+  --sidebar-active-bg: var(--gray-10);
+  --sidebar-active-text-color: var(--gray-100);
+  --sidebar-border-color: var(--gray-80);
+
+  --submenu-bg: var(--gray-100);
+  --submenu-text-color: var(--gray-50);
+  --submenu-hover-bg: var(--gray-90);
+
+  --tag-bg: var(--gray-100);
+  --tag-item-bg: var(--gray-90);
+  --tag-item-hover-bg: var(--gray-90);
+  --tag-active-item-bg: var(--gray-90);
+  --tag-text-color: var(--gray-40);
+  --tag-active-text-color: var(--gray-30);
+  --tag-active-border-color: var(--gray-30);
+  --tag-border-color: var(--gray-70);
+  --tag-btn-bg: var(--gray-40);
+  --tag-btn-text-color: var(--gray-30);
+  --tag-btn-hover-text-color: var(--gray-70);
+
+  --main-bg: var(--gray-90);
+  --main-text-color: var(--gray-30);
+  --main-border-color: var(--gray-80);
 }
 .pagination {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   margin-top: 20px;
+  color: var(--text-color);
 }
