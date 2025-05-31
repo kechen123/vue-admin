@@ -9,9 +9,12 @@
         </el-badge>
       </li>
       <li>
-        <el-icon size="20" @click="toggleDark()">
+        <el-icon size="20">
           <MIcon iconName="FullScreen" />
         </el-icon>
+      </li>
+      <li>
+        <el-switch v-model="isDark" :active-action-icon="Moon" :inactive-action-icon="Sunny" />
       </li>
       <li>
         <el-dropdown @command="handleCommand">
@@ -26,12 +29,8 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item
-                v-for="(item, index) in dropdownList"
-                :key="item.path"
-                :command="item.path"
-                :divided="index == dropdownList.length - 1"
-              >
+              <el-dropdown-item v-for="(item, index) in dropdownList" :key="item.path" :command="item.path"
+                :divided="index == dropdownList.length - 1">
                 <el-icon :size="16">
                   <MIcon :iconName="item.icon" />
                 </el-icon>
@@ -46,10 +45,10 @@
 </template>
 
 <script setup lang="ts">
+import { Moon, Sunny } from '@element-plus/icons-vue'
 import UserLogo from '@/assets/svg/user.svg'
 const isDark = useDark()
 const router = useRouter()
-const toggleDark = useToggle(isDark)
 const dropdownList = ref([
   {
     label: '个人中心',
@@ -76,6 +75,11 @@ const handleCommand = (command: string | number | object) => {
     router.push(command as string)
   }
 }
+
+watch(isDark, (val) => {
+  console.log('count 变了:', val)
+  useToggle(val)
+})
 </script>
 
 <style scoped lang="less">
@@ -93,10 +97,12 @@ const handleCommand = (command: string | number | object) => {
       padding: 0 20px;
       display: flex;
       align-items: center;
+      color: var(--top-bar-text);
       cursor: pointer;
 
       .el-dropdown-link {
         outline: 0;
+        color: var(--top-bar-text);
 
         .user {
           display: flex;

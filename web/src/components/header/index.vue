@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <HeaderLeft />
+    <!-- <HeaderLeft /> -->
     <HeaderNavigation />
   </div>
 </template>
@@ -12,9 +12,9 @@
   height: 100%;
   display: flex;
   align-items: center;
-  background-color: var(--header-bg-color);
-  color: var(--header-color);
-  padding: 0 20px;
-  border-bottom: var(--header-border);
+  background-color: var(--top-bar-bg);
+  color: var(--top-bar-text);
+  padding: 10px 20px;
+  border-bottom: var(--top-bar-border);
 }
 </style>
