@@ -1,6 +1,6 @@
 <template>
   <div class="aside-header">
-    <Logo />
+    <!-- <Logo /> -->
     <div class="title">Vue3 Admin</div>
   </div>
 </template>
@@ -14,15 +14,16 @@ import Logo from '@/assets/svg/logo.svg'
   padding: 10px 20px;
   display: flex;
   align-items: center;
-  border-bottom: var(--sidebar-border);
 
   svg {
     width: 40px;
     height: 40px;
-    fill: var(--sidebar-text-color);
+    fill: var(--msidebar-text-color);
   }
 
   .title {
+    height: 35px;
+    line-height: 35px;
     margin-left: 10px;
     font-size: 20px;
     font-weight: 600;

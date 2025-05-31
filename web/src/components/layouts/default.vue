@@ -8,7 +8,7 @@
         <Header />
       </el-header>
       <Tags />
-      <el-main>
+      <el-main class="main">
         <RouterView v-slot="{ Component, route }">
           <template v-if="Component">
             <Transition name="fade" mode="out-in">
@@ -28,21 +28,27 @@
 <style scoped lang="less">
 .layout-container {
   height: 100vh;
-  background-color: var(--bg);
+  background-color: var(--bg-color);
 
   .sidebar {
-    background-color: var(--sidebar-bg-color);
+    background-color: var(--sidebar-bg);
     width: var(--sidebar-width);
     transition: all 0.3s ease-in-out;
     transform: translateX(0);
     // border-right: var(--sidebar-border);
-    box-shadow: var(--border);
-
+    // box-shadow: var(--border);
+    border-right-width: 1px;
+    border-right-style: solid;
+    border-right-color: var(--sidebar-border-color);
   }
 
   .header {
     height: var(--header-height);
     padding: 0;
+  }
+
+  .main {
+    background-color: var(--main-bg);
   }
 }
 </style>

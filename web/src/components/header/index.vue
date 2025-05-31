@@ -12,9 +12,11 @@
   height: 100%;
   display: flex;
   align-items: center;
-  background-color: var(--top-bar-bg);
-  color: var(--top-bar-text);
+  background-color: var(--header-bg);
+  color: var(--header-text-color);
   padding: 10px 20px;
-  border-bottom: var(--top-bar-border);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: var(--header-border-color);
 }
 </style>

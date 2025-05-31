@@ -3,11 +3,7 @@
     <el-scrollbar>
       <div class="container">
         <template v-for="item in tagsStore.tags">
-          <div
-            class="item"
-            :class="[item.name === tagsStore.active.name ? 'active' : '']"
-            @click.stop="tagClick(item)"
-          >
+          <div class="item" :class="[item.name === tagsStore.active.name ? 'active' : '']" @click.stop="tagClick(item)">
             <span class="name">
               {{ item.name }}
             </span>
@@ -64,7 +60,7 @@ const setTags = (route: any) => {
 <style scoped lang="less">
 .tags {
   user-select: none;
-  background-color: #fff;
+  background-color: var(--tag-bg);
   overflow: hidden;
   position: relative;
   // height: 32px;
@@ -76,7 +72,7 @@ const setTags = (route: any) => {
     left: 0;
     width: 100%;
     height: 1px;
-    background-color: #ebeef5;
+    background-color: var(--tag-border-color);
   }
 
   .container {
@@ -88,13 +84,13 @@ const setTags = (route: any) => {
       display: flex;
       align-items: center;
       height: 100%;
-      border-right: solid 1px #ebeef5;
+      border-right: solid 1px var(--tag-border-color);
       padding: 0 4px 0 16px;
       cursor: pointer;
 
       .name {
         font-size: 14px;
-        color: #606266;
+        color: var(--tag-text-color);
       }
 
       &:hover {
@@ -105,7 +101,7 @@ const setTags = (route: any) => {
 
       .close {
         opacity: 0;
-        color: #909399;
+        color: var(--tag-btn-text-color);
         margin-left: 4px;
         border-radius: 4px;
         height: 20px;
@@ -113,14 +109,14 @@ const setTags = (route: any) => {
         cursor: pointer;
 
         &:hover {
-          color: #606266;
-          background-color: #d1cfcf;
+          color: var(--tab-btn-hover-text-color);
+          background-color: var(--tag-btn-bg);
         }
       }
     }
 
     .active {
-      background-color: #faf9f9;
+      background-color: var(--tag-active-item-bg);
       position: relative;
       z-index: 1;
 
@@ -131,11 +127,11 @@ const setTags = (route: any) => {
         left: 0;
         width: 100%;
         height: 1px;
-        background-color: #409eff;
+        background-color: var(--tag-active-border-color);
       }
 
       .name {
-        color: #409eff;
+        color: var(--tag-active-text-color);
       }
 
       .close {
