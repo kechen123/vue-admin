@@ -95,12 +95,42 @@ const handleCommand = (command: string | number | object) => {
     display: flex;
     flex-direction: row;
     margin-left: auto;
+    gap: 10px;
+
+    @keyframes scale-pop {
+      0% {
+        transform: scale(0.1);
+      }
+
+      50% {
+        transform: scale(1.3);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
 
     li {
-      padding: 0 20px;
+      padding: 6px;
+      height: 34px;
       display: flex;
       align-items: center;
       cursor: pointer;
+      transition: background-color 0.3s;
+      border-radius: 4px;
+
+      i {
+        transition: transform 0.3s ease;
+      }
+
+      &:hover {
+        background-color: var(--gray-70);
+
+        i {
+          animation: scale-pop 0.3s ease;
+        }
+      }
 
       .el-dropdown-link {
         outline: 0;

@@ -8,7 +8,7 @@ interface Check {
   router?: Router
 }
 
-type CheckFun = (check: Check) => any
+type CheckFun = (check: Check) => unknown
 
 const checkLegal: CheckFun = ({ to, from, router }) => {
   if (router && router.hasRoute(to.name as string)) {
@@ -23,13 +23,6 @@ const checkLegal: CheckFun = ({ to, from, router }) => {
   //   return { name: '/404' }
   // }
   return { name: '/404' }
-}
-
-const checkHome: CheckFun = ({ to, from }) => {
-  if (to.path === '/') {
-    return { name: 'index' }
-  }
-  return false
 }
 
 const checkLogin: CheckFun = ({ to, from }) => {

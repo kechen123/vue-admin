@@ -32,6 +32,7 @@ watch(
   --el-menu-item-height: 50px;
   --el-menu-sub-item-height: 50px;
   padding: 0 14px;
+
 }
 
 
@@ -41,18 +42,37 @@ watch(
   border: none;
 }
 
+@keyframes scale-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+
 .el-menu-item,
 .el-sub-menu__title {
   border-radius: 10px;
-}
 
-.el-menu-item {
-  i {
-    transition: transform 0.2s ease;
+  i,
+  span {
+    transition: transform 0.3s ease;
   }
 
-  &:hover i {
-    transform: scale(1.2);
+  &:hover {
+
+    i {
+      animation: scale-pop 0.3s ease;
+    }
+
+
   }
 }
 

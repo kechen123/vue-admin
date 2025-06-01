@@ -58,38 +58,16 @@ import { Auth, NotCheckRouter } from './permission'
 
 //   return setupLayouts([route])[0]
 // }
-
+console.log(routes)
 export const router = createRouter({
   history: createWebHistory(),
   routes: setupLayouts(routes),
-  // extendRoutes: (routes) => setupLayouts(routes),
-  // extendRoutes: (routes) => {
-  //   return routes.map((route) => {
-  //     const isCustomLayout = (route?.meta?.layout as string)?.indexOf('custom') > -1
-  //     if (isCustomLayout) {
-  //       route = {
-  //         name: route.name,
-  //         path: route.path,
-  //         component: CustomLayout,
-  //         children: route.path === '/' ? [route] : [{...route, path: ''}]
-  //       }
-  //     } else {
-  //       route = {
-  //         name: route.name,
-  //         path: route.path,
-  //         component: DefaultLayout,
-  //         children: route.path === '/' ? [route] : [{...route, path: ''}]
-  //       }
-  //     }
-  //     return route
-  //   })
-  // }
 })
 
 // console.log('router', router.getRoutes())
 // 在路由跳转前，检查用户是否有权限访问该路由
 router.beforeEach(async (to, from) => {
-  let b = false
+  let b: unknown = false
   console.log(to.name)
   for (const fn of Auth) {
     if (NotCheckRouter.indexOf(to.name?.toString() || '') > -1) {
@@ -105,4 +83,8 @@ router.beforeEach(async (to, from) => {
     return b
   }
 })
+
+if (import.meta.hot) {
+  handleHotUpdate(router)
+}
 export default router
