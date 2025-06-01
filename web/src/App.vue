@@ -7,4 +7,3 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
     <router-view />
   </el-config-provider>
 </template>
-

@@ -1,5 +1,9 @@
 // import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router/auto'
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router/auto'
+// import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router/auto'
+
+import { createRouter, createWebHistory } from 'vue-router'
+import { routes, handleHotUpdate } from 'vue-router/auto-routes'
+
 import { setupLayouts } from 'virtual:generated-layouts'
 import { Auth, NotCheckRouter } from './permission'
 
@@ -56,8 +60,9 @@ import { Auth, NotCheckRouter } from './permission'
 // }
 
 export const router = createRouter({
-  history: createWebHashHistory(),
-  extendRoutes: (routes) => setupLayouts(routes)
+  history: createWebHistory(),
+  routes: setupLayouts(routes),
+  // extendRoutes: (routes) => setupLayouts(routes),
   // extendRoutes: (routes) => {
   //   return routes.map((route) => {
   //     const isCustomLayout = (route?.meta?.layout as string)?.indexOf('custom') > -1
@@ -86,7 +91,7 @@ export const router = createRouter({
 router.beforeEach(async (to, from) => {
   let b = false
   console.log(to.name)
-  for (let fn of Auth) {
+  for (const fn of Auth) {
     if (NotCheckRouter.indexOf(to.name?.toString() || '') > -1) {
       break
     }

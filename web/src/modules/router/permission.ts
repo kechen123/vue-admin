@@ -1,4 +1,4 @@
-import { Router, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
+import type { Router, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 import { useRouterStore } from '@/stores/router'
 
 interface Check {
@@ -43,7 +43,7 @@ const checkLogin: CheckFun = ({ to, from }) => {
 }
 
 const checkAuth: CheckFun = ({ to, from }) => {
-  let auth = true
+  const auth = true
   if (!auth) {
     return { name: '/login' }
   }
