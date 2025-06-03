@@ -67,8 +67,7 @@ export const router = createRouter({
 // console.log('router', router.getRoutes())
 // 在路由跳转前，检查用户是否有权限访问该路由
 router.beforeEach(async (to, from) => {
-  let b: unknown = false
-  console.log(to.name)
+  let b: boolean | Object = false
   for (const fn of Auth) {
     if (NotCheckRouter.indexOf(to.name?.toString() || '') > -1) {
       break
@@ -78,10 +77,7 @@ router.beforeEach(async (to, from) => {
       break
     }
   }
-  if (b) {
-    console.log('b2', b)
-    return b
-  }
+  if (b) return b
 })
 
 if (import.meta.hot) {

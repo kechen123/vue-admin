@@ -8,7 +8,7 @@ const service = axios.create({
   // baseURL: baseURL,
   // 超时设置
   // timeout: 15000,
-  headers: { 'Content-Type': 'application/json;charset=utf-8' }
+  headers: { 'Content-Type': 'application/json;charset=utf-8' },
 })
 
 let loading: any
@@ -21,7 +21,7 @@ const showLoading = () => {
     loading = ElLoading.service({
       text: '拼命加载中，请稍后...',
       background: 'rgba(0, 0, 0, 0.7)',
-      spinner: 'el-icon-loading'
+      spinner: 'el-icon-loading',
     })
   }
   requestCount++
@@ -49,13 +49,13 @@ service.interceptors.request.use(
       let url = config.url + '?'
       for (const propName of Object.keys(config.params)) {
         const value = config.params[propName]
-        var part = encodeURIComponent(propName) + '='
+        const part = encodeURIComponent(propName) + '='
         if (value !== null && typeof value !== 'undefined') {
           // 对象处理
           if (typeof value === 'object') {
             for (const key of Object.keys(value)) {
-              let params = propName + '[' + key + ']'
-              var subPart = encodeURIComponent(params) + '='
+              const params = propName + '[' + key + ']'
+              const subPart = encodeURIComponent(params) + '='
               url += subPart + encodeURIComponent(value[key]) + '&'
             }
           } else {
@@ -72,7 +72,7 @@ service.interceptors.request.use(
   (error) => {
     console.log(error)
     Promise.reject(error)
-  }
+  },
 )
 
 // 响应拦截器
@@ -86,18 +86,7 @@ service.interceptors.response.use(
     if (code === 202) {
       res.data['status'] = 200
     } else if (code !== 200) {
-      if (code === 400) {
-        // token 验证失败
-        ElMessage.error({
-          message: msg,
-          duration: 2 * 1000,
-          onClose: () => {
-            location.href = '/#/login'
-          }
-        })
-      } else {
-        ElMessage.error(msg)
-      }
+      ElMessage.error(msg)
     }
     return Promise.resolve(res.data)
   },
@@ -114,10 +103,10 @@ service.interceptors.response.use(
     }
     ElMessage.error({
       message: message,
-      duration: 5 * 1000
+      duration: 5 * 1000,
     })
     return Promise.reject(error)
-  }
+  },
 )
 
 export default service

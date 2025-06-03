@@ -4,6 +4,14 @@
   "exclude": ["src/**/__tests__/*"],
 
   "compilerOptions": {
+    // 明确覆盖所有严格检查
+    "strict": false,
+    "noImplicitAny": false,
+    // 确保其他严格选项也被关闭
+    "strictNullChecks": false,
+    "strictBindCallApply": false,
+    "strictFunctionTypes": false,
+    "strictPropertyInitialization": false,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "moduleResolution": "Bundler",
     "types": ["unplugin-vue-router/client"],

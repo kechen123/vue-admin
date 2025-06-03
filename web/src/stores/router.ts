@@ -111,19 +111,20 @@ import axios from '@/utils/http/axios'
 export const useRouterStore = defineStore(
   'router',
   () => {
-    const roles = ref<AuthRoute.Route[]>([])
+    const roles = ref([])
     const initMenu = async () => {
-      const res: any = await axios.post('/rs/auth')
+      const res = await axios.post('/rs/auth')
       if (res.status === 200) {
         roles.value = res.data
       }
+      return res
     }
-    const addRoles = (r: AuthRoute.Route[]): void => {
+    const addRoles = (r: []) => {
       roles.value = r
     }
     return { roles, initMenu, addRoles }
-  }
-  // {
-  //   persist: true
-  // }
+  },
+  {
+    persist: true,
+  },
 )

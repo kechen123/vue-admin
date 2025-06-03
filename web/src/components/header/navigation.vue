@@ -2,7 +2,7 @@
   <div class="navbar-collapse">
     <ul>
       <li>
-        <el-badge :value="12" class="item">
+        <el-badge :value="12" class="badge">
           <el-icon size="20">
             <MIcon iconName="ChatDotSquare" />
           </el-icon>
@@ -18,7 +18,7 @@
           @change="triggerTransition" />
       </li>
       <li>
-        <el-dropdown @command="handleCommand">
+        <el-dropdown @command="handleCommand" trigger="click">
           <span class="el-dropdown-link">
             <div class="user">
               <img src="@/assets/user.jpg" />
@@ -120,6 +120,16 @@ const handleCommand = (command: string | number | object) => {
       transition: background-color 0.3s;
       border-radius: 4px;
 
+
+
+      .badge {
+        --el-color-danger: var(--gray-10);
+
+        :deep(.el-badge__content--danger) {
+          color: var(--gray-100);
+        }
+      }
+
       i {
         transition: transform 0.3s ease;
       }
@@ -135,15 +145,17 @@ const handleCommand = (command: string | number | object) => {
       .el-dropdown-link {
         outline: 0;
 
+
+
         .user {
           display: flex;
           align-items: center;
           user-select: none;
-          gap: 10px;
+          gap: 4px;
 
           img {
-            width: 34px;
-            height: 34px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
           }
 
@@ -157,5 +169,12 @@ const handleCommand = (command: string | number | object) => {
       }
     }
   }
+}
+</style>
+<style>
+.el-dropdown-menu__item:not(.is-disabled):focus,
+.el-dropdown-menu__item:not(.is-disabled):hover {
+  --el-dropdown-menuItem-hover-color: var(--gray-90);
+  --el-dropdown-menuItem-hover-fill: var(--gray-20);
 }
 </style>
