@@ -5,7 +5,7 @@ export function useThemeTransition() {
     selector: 'html',
     attribute: 'class',
     valueDark: 'dark',
-    valueLight: 'light'
+    valueLight: 'light',
   })
 
   const toggleDark = useToggle(isDark)
@@ -14,15 +14,21 @@ export function useThemeTransition() {
   const onPointerDown = (e: PointerEvent | MouseEvent) => {
     pointerPos.value = {
       x: e.clientX,
-      y: e.clientY
+      y: e.clientY,
     }
   }
 
-  const triggerTransition = () => {
+  const triggerTransition = (e?: PointerEvent | MouseEvent) => {
+    if (e) {
+      pointerPos.value = {
+        x: e.clientX,
+        y: e.clientY,
+      }
+    }
     const { x, y } = pointerPos.value
     const endRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
+      Math.max(y, window.innerHeight - y),
     )
 
     if (!document.startViewTransition) {
@@ -39,15 +45,15 @@ export function useThemeTransition() {
 
       document.documentElement.animate(
         {
-          clipPath: isDark.value ? [...clipPath].reverse() : clipPath
+          clipPath: isDark.value ? [...clipPath].reverse() : clipPath,
         },
         {
           duration: 400,
           easing: 'ease-in',
           pseudoElement: isDark.value
             ? '::view-transition-old(root)'
-            : '::view-transition-new(root)'
-        }
+            : '::view-transition-new(root)',
+        },
       )
     })
   }
@@ -55,6 +61,6 @@ export function useThemeTransition() {
   return {
     isDark,
     onPointerDown,
-    triggerTransition
+    triggerTransition,
   }
 }

@@ -1,11 +1,12 @@
 <template>
-  <AsideHeader />
+  <LayoutAsideHeader />
   <el-menu :default-active="defaultActive" class="el-menu-vertical" :collapse="isCollapse" :router="true">
-    <AsideSubItem :item="item" v-for="item in routerPath" />
+    <LayoutAsideSubItem :item="item" :key="index" v-for="(item, index) in routerPath" />
   </el-menu>
 </template>
 
 <script lang="ts" setup>
+
 import { useRouterStore } from '@/stores/router'
 
 const router = useRouter()

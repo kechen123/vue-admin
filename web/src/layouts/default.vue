@@ -1,13 +1,13 @@
 <template>
   <el-container class="layout-container">
     <el-aside class="sidebar">
-      <Aside />
+      <LayoutAside />
     </el-aside>
     <el-container>
       <el-header class="header">
-        <Header />
+        <LayoutHeader />
       </el-header>
-      <Tags />
+      <LayoutTags />
       <el-main class="main">
         <RouterView v-slot="{ Component, route }">
           <template v-if="Component">
@@ -57,7 +57,7 @@
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-  transform: translateX(100px);
+  transform: translateX(50px);
   /* 从右边开始进入 */
 }
 
@@ -74,7 +74,7 @@
 
 .fade-leave-to {
   opacity: 0;
-  transform: translateX(-100px);
+  transform: translateX(-50px);
   /* 向左移出 */
 }
 </style>

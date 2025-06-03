@@ -83,9 +83,13 @@ service.interceptors.response.use(
     const code = res.data['status'] || 200
     // 获取错误信息
     const msg = errorCodeType(code) || res.data['message'] || errorCodeType('default')
-    if (code === 202) {
+    if (code === 200) {
       res.data['status'] = 200
-    } else if (code !== 200) {
+    } else if (code === 202) {
+      ElMessage.error(msg)
+      location.href = '/login'
+    } else {
+      console.log(code)
       ElMessage.error(msg)
     }
     return Promise.resolve(res.data)

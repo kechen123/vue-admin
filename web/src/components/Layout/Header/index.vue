@@ -1,7 +1,7 @@
 <template>
   <div class="body">
     <!-- <HeaderLeft /> -->
-    <HeaderNavigation />
+    <LayoutHeaderNavigation />
   </div>
 </template>
 

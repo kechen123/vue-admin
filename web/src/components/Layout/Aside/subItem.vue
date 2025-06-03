@@ -6,7 +6,7 @@
       </el-icon>
       <span>{{ item.name }}</span>
     </template>
-    <SubItem :item="item1" v-for="item1 in item.children" />
+    <sub-item :key="index" :item="item1" v-for="(item1, index) in item.children" />
   </el-sub-menu>
   <el-menu-item v-else :index="item.path">
     <template #title>
@@ -21,13 +21,13 @@
 <script setup lang="ts">
 interface Props {
   item: {
-    name: String
-    path: String
-    icon?: String
-    disabled?: Boolean
+    name: string
+    path: string
+    icon?: string
+    disabled?: boolean
     children?: Array<any>
   }
-  parentPath?: String
+  parentPath?: string
   level?: Number
 }
 

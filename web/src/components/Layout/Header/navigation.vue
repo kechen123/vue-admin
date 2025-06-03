@@ -14,8 +14,12 @@
         </el-icon>
       </li>
       <li>
-        <el-switch v-model="value" :active-action-icon="Moon" :inactive-action-icon="Sunny" @pointerdown="onPointerDown"
-          @change="triggerTransition" />
+        <!-- <el-switch v-model="value" :active-action-icon="Moon" :inactive-action-icon="Sunny" @pointerdown="onPointerDown"
+          @change="triggerTransition" /> -->
+        <el-icon size="20">
+          <MIcon v-if="isDark" iconName="Moon" @click="triggerTransition" />
+          <MIcon v-else iconName="Sunny" @click="triggerTransition" />
+        </el-icon>
       </li>
       <li>
         <el-dropdown @command="handleCommand" trigger="click">
@@ -47,12 +51,10 @@
 
 <script setup lang="ts">
 
-import { Moon, Sunny } from '@element-plus/icons-vue'
-import UserLogo from '@/assets/svg/user.svg'
 import { useThemeTransition } from '@/hooks/useThemeTransition'
 
-const { isDark, onPointerDown, triggerTransition } = useThemeTransition()
-const value = ref(isDark.value)
+const router = useRouter()
+const { isDark, triggerTransition } = useThemeTransition()
 
 
 const dropdownList = ref([

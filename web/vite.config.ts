@@ -20,7 +20,7 @@ export default defineConfig({
     vueDevTools(),
     svgLoader(),
     Layouts({
-      layoutsDirs: 'src/components/layouts',
+      layoutsDirs: 'src/layouts',
       defaultLayout: 'default',
     }),
     AutoImport({
