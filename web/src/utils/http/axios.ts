@@ -85,7 +85,7 @@ service.interceptors.response.use(
     const msg = errorCodeType(code) || res.data['message'] || errorCodeType('default')
     if (code === 200) {
       res.data['status'] = 200
-    } else if (code === 202) {
+    } else if (code === 400) {
       ElMessage.error(msg)
       location.href = '/login'
     } else {

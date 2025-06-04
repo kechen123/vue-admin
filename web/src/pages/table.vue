@@ -48,8 +48,9 @@
         </el-table-column>
       </el-table>
       <div class="pagination">
-        <el-pagination layout="total, sizes, prev, pager, next, jumper" :page-sizes="pageSizes" :total="pagination.total"
-          :default-page-size="pagination.size" @current-change="currentChange" @size-change="handleSizeChange" />
+        <el-pagination layout="total, sizes, prev, pager, next, jumper" :page-sizes="pageSizes"
+          :total="pagination.total" :default-page-size="pagination.size" @current-change="currentChange"
+          @size-change="handleSizeChange" />
       </div>
     </el-card>
 
@@ -79,7 +80,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" :loading="btnLoading" @click="saveBtnClick(ruleFormRef)">保存</el-button>
-          <el-button @click="dialogTableVisible = false ">取消</el-button>
+          <el-button @click="dialogTableVisible = false">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -125,7 +126,15 @@ onMounted(() => {
   getStatusList()
 })
 
-const { getPageData, getTypeList, getStatusList, addTableData, editTableData, deleteTableData, deleteTableByIds } = useTable(tableData, typeList, statusList, pagination)
+const {
+  getPageData,
+  getTypeList,
+  getStatusList,
+  addTableData,
+  editTableData,
+  deleteTableData,
+  deleteTableByIds
+} = useTable(tableData, typeList, statusList, pagination)
 const { pageSizes, currentChange, handleSizeChange } = usePagination(getPageData, pagination)
 
 const handleSelectionChange = (val: TableDataType[]) => {

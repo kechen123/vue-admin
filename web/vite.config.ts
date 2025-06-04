@@ -14,7 +14,9 @@ import { ElementPlusResolver, VueUseComponentsResolver } from 'unplugin-vue-comp
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    VueRouter(),
+    VueRouter({
+      exclude: ['**/_*.vue'],
+    }),
     // ⚠️ Vue must be placed after VueRouter()
     vue(),
     vueDevTools(),
