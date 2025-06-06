@@ -104,13 +104,13 @@ const onClose = () => close?.()
 
   }
 
-  .footer {
+  .body {
     flex: 1;
     overflow: auto;
     padding: 16px;
   }
 
-  .body {
+  .footer {
     padding: 16px;
   }
 }

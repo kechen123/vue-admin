@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Detail from './_detail.vue'
+import BtnList from './_btnList.vue'
 
 const tableData = [
   {
@@ -72,12 +73,21 @@ const containerRef = ref()
 
 function openUserDetail(userId: string) {
   containerRef.value.open({
-    component: Detail,
-    props: { userId },
-    width: 600,
-    title: '用户详情',
-    onClose: () => {
-      console.log('onclose')
+    default: {
+      component: Detail,
+      props: { userId },
+      width: 600,
+      title: '用户详情',
+      onClose: () => {
+        console.log('onclose')
+      }
+    },
+    footer: {
+      component: BtnList,
+      props: { userId },
+      onClick: () => {
+        console.log('onclose')
+      }
     }
   })
 }

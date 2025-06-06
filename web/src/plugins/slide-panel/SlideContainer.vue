@@ -5,56 +5,59 @@
     </div>
 
     <transition name="slide">
-      <div v-if="showSide" id="right" class="side-panel" :style="{ width: layout.rightLayout.realTimeWidth + 'px' }">
-        <!-- 拖拽条：仅在 hover 时显示 -->
+      <div v-if="sidePanelState.show" id="right" class="side-panel"
+        :style="{ width: layout.rightLayout.realTimeWidth + 'px' }">
         <div ref="rightLineRef" class="resizer" />
-        <SidePanelWrapper :title="sideTitle">
-          <component :is="sideComponent" v-bind="sideProps" ref="sideRef" />
+        <SidePanelWrapper :title="sidePanelState.title">
+          <component :is="sidePanelState.sideComponent" v-bind="sidePanelState.sideProps"
+            :ref="(el: any) => (sidePanelState.sideRef = el)" />
+          <template #footer>
+            <component v-if="sidePanelState.footerComponent" :is="sidePanelState.footerComponent"
+              v-bind="sidePanelState.footerProps" :ref="(el: any) => (sidePanelState.footerRef = el)" />
+          </template>
         </SidePanelWrapper>
       </div>
     </transition>
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { useLayoutStore } from '@/stores/layout'
 import useMouse from './useMouseDrop'
 import SidePanelWrapper from './SidePanelWrapper.vue'
 
-interface OpenOptions {
-  component: any
-  props?: Record<string, any>
-  method?: string
-  width?: number
-  title?: string
-  onClose?: () => void
-}
-
 const layoutStore = useLayoutStore()
+const layout = layoutStore.mainLayout
 
-const showSide = ref(false)
-const sideComponent = shallowRef()
-const sideProps = ref({})
-const sideRef = ref()
-const sideTitle = ref('详情')
-const containerRef = ref()
-const onCloseCallback = ref<(() => void) | null>(null)
 const mainRect = reactive({
   width: 0,
   height: 0
 })
-const layout = reactive<MainLayout>(layoutStore.mainLayout)
+
+const sidePanelState = reactive({
+  show: false,
+  title: '详情',
+  sideComponent: shallowRef(),
+  sideProps: {},
+  footerComponent: shallowRef(),
+  footerProps: {},
+  sideRef: null as any,
+  footerRef: null as any,
+})
+
+const containerRef = ref()
+const onCloseCallback = ref<(() => void) | null>(null)
 
 const downRight = () => {
   layout.rightLayout.downWidth = layout.rightLayout.realTimeWidth
 }
+
 const moveRight = (e: MouseEvent, mouse: any) => {
   if (mouse.state === 'down') {
     let w = layout.rightLayout.downWidth - mouse.x
     const minWidth = layout.rightLayout.minWidth
-    if (w < minWidth) {
-      w = minWidth
-    }
+    if (w < minWidth) w = minWidth
     layout.rightLayout.realTimeWidth = w
     layout.contentLayout.realTimeWidth = mainRect.width - w
   }
@@ -62,32 +65,67 @@ const moveRight = (e: MouseEvent, mouse: any) => {
 
 const [rightLineRef, addListener] = useMouse({ down: downRight, move: moveRight })
 
+interface SideOpenOptions {
+  default: {
+    component: any
+    props?: Record<string, any>
+    method?: string
+    width?: number
+    title?: string
+    onClose?: () => void
+  }
+  footer?: {
+    component: any
+    props?: Record<string, any>
+    method?: string
+  }
+}
 
-async function open({
-  component,
-  props = {},
-  method = 'init',
-  width = 400,
-  title = '详情',
-  onClose
-}: OpenOptions) {
-  sideComponent.value = component
-  sideProps.value = props
-  sideTitle.value = title
+async function open(params: SideOpenOptions) {
+  const {
+    default: {
+      component,
+      props = {},
+      method = 'init',
+      width = 400,
+      title = '详情',
+      onClose
+    },
+    footer
+  } = params
+
+  sidePanelState.sideComponent = component
+  sidePanelState.sideProps = props
+  sidePanelState.title = title
+  sidePanelState.show = true
+  onCloseCallback.value = onClose ?? null
+
+  if (footer) {
+    sidePanelState.footerComponent = footer.component
+    sidePanelState.footerProps = footer.props || {}
+  } else {
+    sidePanelState.footerComponent = null
+    sidePanelState.footerProps = {}
+  }
+
   layout.contentLayout.realTimeWidth = mainRect.width - width
   layout.rightLayout.realTimeWidth = width
-  onCloseCallback.value = onClose ?? null
-  showSide.value = true
 
   await nextTick()
   addListener()
-  if (method && sideRef.value?.[method]) {
-    sideRef.value[method](props)
+
+  // 调用 exposed 方法
+  if (method && sidePanelState.sideRef?.[method]) {
+    sidePanelState.sideRef[method](props)
+  }
+
+  if (footer?.method && sidePanelState.footerRef?.[footer.method]) {
+    sidePanelState.footerRef[footer.method](footer.props || {})
   }
 }
 
 function close() {
-  showSide.value = false
+  sidePanelState.show = false
   onCloseCallback.value?.()
 }
 
@@ -101,10 +139,8 @@ onMounted(() => {
   }
 })
 
-
 defineExpose({ open, close })
 provide('slideClose', close)
-
 
 </script>
 
@@ -141,25 +177,33 @@ provide('slideClose', close)
 }
 
 /* 拖拽线默认隐藏，hover 时显示 */
-.side-panel:hover .resizer {
+.resizer:hover {
   opacity: 1;
   z-index: 1;
 }
 
 .resizer {
+  width: 4px;
+  height: 100%;
+  cursor: ew-resize;
   position: absolute;
   top: 0;
   left: 0;
-  width: 6px;
-  height: 100%;
-  cursor: ew-resize;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  background: var(--gray-60);
+  z-index: 1;
+
+  &::before {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.1s ease-out;
+    background: transparent;
+  }
 }
 
-.resizer:hover {
-  background: var(--gray-50);
+.hover:before {
+  background: var(--gray-10);
 }
 
 .slide-enter-from,

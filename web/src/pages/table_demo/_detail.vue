@@ -1,14 +1,7 @@
 <template>
-  <div>
+  <div style="height:2220px;background-color: antiquewhite;">
     <div>这是用户详情，ID: {{ userId }}</div>
     <el-button @click="handleClose">关闭</el-button>
-
-    <!-- <template #footer>
-      <div class="footer-bar">
-        <el-button>取消</el-button>
-        <el-button type="primary">提交</el-button>
-      </div>
-    </template> -->
   </div>
 </template>
 

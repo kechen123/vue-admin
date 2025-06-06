@@ -63,6 +63,7 @@ const setTags = (route: any) => {
   background-color: var(--tag-bg);
   overflow: hidden;
   position: relative;
+  flex-shrink: 0;
   // height: 32px;
 
   &::after {
