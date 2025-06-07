@@ -7,6 +7,16 @@ const menu = [
     disabled: false,
   },
   {
+    name: "基础表格",
+    icon: "TakeawayBox",
+    path: "/table_demo/default",
+  },
+  {
+    name: "左侧栏目表格",
+    icon: "Wallet",
+    path: "/table_demo/aside",
+  },
+  {
     name: "组件",
     path: "/component",
     icon: "Memo",
@@ -14,7 +24,7 @@ const menu = [
       {
         name: "表格示例",
         icon: "Tickets",
-        path: "/table_demo/",
+        path: "/table_demo/default",
       },
       {
         name: "表格",

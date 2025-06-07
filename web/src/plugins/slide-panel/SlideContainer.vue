@@ -1,10 +1,10 @@
 <template>
   <div class="slide-container" ref="containerRef">
     <div class="main" :style="{ width: layout.contentLayout.realTimeWidth + 'px' }">
-      <slot name="main" />
+      <slot />
     </div>
 
-    <transition name="slide">
+    <transition name="slide" @after-enter="onSlideInComplete">
       <div v-if="sidePanelState.show" id="right" class="side-panel"
         :style="{ width: layout.rightLayout.realTimeWidth + 'px' }">
         <div ref="rightLineRef" class="resizer" />
@@ -25,7 +25,9 @@
 <script setup lang="ts">
 import { useLayoutStore } from '@/stores/layout'
 import useMouse from './useMouseDrop'
+import useElementResize from './useElementResize'
 import SidePanelWrapper from './SidePanelWrapper.vue'
+
 
 const layoutStore = useLayoutStore()
 const layout = layoutStore.mainLayout
@@ -46,6 +48,7 @@ const sidePanelState = reactive({
   footerRef: null as any,
 })
 
+
 const containerRef = ref()
 const onCloseCallback = ref<(() => void) | null>(null)
 
@@ -63,7 +66,21 @@ const moveRight = (e: MouseEvent, mouse: any) => {
   }
 }
 
+const bodyReSize = (event: Element, width: number, height: number) => {
+  mainRect.width = width
+  mainRect.height = height
+  console.log('bodyReSize', width)
+  if (sidePanelState.show) {
+    layout.contentLayout.downWidth = width - layout.rightLayout.realTimeWidth
+    layout.contentLayout.realTimeWidth = width - layout.rightLayout.realTimeWidth
+  } else {
+    layout.contentLayout.downWidth = width
+    layout.contentLayout.realTimeWidth = width
+  }
+}
+
 const [rightLineRef, addListener] = useMouse({ down: downRight, move: moveRight })
+// const [containerRef] = useElementResize({ resize: bodyReSize, className: 'slide-container' })
 
 interface SideOpenOptions {
   default: {
@@ -107,7 +124,6 @@ async function open(params: SideOpenOptions) {
     sidePanelState.footerComponent = null
     sidePanelState.footerProps = {}
   }
-
   layout.contentLayout.realTimeWidth = mainRect.width - width
   layout.rightLayout.realTimeWidth = width
 
@@ -129,17 +145,31 @@ function close() {
   onCloseCallback.value?.()
 }
 
-onMounted(() => {
+const onSlideInComplete = () => {
+  // updateContentLayout()
+}
+
+const updateContentLayout = () => {
+  console.log('updateContentLayout>>.')
   if (containerRef.value) {
     const rect = containerRef.value.getBoundingClientRect()
-    mainRect.width = rect.width
-    mainRect.height = rect.height
-    layout.contentLayout.downWidth = rect.width
-    layout.contentLayout.realTimeWidth = rect.width
+    // console.log('updateContentLayout>>.', rect)
+    const innerWidth = window.innerWidth
+    const innerHeight = window.innerHeight
+    const width = innerWidth - rect.x - 20
+    const height = innerHeight - rect.y - 20
+    mainRect.width = width
+    mainRect.height = height
+    layout.contentLayout.downWidth = width
+    layout.contentLayout.realTimeWidth = width
   }
+}
+
+onMounted(() => {
+  updateContentLayout()
 })
 
-defineExpose({ open, close })
+defineExpose({ open, close, updateContentLayout })
 provide('slideClose', close)
 
 </script>
@@ -153,6 +183,7 @@ provide('slideClose', close)
   overflow: hidden;
   background-color: var(--el-bg-color);
   transition: all 0.3s;
+  border-radius: 8px;
 }
 
 .main {

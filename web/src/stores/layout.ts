@@ -16,7 +16,7 @@ export const useLayoutStore = defineStore(
     })
     return { mainLayout }
   },
-  {
-    persist: true,
-  },
+  // {
+  //   persist: true,
+  // },
 )
