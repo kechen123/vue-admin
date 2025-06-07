@@ -28,10 +28,10 @@
 <style scoped lang="less">
 .layout-container {
   height: 100vh;
-  background-color: var(--bg-color);
+  background-color: var(--el-bg-color);
 
   .sidebar {
-    background-color: var(--sidebar-bg);
+    // background-color: var(--sidebar-bg);
     width: 200px;
     transition: all 0.3s ease-in-out;
     transform: translateX(0);
@@ -39,7 +39,7 @@
     // box-shadow: var(--border);
     border-right-width: 1px;
     border-right-style: solid;
-    border-right-color: var(--sidebar-border-color);
+    border-right-color: var(--el-border-color);
   }
 
   .header {
@@ -48,7 +48,7 @@
   }
 
   .main {
-    background-color: var(--main-bg);
+    background-color: var(--el-bg-color-page);
   }
 }
 </style>

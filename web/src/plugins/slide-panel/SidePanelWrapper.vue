@@ -50,14 +50,13 @@ const onClose = () => close?.()
   transition: all 0.3s ease;
   transform: scale(1);
   overflow: hidden;
-  background-color: var(--gray-100);
 
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    border-bottom: 1px solid var(--main-border-color);
+    border-bottom: 1px solid var(--el-border-color);
 
     .title {}
 
@@ -79,7 +78,7 @@ const onClose = () => close?.()
         }
 
         &:hover {
-          background-color: var(--gray-70);
+          background-color: var(--el-color-primary-light-7);
 
           i {
             animation: scale-pop 0.3s ease;
@@ -108,6 +107,7 @@ const onClose = () => close?.()
     flex: 1;
     overflow: auto;
     padding: 16px;
+    border-bottom: 1px solid var(--el-border-color);
   }
 
   .footer {

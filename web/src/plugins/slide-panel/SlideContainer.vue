@@ -151,7 +151,7 @@ provide('slideClose', close)
   height: 100%;
   position: relative;
   overflow: hidden;
-  background-color: var(--gray-100);
+  background-color: var(--el-bg-color);
   transition: all 0.3s;
 }
 
@@ -167,7 +167,7 @@ provide('slideClose', close)
   position: relative;
   min-width: 0;
   height: 100%;
-  border-left: 1px solid var(--main-border-color);
+  border-left: 1px solid var(--el-border-color);
   transition: none;
   user-select: none;
 }
@@ -203,7 +203,7 @@ provide('slideClose', close)
 }
 
 .hover:before {
-  background: var(--gray-10);
+  background: var(--el-color-primary);
 }
 
 .slide-enter-from,

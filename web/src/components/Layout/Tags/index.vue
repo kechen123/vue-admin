@@ -60,7 +60,7 @@ const setTags = (route: any) => {
 <style scoped lang="less">
 .tags {
   user-select: none;
-  background-color: var(--tag-bg);
+  background-color: var(--el-bg-color);
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
@@ -73,7 +73,7 @@ const setTags = (route: any) => {
     left: 0;
     width: 100%;
     height: 1px;
-    background-color: var(--tag-border-color);
+    background-color: var(--el-border-color);
   }
 
   .container {
@@ -85,7 +85,7 @@ const setTags = (route: any) => {
       display: flex;
       align-items: center;
       height: 100%;
-      border-right: solid 1px var(--tag-border-color);
+      border-right: solid 1px var(--el-border-color);
       padding: 0 4px 0 16px;
       cursor: pointer;
 
@@ -119,7 +119,7 @@ const setTags = (route: any) => {
     }
 
     .active {
-      background-color: var(--tag-active-item-bg);
+      background-color: var(--el-bg-color-page);
       position: relative;
       z-index: 1;
 
@@ -130,11 +130,11 @@ const setTags = (route: any) => {
         left: 0;
         width: 100%;
         height: 1px;
-        background-color: var(--tag-active-border-color);
+        background-color: var(--el-color-primary);
       }
 
       .name {
-        color: var(--tag-active-text-color);
+        color: var(--el-text-color-primary);
       }
 
       .close {

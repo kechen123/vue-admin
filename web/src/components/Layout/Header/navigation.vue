@@ -123,12 +123,11 @@ const handleCommand = (command: string | number | object) => {
       border-radius: 4px;
 
 
-
       .badge {
-        --el-color-danger: var(--gray-10);
+        // --el-color-danger: var(--gray-10);
 
         :deep(.el-badge__content--danger) {
-          color: var(--gray-100);
+          // color: var(--gray-100);
         }
       }
 
@@ -137,7 +136,7 @@ const handleCommand = (command: string | number | object) => {
       }
 
       &:hover {
-        background-color: var(--gray-70);
+        background-color: var(--el-color-primary-light-7);
 
         i {
           animation: scale-pop 0.3s ease;
@@ -173,10 +172,4 @@ const handleCommand = (command: string | number | object) => {
   }
 }
 </style>
-<style>
-.el-dropdown-menu__item:not(.is-disabled):focus,
-.el-dropdown-menu__item:not(.is-disabled):hover {
-  --el-dropdown-menuItem-hover-color: var(--gray-90);
-  --el-dropdown-menuItem-hover-fill: var(--gray-20);
-}
-</style>
+<style></style>
