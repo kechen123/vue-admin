@@ -95,10 +95,13 @@ const setTags = (route: any) => {
       }
 
       &:hover {
-        background-color: var(--tag-item-hover-bg);
+        background-color: var(--el-bg-color-page);
+        color: var(--el-color-primary);
+
 
         .close {
           opacity: 1;
+
         }
       }
 
@@ -112,8 +115,8 @@ const setTags = (route: any) => {
         cursor: pointer;
 
         &:hover {
-          color: var(--tag-btn-hover-text-color);
-          background-color: var(--tag-btn-bg);
+          color: var(--el-color-primary);
+          background-color: var(--el-color-info-light-7);
         }
       }
     }
@@ -134,10 +137,11 @@ const setTags = (route: any) => {
       }
 
       .name {
-        color: var(--el-text-color-primary);
+        color: var(--el-color-primary);
       }
 
       .close {
+        color: var(--el-color-primary);
         opacity: 1;
       }
     }

@@ -75,13 +75,14 @@ defineExpose({
   width: 400px;
   transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
-  background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   margin-right: 20px;
   flex-shrink: 0;
+  background-color: var(--el-bg-color);
+  border: solid 1px var(--el-border-color);
 
   &.minimized {
     width: 0;
+    border: none;
   }
 
   .header {
@@ -139,7 +140,8 @@ defineExpose({
 
 .content {
   flex: 1;
-  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .floating-button {

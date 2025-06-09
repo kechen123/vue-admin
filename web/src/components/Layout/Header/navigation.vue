@@ -2,9 +2,14 @@
   <div class="navbar-collapse">
     <ul>
       <li>
+        <el-icon size="20">
+          <MIcon iconName="Search" />
+        </el-icon>
+      </li>
+      <li>
         <el-badge :value="12" class="badge">
           <el-icon size="20">
-            <MIcon iconName="ChatDotSquare" />
+            <MIcon iconName="Bell" />
           </el-icon>
         </el-badge>
       </li>
@@ -14,8 +19,6 @@
         </el-icon>
       </li>
       <li>
-        <!-- <el-switch v-model="value" :active-action-icon="Moon" :inactive-action-icon="Sunny" @pointerdown="onPointerDown"
-          @change="triggerTransition" /> -->
         <el-icon size="20">
           <MIcon v-if="isDark" iconName="Moon" @click="triggerTransition" />
           <MIcon v-else iconName="Sunny" @click="triggerTransition" />
@@ -114,8 +117,7 @@ const handleCommand = (command: string | number | object) => {
     }
 
     li {
-      padding: 6px;
-      height: 34px;
+      padding: 6px 8px;
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -123,20 +125,13 @@ const handleCommand = (command: string | number | object) => {
       border-radius: 4px;
 
 
-      .badge {
-        // --el-color-danger: var(--gray-10);
-
-        :deep(.el-badge__content--danger) {
-          // color: var(--gray-100);
-        }
-      }
-
       i {
         transition: transform 0.3s ease;
       }
 
       &:hover {
-        background-color: var(--el-color-primary-light-7);
+        background-color: var(--el-color-info-light-8);
+        color: var(--el-color-primary);
 
         i {
           animation: scale-pop 0.3s ease;
@@ -145,8 +140,6 @@ const handleCommand = (command: string | number | object) => {
 
       .el-dropdown-link {
         outline: 0;
-
-
 
         .user {
           display: flex;

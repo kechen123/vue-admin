@@ -1,12 +1,12 @@
 <template>
   <div class="slide-container" ref="containerRef">
-    <div class="main" :style="{ width: layout.contentLayout.realTimeWidth + 'px' }">
+    <div class="main" :style="{ 'flex-basis': layout.contentLayout.realTimeWidth + 'px' }">
       <slot />
     </div>
 
     <transition name="slide" @after-enter="onSlideInComplete">
       <div v-if="sidePanelState.show" id="right" class="side-panel"
-        :style="{ width: layout.rightLayout.realTimeWidth + 'px' }">
+        :style="{ 'flex-basis': layout.rightLayout.realTimeWidth + 'px' }">
         <div ref="rightLineRef" class="resizer" />
         <SidePanelWrapper :title="sidePanelState.title">
           <component :is="sidePanelState.sideComponent" v-bind="sidePanelState.sideProps"
@@ -63,19 +63,6 @@ const moveRight = (e: MouseEvent, mouse: any) => {
     if (w < minWidth) w = minWidth
     layout.rightLayout.realTimeWidth = w
     layout.contentLayout.realTimeWidth = mainRect.width - w
-  }
-}
-
-const bodyReSize = (event: Element, width: number, height: number) => {
-  mainRect.width = width
-  mainRect.height = height
-  console.log('bodyReSize', width)
-  if (sidePanelState.show) {
-    layout.contentLayout.downWidth = width - layout.rightLayout.realTimeWidth
-    layout.contentLayout.realTimeWidth = width - layout.rightLayout.realTimeWidth
-  } else {
-    layout.contentLayout.downWidth = width
-    layout.contentLayout.realTimeWidth = width
   }
 }
 
@@ -150,7 +137,6 @@ const onSlideInComplete = () => {
 }
 
 const updateContentLayout = () => {
-  console.log('updateContentLayout>>.')
   if (containerRef.value) {
     const rect = containerRef.value.getBoundingClientRect()
     // console.log('updateContentLayout>>.', rect)
@@ -160,8 +146,8 @@ const updateContentLayout = () => {
     const height = innerHeight - rect.y - 20
     mainRect.width = width
     mainRect.height = height
-    layout.contentLayout.downWidth = width
-    layout.contentLayout.realTimeWidth = width
+    layout.contentLayout.downWidth = width - (sidePanelState.show ? layout.rightLayout.realTimeWidth : 0)
+    layout.contentLayout.realTimeWidth = width - (sidePanelState.show ? layout.rightLayout.realTimeWidth : 0)
   }
 }
 
@@ -184,6 +170,7 @@ provide('slideClose', close)
   background-color: var(--el-bg-color);
   transition: all 0.3s;
   border-radius: 8px;
+  border: solid 1px var(--el-border-color);
 }
 
 .main {

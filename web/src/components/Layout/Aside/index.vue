@@ -25,13 +25,12 @@ watch(
 
 <style lang="less">
 .el-menu-vertical {
-  // --el-menu-bg-color: var(--el-color-primary-light-3);
-  --el-menu-text-color: var(--el-text-color-primary);
-  --el-menu-hover-bg-color: var(--el-color-primary-light-7);
-  --el-menu-active-color: var(--el-text-color-primary);
-  --el-menu-active-bg-color: var(--el-color-primary-light-7);
-  --el-menu-item-height: 50px;
-  --el-menu-sub-item-height: 50px;
+  --el-menu-text-color: var(--el-text-color-primary-light-8);
+  --el-menu-hover-bg-color: var(--el-color-info-light-8);
+  --el-menu-active-color: var(--el-text-color-primary-light-8);
+  --el-menu-active-bg-color: var(--el-color-primary-light-9);
+  --el-menu-item-height: 40px;
+  --el-menu-sub-item-height: 40px;
   padding: 0 14px;
 
 }
@@ -61,6 +60,7 @@ watch(
 .el-menu-item,
 .el-sub-menu__title {
   border-radius: 10px;
+  margin-bottom: 10px;
 
   i,
   span {
@@ -80,7 +80,7 @@ watch(
 
 
 .el-menu-item.is-active {
-  background-color: var(--el-color-primary-light-3) !important;
-  color: var(--el-text-color-primary);
+  background-color: var(--el-color-primary-light-7);
+  color: var(--el-color-primary);
 }
 </style>
