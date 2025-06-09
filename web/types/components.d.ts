@@ -38,6 +38,7 @@ declare module 'vue' {
     ElSplitterPanel: typeof import('element-plus/es')['ElSplitterPanel']
     ElSubmenu: typeof import('element-plus/es')['ElSubmenu']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
+    ElSwitch: typeof import('element-plus/es')['ElSwitch']
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
@@ -61,7 +62,11 @@ declare module 'vue' {
     MIcon: typeof import('./../src/components/MIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SmartTable: typeof import('./../src/components/SmartTable/index.vue')['default']
     TableSearch: typeof import('./../src/components/Table/search.vue')['default']
     Test: typeof import('./../src/components/test.vue')['default']
+  }
+  export interface GlobalDirectives {
+    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

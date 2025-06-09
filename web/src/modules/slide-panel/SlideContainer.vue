@@ -24,9 +24,9 @@
 
 <script setup lang="ts">
 import { useLayoutStore } from '@/stores/layout'
-import useMouse from './useMouseDrop'
-import useElementResize from './useElementResize'
-import SidePanelWrapper from './SidePanelWrapper.vue'
+import useMouse from './hooks/useMouseDrop'
+// import useElementResize from './hooks/useElementResize'
+import SidePanelWrapper from './components/SidePanelWrapper.vue'
 
 
 const layoutStore = useLayoutStore()
@@ -77,6 +77,7 @@ interface SideOpenOptions {
     width?: number
     title?: string
     onClose?: () => void
+    onOpen?: () => void
   }
   footer?: {
     component: any
@@ -93,7 +94,8 @@ async function open(params: SideOpenOptions) {
       method = 'init',
       width = 400,
       title = '详情',
-      onClose
+      onClose,
+      onOpen,
     },
     footer
   } = params
@@ -125,6 +127,7 @@ async function open(params: SideOpenOptions) {
   if (footer?.method && sidePanelState.footerRef?.[footer.method]) {
     sidePanelState.footerRef[footer.method](footer.props || {})
   }
+  onOpen?.()
 }
 
 function close() {

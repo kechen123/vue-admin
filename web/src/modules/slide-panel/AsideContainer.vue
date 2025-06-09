@@ -34,6 +34,7 @@
 </template>
 
 <script setup lang="ts">
+import SlideContainer from './SlideContainer.vue'
 const containerRef = ref()
 const isMinimized = ref(false)
 const asideRef = ref()
