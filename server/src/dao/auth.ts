@@ -9,12 +9,12 @@ const menu = [
   {
     name: "基础表格",
     icon: "TakeawayBox",
-    path: "/table_demo/default",
+    path: "/table_demo/base/",
   },
   {
     name: "左侧栏目表格",
     icon: "Wallet",
-    path: "/table_demo/aside",
+    path: "/table_demo/aside/",
   },
   {
     name: "组件",

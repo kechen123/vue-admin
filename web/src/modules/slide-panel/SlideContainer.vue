@@ -4,7 +4,7 @@
       <slot />
     </div>
 
-    <transition name="slide" @after-enter="onSlideInComplete">
+    <transition name="slide" @after-enter="onSlideInComplete" @after-leave="onSlideOutComplete">
       <div v-if="sidePanelState.show" id="right" class="side-panel"
         :style="{ 'flex-basis': layout.rightLayout.realTimeWidth + 'px' }">
         <div ref="rightLineRef" class="resizer" />
@@ -86,7 +86,7 @@ interface SideOpenOptions {
   }
 }
 
-async function open(params: SideOpenOptions) {
+const open = async (params: SideOpenOptions) => {
   const {
     default: {
       component,
@@ -130,13 +130,17 @@ async function open(params: SideOpenOptions) {
   onOpen?.()
 }
 
-function close() {
+const close = async () => {
   sidePanelState.show = false
   onCloseCallback.value?.()
 }
 
 const onSlideInComplete = () => {
-  // updateContentLayout()
+  updateContentLayout()
+}
+
+const onSlideOutComplete = () => {
+  updateContentLayout()
 }
 
 const updateContentLayout = () => {
@@ -145,8 +149,8 @@ const updateContentLayout = () => {
     // console.log('updateContentLayout>>.', rect)
     const innerWidth = window.innerWidth
     const innerHeight = window.innerHeight
-    const width = innerWidth - rect.x - 20
-    const height = innerHeight - rect.y - 20
+    const width = innerWidth - rect.x - 20 - 2
+    const height = innerHeight - rect.y - 20 - 2
     mainRect.width = width
     mainRect.height = height
     layout.contentLayout.downWidth = width - (sidePanelState.show ? layout.rightLayout.realTimeWidth : 0)
@@ -180,6 +184,9 @@ provide('slideClose', close)
   flex: 1;
   transition: width 0.3s ease;
   min-width: 0;
+  flex-basis: 0;
+  flex-shrink: 0;
+  flex-grow: 0;
   padding: 20px;
   user-select: none;
 }
@@ -187,6 +194,9 @@ provide('slideClose', close)
 .side-panel {
   position: relative;
   min-width: 0;
+  flex-basis: 0;
+  flex-shrink: 0;
+  flex-grow: 0;
   height: 100%;
   border-left: 1px solid var(--el-border-color);
   transition: none;

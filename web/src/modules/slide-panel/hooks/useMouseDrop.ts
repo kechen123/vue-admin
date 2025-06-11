@@ -43,7 +43,6 @@ export default function ({ down, move, up }: Props) {
   const hover = ref(false)
   const target: Ref<HTMLElement | null> = ref(null)
   const mousedown = (event: MouseEvent) => {
-    console.log('1111')
     mouse.down.x = event.pageX
     mouse.down.y = event.pageY
     mouse.state = 'down'
