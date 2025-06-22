@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import AutoImport from 'unplugin-auto-import/vite'
 import VueRouter from 'unplugin-vue-router/vite'
@@ -19,6 +20,8 @@ export default defineConfig({
     }),
     // ⚠️ Vue must be placed after VueRouter()
     vue(),
+    // vue 可以使用 jsx/tsx 语法
+    vueJsx(),
     vueDevTools(),
     svgLoader(),
     Layouts({
@@ -45,6 +48,8 @@ export default defineConfig({
     Components({
       //自动加载的组件目录，默认值为 ['src/components']
       dirs: ['src/components'],
+      // 排除掉子目录中的组件
+      exclude: ['src/components/**/components/**'],
       //组件名称包含目录，防止同名组件冲突
       directoryAsNamespace: true,
       //指定类型声明文件，为true时在项目根目录创建

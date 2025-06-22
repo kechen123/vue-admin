@@ -149,7 +149,7 @@ defineExpose({
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: -18px;
+  left: 4px;
   /* 吸附到左侧外边缘 */
   width: 36px;
   height: 36px;

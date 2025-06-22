@@ -45,6 +45,8 @@ declare module 'vue' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
     ElUpload: typeof import('element-plus/es')['ElUpload']
+    KcTable: typeof import('./../src/components/KcTable/index.vue')['default']
+    KcTableComponentsColumn: typeof import('./../src/components/KcTable/components/Column.vue')['default']
     LayoutAside: typeof import('./../src/components/Layout/Aside/index.vue')['default']
     LayoutAsideEnuItem: typeof import('./../src/components/Layout/Aside/enuItem.vue')['default']
     LayoutAsideHeader: typeof import('./../src/components/Layout/Aside/header.vue')['default']

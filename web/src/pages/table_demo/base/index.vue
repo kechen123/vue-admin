@@ -4,22 +4,13 @@
       <h2>用户列表</h2>
       <el-button @click="openUserDetail('user-123')">查看用户详情</el-button>
       <el-button @click="containerRef.close()">关闭用户详情</el-button>
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column fixed prop="date" label="Date" width="150" />
-        <el-table-column prop="name" label="Name" width="120" />
-        <el-table-column prop="state" label="State" width="120" />
-        <el-table-column prop="city" label="City" width="120" />
-        <el-table-column prop="address" label="Address" width="600" />
-        <el-table-column prop="zip" label="Zip" width="120" />
-        <el-table-column fixed="right" label="Operations" min-width="120">
-          <template #default>
-            <el-button link type="primary" size="small" @click="handleClick">
-              Detail
-            </el-button>
-            <el-button link type="primary" size="small">Edit</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <KcTable :columns="columns" :data="tableData" :loading="loading">
+        <template #actions="{ row }">
+          <el-button type="primary" @click="openUserDetail(row.name)">编辑</el-button>
+          <el-button type="success" @click="openUserDetail(row.name)">查看详情</el-button>
+          <el-button type="danger" @click="handleClick">删除</el-button>
+        </template>
+      </KcTable>
     </div>
   </SlideContainer>
 </template>
@@ -29,44 +20,51 @@ import { ref } from 'vue'
 import Detail from './_detail.vue'
 import BtnList from './_btnList.vue'
 
-const tableData = [
+const columns = [
   {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
+    type: 'text',
+    prop: 'name',
+    label: '姓名',
+    formatter: (row: any, column: any, cellValue: any, index: number) => {
+      console.log('formatter', row, column, cellValue, index)
+      return row.name + '（格式化）'
+    },
+    show: true,
   },
   {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
+    prop: 'status',
+    label: '状态',
+    type: 'tag',
+    show: true,
+    options: [
+      { value: 1, label: '启用', tagType: 'success' },
+      { value: 0, label: '禁用', tagType: 'danger' }
+    ]
   },
   {
-    date: '2016-05-04',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
+    prop: 'active',
+    label: '激活',
+    show: true,
+    type: 'switch'
   },
+
   {
-    date: '2016-05-01',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
-  },
+    label: '操作',
+    prop: 'actions',
+    show: true,
+    type: 'slot',
+    width: 400
+  }
+
 ]
+
+const tableData = [
+  { name: '张三', status: 1, active: true },
+  { name: '李四', status: 0, active: false }
+]
+
+const loading = false
+
 const containerRef = ref()
 
 function openUserDetail(userId: string) {
