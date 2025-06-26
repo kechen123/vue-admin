@@ -1,191 +1,185 @@
-import axios from '@/utils/http/axios'
+import { ref, reactive, computed, type Ref, type ComputedRef } from 'vue'
+import type { PaginationParams, PaginationResponse } from '@/components/KcTable/types'
 
-export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>> // 使某些属性可选
-
-export interface TableType {
-  id: string
-  name: string
-  type: string
-  email: string
-  status: string
-  address: string
-  age: number
-  create_user: string
-  update_time: string
-  create_time: string
+export interface UseTableOptions<T = any> {
+  // 请求函数
+  request: (params: PaginationParams & Record<string, any>) => Promise<PaginationResponse>
+  // 默认分页参数
+  defaultPagination?: Partial<PaginationParams>
+  // 默认查询参数
+  defaultParams?: Record<string, any>
+  // 是否立即执行请求
+  immediate?: boolean
+  // 请求前的处理函数
+  beforeRequest?: (
+    params: PaginationParams & Record<string, any>,
+  ) => PaginationParams & Record<string, any>
+  // 请求后的处理函数
+  afterRequest?: (response: PaginationResponse) => void
 }
 
-export type TableDataType = TableType & {
-  type_id: string
-  status_id: string
-  type_name: string
-  user_status: string
+export interface UseTableReturn<T = any> {
+  // 数据相关
+  data: Ref<T[]>
+  loading: Ref<boolean>
+  total: Ref<number>
+
+  // 分页相关
+  pagination: PaginationParams
+  page: ComputedRef<number>
+  size: ComputedRef<number>
+
+  // 查询参数
+  searchParams: Record<string, any>
+
+  // 方法
+  fetchData: () => Promise<void>
+  resetPagination: () => void
+  setSearchParams: (params: Record<string, any>) => void
+  resetSearchParams: () => void
+  refresh: () => Promise<void>
+
+  // 分页事件处理
+  handlePaginationChange: (params: PaginationParams) => void
+  handleSizeChange: (size: number) => void
+  handleCurrentChange: (page: number) => void
 }
 
-export interface Pagination {
-  page: number
-  size: number
-  total: number
-}
+export function useTable<T = any>(options: UseTableOptions<T>): UseTableReturn<T> {
+  const {
+    request,
+    defaultPagination = {},
+    defaultParams = {},
+    immediate = true,
+    beforeRequest,
+    afterRequest,
+  } = options
 
-export interface Search {
-  name: string
-  type: string
-  status: string
-  create_time: string[]
-}
+  // 响应式数据 - 明确指定类型
+  const data = ref<T[]>([]) as Ref<T[]>
+  const loading = ref(false)
+  const total = ref(0)
 
-export interface Option {
-  value: string
-  label: string
-}
-
-export type Form = Optional<TableType, 'id' | 'create_user' | 'create_time' | 'update_time'>
-
-export function useTable(
-  tableData: Ref<TableDataType[]>,
-  typeList: Ref<Option[]>,
-  statusList: Ref<Option[]>,
-  pagination: Pagination
-) {
-  const getPageData = (search?: Search) => {
-    let params: any = {
-      page: pagination.page,
-      size: pagination.size
-    }
-    if (search) {
-      params.page = 1
-      if (search.name) {
-        params = Object.assign(params, { name: search.name })
-      }
-      if (search.type) {
-        params['type_id'] = search.type
-      }
-      if (search.status) {
-        params['status_id'] = search.status
-      }
-      if (search.create_time.length > 0) {
-        params['create_time'] = `>=,${search.create_time[0]},<=,${search.create_time[1]}`
-      }
-    }
-    axios.get('/rs/table_list', { params }).then((res: any) => {
-      if (res.status === 200) {
-        tableData.value = res.data
-        pagination.total = Number(res.records)
-      } else {
-        console.log('error /rs/table!')
-      }
-    })
-  }
-  const getTypeList = () => {
-    axios.get('/rs/type').then((res: any) => {
-      if (res.status === 200) {
-        typeList.value = res.data.map((item: any) => {
-          return {
-            value: item.id,
-            label: item.name
-          }
-        })
-      } else {
-        console.log('error /rs/type!')
-      }
-    })
-  }
-
-  const getStatusList = () => {
-    axios.get('/rs/status').then((res: any) => {
-      if (res.status === 200) {
-        statusList.value = res.data.map((item: any) => {
-          return {
-            value: item.id,
-            label: item.name
-          }
-        })
-      } else {
-        console.log('error /rs/status_list!')
-      }
-    })
-  }
-
-  const addTableData = async (row: Form) => {
-    const res = await axios.post('/rs/table', row)
-    if (res.status === 200) {
-      return true
-    }
-    return false
-  }
-
-  const editTableData = async (id: string, row: Form) => {
-    const res = await axios.put('/rs/table/' + id, row)
-    if (res.status === 200) {
-      return true
-    }
-    return false
-  }
-
-  const deleteTableData = async (id: string) => {
-    const res = await axios.delete('/rs/table/' + id)
-    if (res.status === 200) {
-      return true
-    }
-    return false
-  }
-
-  const deleteTableByIds = async (ids: string) => {
-    const res = await axios.delete('/rs/table_update', { params:{ id:ids } })
-    if (res.status === 200) {
-      return true
-    }
-    return false
-  }
-
-  return {
-    tableData,
-    getPageData,
-    getTypeList,
-    getStatusList,
-    addTableData,
-    editTableData,
-    deleteTableData,
-    deleteTableByIds
-  }
-}
-
-export function usePagination(getPageData: (search?: Search) => void, pagination: Pagination) {
-  const pageSizes = [10, 20, 30, 40]
-  const currentChange = (val: number) => {
-    pagination.page = val
-    getPageData()
-  }
-
-  const handleSizeChange = (val: number) => {
-    pagination.size = val
-    getPageData()
-  }
-
-  return {
-    pageSizes,
-    currentChange,
-    handleSizeChange
-  }
-}
-
-export function useSearch() {
-  const searchData = reactive<Search>({
-    name: '',
-    type: '',
-    status: '',
-    create_time: []
+  // 分页参数
+  const pagination = reactive<PaginationParams>({
+    page: defaultPagination.page || 1,
+    size: defaultPagination.size || 10,
   })
 
-  watch(() => searchData.create_time, (newVal, oldVal) => {
-    if (newVal !== oldVal) {
-      newVal[0] = newVal[0] ? newVal[0] + ' 00:00:00' : ''
-      newVal[1] = newVal[1] ? newVal[1] + ' 23:59:59' : ''
+  // 查询参数
+  const searchParams = reactive<Record<string, any>>({ ...defaultParams })
+
+  // 计算属性
+  const page = computed(() => pagination.page)
+  const size = computed(() => pagination.size)
+
+  // 获取数据
+  const fetchData = async () => {
+    loading.value = true
+
+    try {
+      // 合并分页参数和查询参数
+      const params = {
+        ...pagination,
+        ...searchParams,
+      }
+
+      // 请求前处理
+      const finalParams = beforeRequest ? beforeRequest(params) : params
+
+      // 发起请求
+      const response = await request(finalParams)
+      // 更新数据 - 明确类型转换
+      data.value = response.list as T[]
+      total.value = response.total
+
+      // 更新分页参数（如果服务端返回了分页信息）
+      if (response.page !== undefined) pagination.page = response.page
+      if (response.size !== undefined) pagination.size = response.size
+
+      // 请求后处理
+      afterRequest?.(response)
+    } catch (error) {
+      console.error('获取表格数据失败:', error)
+      data.value = [] as T[]
+      total.value = 0
+    } finally {
+      loading.value = false
     }
-  })
+  }
+
+  // 重置分页到第一页
+  const resetPagination = () => {
+    pagination.page = 1
+  }
+
+  // 设置查询参数
+  const setSearchParams = (params: Record<string, any>) => {
+    Object.assign(searchParams, params)
+  }
+
+  // 重置查询参数
+  const resetSearchParams = () => {
+    Object.keys(searchParams).forEach((key) => {
+      delete searchParams[key]
+    })
+    Object.assign(searchParams, defaultParams)
+  }
+
+  // 刷新数据
+  const refresh = async () => {
+    await fetchData()
+  }
+
+  // 分页变化处理
+  const handlePaginationChange = (params: PaginationParams) => {
+    pagination.page = params.page
+    pagination.size = params.size
+    fetchData()
+  }
+
+  // 每页条数变化
+  const handleSizeChange = (size: number) => {
+    pagination.size = size
+    pagination.page = 1 // 重置到第一页
+    fetchData()
+  }
+
+  // 当前页变化
+  const handleCurrentChange = (page: number) => {
+    pagination.page = page
+    fetchData()
+  }
+
+  // 立即执行请求
+  if (immediate) {
+    fetchData()
+  }
 
   return {
-    searchData
+    // 数据
+    data,
+    loading,
+    total,
+
+    // 分页
+    pagination,
+    page,
+    size,
+
+    // 查询参数
+    searchParams,
+
+    // 方法
+    fetchData,
+    resetPagination,
+    setSearchParams,
+    resetSearchParams,
+    refresh,
+
+    // 事件处理
+    handlePaginationChange,
+    handleSizeChange,
+    handleCurrentChange,
   }
 }

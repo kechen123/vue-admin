@@ -24,18 +24,19 @@ export default defineComponent({
         return scope.row[props.column.prop]
       }
       if (item.type === 'tag') {
-        return <ElTag type={item.tagType || 'primary'}>{scope.row[props.column.prop]}</ElTag>
+        const value = scope.row[props.column.prop]
+        const option = Array.isArray(item.options)
+          ? item.options.find((opt: any) => opt.value === value)
+          : null
+        return (
+          <ElTag type={option?.tagType || item.tagType || 'primary'}>
+            {option?.label ?? value}
+          </ElTag>
+        )
       }
       if (item.type === 'switch') {
-        return (
-          <ElSwitch
-            v-model={scope.row[props.column.prop]}
-            active-color={item.activeColor || '#13ce66'}
-            inactive-color={item.inactiveColor || '#ff4949'}
-            active-text={item.activeText}
-            inactive-text={item.inactiveText}
-          />
-        )
+        const prop = props.column.prop
+        return <ElSwitch v-model={scope.row[prop]} {...item.options} />
       }
     }
 

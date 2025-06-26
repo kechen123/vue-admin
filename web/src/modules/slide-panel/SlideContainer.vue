@@ -189,6 +189,8 @@ provide('slideClose', close)
   flex-grow: 0;
   padding: 20px;
   user-select: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .side-panel {

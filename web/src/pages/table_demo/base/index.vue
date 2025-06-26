@@ -1,51 +1,63 @@
 <template>
   <SlideContainer ref="containerRef">
-    <div>
+    <div style="margin-bottom: 16px;">
       <h2>用户列表</h2>
       <el-button @click="openUserDetail('user-123')">查看用户详情</el-button>
       <el-button @click="containerRef.close()">关闭用户详情</el-button>
-      <KcTable :columns="columns" :data="tableData" :loading="loading">
-        <template #actions="{ row }">
-          <el-button type="primary" @click="openUserDetail(row.name)">编辑</el-button>
-          <el-button type="success" @click="openUserDetail(row.name)">查看详情</el-button>
-          <el-button type="danger" @click="handleClick">删除</el-button>
-        </template>
-      </KcTable>
     </div>
+
+    <KcTable :config="tableConfig">
+      <template #actions="{ row }">
+        <el-button type="primary" @click="openUserDetail(row.name)">编辑</el-button>
+        <el-button type="success" @click="openUserDetail(row.name)">查看详情</el-button>
+        <el-button type="danger" @click="handleClick">删除</el-button>
+      </template>
+    </KcTable>
   </SlideContainer>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { getList } from '@/api/test'
 import Detail from './_detail.vue'
 import BtnList from './_btnList.vue'
+import type { TableConfig, ColumnProps } from '@/components/KcTable/types'
 
-const columns = [
+const columns: ColumnProps[] = [
   {
     type: 'text',
-    prop: 'name',
+    prop: 'username',
     label: '姓名',
     formatter: (row: any, column: any, cellValue: any, index: number) => {
-      console.log('formatter', row, column, cellValue, index)
-      return row.name + '（格式化）'
+      return row.username + '（格式化）'
     },
     show: true,
   },
   {
-    prop: 'status',
-    label: '状态',
+    prop: 'gender',
+    label: '性别',
     type: 'tag',
     show: true,
     options: [
-      { value: 1, label: '启用', tagType: 'success' },
-      { value: 0, label: '禁用', tagType: 'danger' }
+      { value: 2, label: '女', tagType: 'success' },
+      { value: 1, label: '男', tagType: 'primary' },
+      { value: 0, label: '未知', tagType: 'danger' }
     ]
   },
   {
-    prop: 'active',
+    prop: 'status',
     label: '激活',
     show: true,
-    type: 'switch'
+    type: 'switch',
+    options: {
+      // activeText: '已激活',
+      // inactiveText: '未激活',
+      activeValue: 1,
+      inactiveValue: 0,
+      onChange: (val: any) => {
+        console.log('change', val)
+      }
+    },
   },
 
   {
@@ -55,15 +67,17 @@ const columns = [
     type: 'slot',
     width: 400
   }
-
 ]
 
-const tableData = [
-  { name: '张三', status: 1, active: true },
-  { name: '李四', status: 0, active: false }
-]
+const tableConfig = ref<TableConfig>({
+  columns: columns,
+  request: getList,
+  defaultPagination: { page: 1, size: 10 },
+  showPagination: true,
+  showLoading: true
+})
 
-const loading = false
+
 
 const containerRef = ref()
 
