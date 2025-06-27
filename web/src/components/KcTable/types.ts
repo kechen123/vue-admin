@@ -34,6 +34,15 @@ export type BeforeRequestHook = (
   params: PaginationParams & Record<string, any>,
 ) => PaginationParams & Record<string, any>
 
+// 表格事件类型
+export interface TableEvents {
+  onSelectionChange?: (selection: any[], row: any) => void
+  onRowClick?: (row: any, column: any, event: Event) => void
+  onCellClick?: (row: any, column: any, cell: any, event: Event) => void
+  onSortChange?: (column: any, prop: string, order: string) => void
+  onFilterChange?: (filters: any) => void
+}
+
 // 表格配置接口
 export interface TableConfig {
   // 列配置
@@ -42,7 +51,7 @@ export interface TableConfig {
   // 数据源配置 - 二选一
   data?: any[] // 静态数据
   request?: RequestFunction // 请求函数
-  responseAdapter?: (raw: any) => PaginationResponse
+  responseAdapter?: (raw: any, params: any) => PaginationResponse
 
   // 默认参数（仅在使用request时有效）</any>
   defaultParams?: Record<string, any>
@@ -57,8 +66,10 @@ export interface TableConfig {
   showPagination?: boolean
   pageSizes?: number[]
   showLoading?: boolean
+
+  // 表格配置
   options?: {
     attributes?: Record<string, any>
-    events?: Record<string, any>
+    events?: TableEvents
   }
 }
