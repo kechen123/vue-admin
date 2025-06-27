@@ -38,7 +38,7 @@ const positionList = ref<any[]>([])
 const formConfig = {
   fields: [
     { key: 'username', label: '用户名', type: 'input' as const, placeholder: '请输入用户名', width: 300, rules: [{ required: true, message: '必填' }] },
-    { key: 'avatar', label: '头像', type: 'custom' as const, slot: true },
+    { key: 'avatar', label: '头像', type: 'input' as const, },
     { key: 'email', label: '邮箱', type: 'input' as const, placeholder: '请输入邮箱' },
     { key: 'gender', label: '性别', type: 'select' as const, options: [{ value: 0, label: '未知' }, { value: 1, label: '男' }, { value: 2, label: '女' }], placeholder: '请选择性别' },
     { key: 'status', label: '激活', type: 'select' as const, options: [{ value: 1, label: '已激活' }, { value: 0, label: '未激活' }], placeholder: '请选择激活状态' },
