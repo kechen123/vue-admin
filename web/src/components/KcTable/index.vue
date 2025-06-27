@@ -1,7 +1,8 @@
 <template>
   <div class="tableContainer">
     <div class="tableContent">
-      <el-table :data="tableData" v-loading="loading && showLoading" class="table">
+      <el-table :data="tableData" v-loading="loading && showLoading" class="table" v-bind="options.attributes"
+        v-on="tableEvents">
         <template v-for="col in columns" :key="col.prop || col.label">
           <RenderColumn :column="col">
             <template #[col.prop]="scope" v-if="col.type === 'slot'">
@@ -42,8 +43,32 @@ const {
   responseAdapter,
   showPagination = true,
   pageSizes = [10, 20, 50, 100],
-  showLoading = true
+  showLoading = true,
+  options = {}
 } = props.config
+
+
+const tableEvents = computed(() => {
+  const events: Record<string, any> = {}
+
+  if (options.events?.onSelectionChange) {
+    events['selection-change'] = options.events.onSelectionChange
+  }
+  if (options.events?.onRowClick) {
+    events['row-click'] = options.events.onRowClick
+  }
+  if (options.events?.onCellClick) {
+    events['cell-click'] = options.events.onCellClick
+  }
+  if (options.events?.onSortChange) {
+    events['sort-change'] = options.events.onSortChange
+  }
+  if (options.events?.onFilterChange) {
+    events['filter-change'] = options.events.onFilterChange
+  }
+
+  return events
+})
 
 // 判断是否为请求模式
 const isRequestMode = computed(() => !!request)

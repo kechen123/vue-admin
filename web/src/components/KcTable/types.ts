@@ -1,10 +1,10 @@
 export interface ColumnProps {
   prop?: string
-  label: string
+  label?: string
   align?: string
   width?: string | number
   show?: boolean
-  type?: 'text' | 'tag' | 'switch' | 'image' | 'slot'
+  type?: 'selection' | 'index' | 'text' | 'tag' | 'switch' | 'image' | 'slot'
   options?: any
   formatter?: (row: any, column: any, cellValue: any, index: number) => any
   showOverflowTooltip?: boolean
@@ -57,4 +57,8 @@ export interface TableConfig {
   showPagination?: boolean
   pageSizes?: number[]
   showLoading?: boolean
+  options?: {
+    attributes?: Record<string, any>
+    events?: Record<string, any>
+  }
 }

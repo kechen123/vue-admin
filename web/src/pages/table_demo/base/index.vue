@@ -25,10 +25,23 @@ import type { TableConfig, ColumnProps } from '@/components/KcTable/types'
 
 const columns: ColumnProps[] = [
   {
+    type: 'selection',
+    show: true,
+    width: 55,
+  },
+  {
+    type: 'index',
+    label: '序号',
+    show: true,
+    width: 90,
+    align: 'center',
+  },
+  {
     type: 'text',
     prop: 'username',
     label: '姓名',
-    formatter: (row: any, column: any, cellValue: any, index: number) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    formatter: (row: any, _column: any, _cellValue: any, _index: number) => {
       return row.username + '（格式化）'
     },
     show: true,
@@ -59,7 +72,12 @@ const columns: ColumnProps[] = [
       }
     },
   },
-
+  {
+    type: 'text',
+    prop: 'email',
+    label: '邮箱',
+    show: true,
+  },
   {
     label: '操作',
     prop: 'actions',
@@ -74,10 +92,21 @@ const tableConfig = ref<TableConfig>({
   request: getList,
   defaultPagination: { page: 1, size: 10 },
   showPagination: true,
-  showLoading: true
+  showLoading: true,
+  options: {
+    attributes: {
+      border: false,
+    },
+    events: {
+      onSelectionChange: (val: any) => {
+        console.log('onSelectionChange', val)
+      },
+      onRowClick: (row: any, column: any, event: any) => {
+        console.log('onRowClick', row, column, event)
+      }
+    }
+  }
 })
-
-
 
 const containerRef = ref()
 
