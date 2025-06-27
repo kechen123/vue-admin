@@ -2,6 +2,9 @@
   <SlideContainer ref="containerRef">
 
     <Kc :config="kcConfig">
+      <template #avatar_url="{ row }">
+        <el-avatar :size="50" shape="square" :src="row.avatar_url" />
+      </template>
       <template #actions="{ row }">
         <el-button type="primary" plain size="small" @click="openUserDetail(row.name)">编辑</el-button>
         <el-button type="success" plain size="small" @click="openUserDetail(row.name)">查看详情</el-button>
@@ -12,15 +15,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { getList } from '@/api/test'
+import { ref, computed, onMounted } from 'vue'
+import { getList, getDepartment, getPosition } from '@/api/test'
 import Detail from './_detail.vue'
 import BtnList from './_btnList.vue'
-import Kc from '@/components/Kc/index.vue'
 import type { KcConfig, TableConfig, ColumnProps, ButtonConfig } from '@/components/Kc/types'
 
 // 选中的行数据
 const selectedRows = ref<any[]>([])
+
+const departmentList = ref<any[]>([])
+const positionList = ref<any[]>([])
 
 const columns: ColumnProps[] = [
   {
@@ -32,19 +37,27 @@ const columns: ColumnProps[] = [
     type: 'index',
     label: '序号',
     show: true,
-    width: 90,
+    width: 80,
     align: 'center',
+  },
+  {
+    type: 'text',
+    prop: 'nickname',
+    align: 'center',
+    label: '姓名',
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    formatter: (row: any, _column: any, _cellValue: any, _index: number) => {
+      return row.nickname + '（格式化）'
+    },
+    width: 160,
+    show: true,
   },
   {
     type: 'text',
     prop: 'username',
     align: 'center',
-    label: '姓名',
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    formatter: (row: any, _column: any, _cellValue: any, _index: number) => {
-      return row.username + '（格式化）'
-    },
     show: true,
+    label: '英文名',
   },
   {
     prop: 'gender',
@@ -53,10 +66,18 @@ const columns: ColumnProps[] = [
     show: true,
     align: 'center',
     options: [
-      { value: 2, label: '女', tagType: 'success' },
+      { value: 0, label: '未知', tagType: 'danger' },
       { value: 1, label: '男', tagType: 'primary' },
-      { value: 0, label: '未知', tagType: 'danger' }
+      { value: 2, label: '女', tagType: 'success' },
     ]
+  },
+  {
+    label: '头像',
+    prop: 'avatar_url',
+    type: 'slot',
+    align: 'center',
+    show: true,
+    width: 100
   },
   {
     prop: 'status',
@@ -65,8 +86,6 @@ const columns: ColumnProps[] = [
     align: 'center',
     type: 'switch',
     options: {
-      // activeText: '已激活',
-      // inactiveText: '未激活',
       activeValue: 1,
       inactiveValue: 0,
       onChange: (val: any) => {
@@ -75,9 +94,81 @@ const columns: ColumnProps[] = [
     },
   },
   {
+    prop: 'position_id',
+    label: '职位',
+    type: 'tag',
+    show: true,
+    align: 'center',
+    width: 120,
+    options: computed(() => positionList.value)
+  },
+  {
+    type: 'text',
+    prop: 'phone',
+    label: '手机号',
+    align: 'center',
+    width: 160,
+    show: true,
+  },
+  {
     type: 'text',
     prop: 'email',
     label: '邮箱',
+    align: 'center',
+    width: 160,
+    show: true,
+  },
+  {
+    type: 'text',
+    prop: 'age',
+    label: '年龄',
+    align: 'center',
+    show: true,
+  },
+  {
+    prop: 'department_id',
+    label: '部门',
+    type: 'tag',
+    show: true,
+    align: 'center',
+    options: computed(() => departmentList.value)
+  },
+
+  {
+    type: 'text',
+    prop: 'last_login_time',
+    label: '最后登录时间',
+    align: 'center',
+    width: 200,
+    show: true,
+  },
+  {
+    type: 'text',
+    prop: 'remark',
+    label: '备注',
+    align: 'center',
+    show: true,
+  },
+  {
+    type: 'text',
+    prop: 'role',
+    label: '角色',
+    align: 'center',
+    show: true,
+  },
+  {
+    type: 'tag',
+    prop: 'is_verified',
+    label: '是否已验证邮箱',
+    options: [
+      { value: 0, label: '否', tagType: 'danger' },
+      { value: 1, label: '是', tagType: 'primary' },
+    ]
+  },
+  {
+    type: 'text',
+    prop: 'login_count',
+    label: '登录次数',
     align: 'center',
     show: true,
   },
@@ -87,6 +178,7 @@ const columns: ColumnProps[] = [
     show: true,
     type: 'slot',
     align: 'center',
+    fixed: 'right',
     width: 240
   }
 ]
@@ -237,7 +329,11 @@ function openUserDetail(userId: string) {
   containerRef.value.open({
     default: {
       component: Detail,
-      props: { userId },
+      props: {
+        _userId: userId,
+        _departmentList: departmentList.value,
+        _positionList: positionList.value
+      },
       width: 600,
       title: '用户详情',
       onClose: () => {
@@ -257,4 +353,19 @@ function openUserDetail(userId: string) {
 const handleClick = () => {
   console.log('click')
 }
+
+onMounted(async () => {
+  const res = await getDepartment()
+  departmentList.value = res.data.map((item: any) => ({
+    label: item.name,
+    value: item.id
+  }))
+  const res2 = await getPosition()
+  positionList.value = res2.data.map((item: any) => ({
+    label: item.name,
+    value: item.id
+  }))
+  console.log(departmentList.value, positionList.value)
+})
+
 </script>

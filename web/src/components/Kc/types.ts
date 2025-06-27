@@ -1,3 +1,5 @@
+import type { Ref, ComputedRef } from 'vue'
+
 // 按钮配置类型
 export interface ButtonConfig {
   key: string
@@ -21,13 +23,16 @@ export interface ToolbarConfig {
 export interface FormField {
   key: string
   label: string
-  type: 'input' | 'select'
+  type: 'input' | 'select' | 'custom'
   placeholder?: string
   clearable?: boolean
   disabled?: boolean
   multiple?: boolean
   width?: string | number // 单个字段宽度，优先级最高
-  options?: Array<{ label: string; value: any }>
+  options?:
+    | { label: string; value: any }[]
+    | Ref<{ label: string; value: any }[]>
+    | ComputedRef<{ label: string; value: any }[]>
   [key: string]: any
 }
 

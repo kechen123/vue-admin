@@ -9,6 +9,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
@@ -46,6 +47,8 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Kc: typeof import('./../src/components/Kc/index.vue')['default']
+    KcComponentsFormGenerator: typeof import('./../src/components/Kc/components/FormGenerator.vue')['default']
+    KcForm: typeof import('./../src/components/Kc/Form/index.vue')['default']
     KcKcTable: typeof import('./../src/components/Kc/KcTable/index.vue')['default']
     KcKcTableComponentsSearch: typeof import('./../src/components/Kc/KcTable/components/Search.vue')['default']
     KcSearch: typeof import('./../src/components/Kc/Search/index.vue')['default']

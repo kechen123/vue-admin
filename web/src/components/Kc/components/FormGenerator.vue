@@ -1,8 +1,12 @@
 <template>
   <el-form-item class="formItem" v-for="field in fields" :key="field.key" :label="field.label" :prop="field.key"
-    :style="{ width: getFieldWidth(field) }">
+    :style="{ width: getFieldWidth(field) }" :label-width="field.labelWidth || undefined">
+    <!-- slot 渲染优先 -->
+    <slot v-if="field.slot" :name="typeof field.slot === 'string' ? field.slot : field.key" :field="field"
+      :model="formData" />
+
     <!-- Input 类型 -->
-    <el-input v-if="field.type === 'input'" v-model="formData[field.key]" :placeholder="field.placeholder"
+    <el-input v-else-if="field.type === 'input'" v-model="formData[field.key]" :placeholder="field.placeholder"
       :clearable="field.clearable !== false" :disabled="field.disabled"
       @change="handleFieldChange(field.key, formData[field.key])" />
 
@@ -10,16 +14,17 @@
     <el-select v-else-if="field.type === 'select'" v-model="formData[field.key]" :placeholder="field.placeholder"
       :clearable="field.clearable !== false" :disabled="field.disabled" :multiple="field.multiple"
       @change="handleFieldChange(field.key, formData[field.key])">
-      <el-option v-for="option in field.options" :key="option.value" :label="option.label" :value="option.value" />
+      <el-option v-for="option in getOptions(field.options)" :key="option.value" :label="option.label"
+        :value="option.value" />
     </el-select>
   </el-form-item>
 
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, isRef } from 'vue'
 import { ElFormItem, ElInput, ElSelect, ElOption } from 'element-plus'
-import type { FormField } from '../../types'
+import type { FormField } from '../types'
 
 interface Props {
   fields: FormField[]
@@ -61,6 +66,14 @@ const getFieldWidth = (field: FormField): string => {
 
   // 3. 默认宽度（最低优先级）
   return '250px'
+}
+
+// 自动解包 options
+function getOptions(options: any): { label: string; value: any }[] {
+  if (!options) return []
+  if (Array.isArray(options)) return options
+  if (isRef(options)) return options.value as { label: string; value: any }[]
+  return []
 }
 
 const handleFieldChange = (key: string, value: any) => {

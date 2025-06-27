@@ -25,9 +25,14 @@ export default defineComponent({
       }
       if (item.type === 'tag') {
         const value = scope.row[props.column.prop]
-        const option = Array.isArray(item.options)
-          ? item.options.find((opt: any) => opt.value === value)
-          : null
+        // 支持 options 为数组、ref、computed
+        let optionsArr = []
+        if (Array.isArray(item.options)) {
+          optionsArr = item.options
+        } else if (item.options && typeof item.options === 'object' && 'value' in item.options) {
+          optionsArr = item.options.value
+        }
+        const option = optionsArr.find((opt: any) => opt.value === value)
         return (
           <ElTag type={option?.tagType || item.tagType || 'primary'}>
             {option?.label ?? value}

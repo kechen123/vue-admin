@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ArrowDown } from '@element-plus/icons-vue'
-import FormGenerator from './components/FormGenerator.vue'
+import FormGenerator from '../components/FormGenerator.vue'
 import type { SearchConfig } from '../types'
 
 interface Props {
