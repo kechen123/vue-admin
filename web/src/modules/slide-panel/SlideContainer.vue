@@ -185,12 +185,13 @@ provide('slideClose', close)
   transition: width 0.3s ease;
   min-width: 0;
   flex-basis: 0;
-  flex-shrink: 0;
-  flex-grow: 0;
+  flex-shrink: 1;
+  flex-grow: 1;
   padding: 20px;
   user-select: none;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .side-panel {
