@@ -61,8 +61,10 @@ const handleToolbarClick = (btn: ButtonConfig) => {
 const handleSearch = (data: Record<string, any>) => {
   // 如果有表格组件，触发表格搜索
   if (tableRef.value?.setSearchParams) {
-    console.log('setSearchParams', data)
     tableRef.value.setSearchParams(data)
+    // 重置分页到第一页
+    tableRef.value.resetPagination()
+    tableRef.value.fetchData()
   }
   emit('search', data)
 }
@@ -72,6 +74,7 @@ const handleReset = () => {
   // 如果有表格组件，重置表格搜索
   if (tableRef.value?.resetSearchParams) {
     tableRef.value.resetSearchParams()
+    tableRef.value.fetchData()
   }
   emit('reset')
 }
@@ -91,6 +94,24 @@ defineExpose({
   resetPagination: () => tableRef.value?.resetPagination?.(),
   setSearchParams: (params: Record<string, any>) => tableRef.value?.setSearchParams?.(params),
   resetSearchParams: () => tableRef.value?.resetSearchParams?.(),
+  // 获取全部搜索参数
+  getRequestParams: () => {
+    // 获取表格的分页参数和搜索参数，合并成请求参数
+    const tablePagination = tableRef.value?.pagination || { page: 1, size: 10 }
+    const tableSearchParams = tableRef.value?.searchParams || {}
+
+    return {
+      ...tablePagination,
+      ...tableSearchParams
+    }
+  },
+  // 清除搜索参数（保留分页参数）
+  delSearchParams: (key: string) => {
+    if (tableRef.value?.searchParams && key) {
+      // 删除指定的搜索参数
+      delete tableRef.value.searchParams[key]
+    }
+  },
 })
 </script>
 

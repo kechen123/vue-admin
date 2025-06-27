@@ -1,5 +1,5 @@
 import { ref, reactive, computed, type Ref, type ComputedRef } from 'vue'
-import type { PaginationParams, PaginationResponse } from '@/components/KcTable/types'
+import type { PaginationParams, PaginationResponse } from '@/components/Kc/types'
 
 export interface UseTableOptions<T = any> {
   // 请求函数
@@ -115,7 +115,21 @@ export function useTable<T = any>(options: UseTableOptions<T>): UseTableReturn<T
 
   // 设置查询参数
   const setSearchParams = (params: Record<string, any>) => {
-    Object.assign(searchParams, params)
+    // 验证不允许设置分页参数
+    const paginationKeys = ['page', 'size']
+    const hasPaginationParams = paginationKeys.some((key) => key in params)
+
+    if (hasPaginationParams) {
+      console.warn('setSearchParams: 不允许设置分页参数 (page, size)，这些参数将被忽略')
+      // 过滤掉分页参数
+      const filteredParams = { ...params }
+      paginationKeys.forEach((key) => {
+        delete filteredParams[key]
+      })
+      Object.assign(searchParams, filteredParams)
+    } else {
+      Object.assign(searchParams, params)
+    }
   }
 
   // 重置查询参数

@@ -5,6 +5,7 @@ export const useLayoutStore = defineStore(
       contentLayout: {
         realTimeWidth: 0,
         downWidth: 0,
+        minWidth: 400,
         show: true,
       },
       rightLayout: {

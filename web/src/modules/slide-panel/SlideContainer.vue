@@ -1,12 +1,18 @@
 <template>
   <div class="slide-container" ref="containerRef">
-    <div class="main" :style="{ 'flex-basis': layout.contentLayout.realTimeWidth + 'px' }">
+    <div class="main" :style="{
+      width: layout.contentLayout.realTimeWidth + 'px',
+      transition: isDragging ? 'none' : 'width 0.3s ease',
+      userSelect: isDragging ? 'none' : 'auto'
+    }">
       <slot />
     </div>
 
     <transition name="slide" @after-enter="onSlideInComplete" @after-leave="onSlideOutComplete">
-      <div v-if="sidePanelState.show" id="right" class="side-panel"
-        :style="{ 'flex-basis': layout.rightLayout.realTimeWidth + 'px' }">
+      <div v-if="sidePanelState.show" id="right" class="side-panel" :style="{
+        'flex-basis': layout.rightLayout.realTimeWidth + 'px',
+        userSelect: isDragging ? 'none' : 'auto'
+      }">
         <div ref="rightLineRef" class="resizer" />
         <SidePanelWrapper :title="sidePanelState.title">
           <component :is="sidePanelState.sideComponent" v-bind="sidePanelState.sideProps"
@@ -32,6 +38,8 @@ import SidePanelWrapper from './components/SidePanelWrapper.vue'
 const layoutStore = useLayoutStore()
 const layout = layoutStore.mainLayout
 
+const isDragging = ref(false)
+
 const mainRect = reactive({
   width: 0,
   height: 0
@@ -53,20 +61,29 @@ const containerRef = ref()
 const onCloseCallback = ref<(() => void) | null>(null)
 
 const downRight = () => {
+  isDragging.value = true
+  layout.rightLayout.downWidth = layout.rightLayout.realTimeWidth
+}
+
+const upRight = () => {
+  isDragging.value = false
   layout.rightLayout.downWidth = layout.rightLayout.realTimeWidth
 }
 
 const moveRight = (e: MouseEvent, mouse: any) => {
   if (mouse.state === 'down') {
     let w = layout.rightLayout.downWidth - mouse.x
-    const minWidth = layout.rightLayout.minWidth
-    if (w < minWidth) w = minWidth
+    const rightMinWidth = layout.rightLayout.minWidth
+    const contentMinWidth = layout.contentLayout.minWidth
+    if (w < rightMinWidth) w = rightMinWidth
+    if (mainRect.width - w < contentMinWidth) w = mainRect.width - contentMinWidth
+
     layout.rightLayout.realTimeWidth = w
     layout.contentLayout.realTimeWidth = mainRect.width - w
   }
 }
 
-const [rightLineRef, addListener] = useMouse({ down: downRight, move: moveRight })
+const [rightLineRef, addListener] = useMouse({ down: downRight, move: moveRight, up: upRight })
 // const [containerRef] = useElementResize({ resize: bodyReSize, className: 'slide-container' })
 
 interface SideOpenOptions {
@@ -182,16 +199,20 @@ provide('slideClose', close)
 
 .main {
   flex: 1;
-  transition: width 0.3s ease;
   min-width: 0;
   flex-basis: 0;
   flex-shrink: 1;
   flex-grow: 1;
   padding: 20px;
-  user-select: none;
   display: flex;
   flex-direction: column;
+  min-width: 0;
   overflow: hidden;
+}
+
+.main>* {
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .side-panel {
@@ -203,7 +224,11 @@ provide('slideClose', close)
   height: 100%;
   border-left: 1px solid var(--el-border-color);
   transition: none;
-  user-select: none;
+}
+
+.side-panel>* {
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .side-panel.is-animating {

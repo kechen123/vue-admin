@@ -325,7 +325,7 @@ const kcConfig = computed<KcConfig>(() => ({
 
 const containerRef = ref()
 
-function openUserDetail(userId: string) {
+const openUserDetail = (userId: string) => {
   containerRef.value.open({
     default: {
       component: Detail,

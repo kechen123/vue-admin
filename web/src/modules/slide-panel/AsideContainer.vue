@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="aside" :class="{ minimized: isMinimized }" ref="asideRef">
+    <div class="aside" :class="{ minimized: isMinimized }" :style="asideStyle" ref="asideRef">
       <div class="header" v-if="!isMinimized">
-        <slot name="title">
+        <slot name="asideTitle">
           <div class="title">标题</div>
         </slot>
         <div class="actions">
@@ -12,6 +12,9 @@
             </el-icon>
           </div>
         </div>
+      </div>
+      <div class="body">
+        <slot name="asideBody" />
       </div>
     </div>
 
@@ -25,9 +28,7 @@
       </transition>
 
       <SlideContainer ref="containerRef">
-        <div>
-          <slot />
-        </div>
+        <slot />
       </SlideContainer>
     </div>
   </div>
@@ -35,9 +36,28 @@
 
 <script setup lang="ts">
 import SlideContainer from './SlideContainer.vue'
+
+interface Props {
+  asideWidth?: string | number
+  minimized?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  asideWidth: '400px',
+  minimized: false
+})
+
 const containerRef = ref()
-const isMinimized = ref(false)
+const isMinimized = ref(props.minimized)
 const asideRef = ref()
+
+// 计算aside样式
+const asideStyle = computed(() => {
+  if (isMinimized.value) {
+    return { width: '0px', border: 'none' }
+  }
+  return { width: typeof props.asideWidth === 'number' ? `${props.asideWidth}px` : props.asideWidth }
+})
 
 const toggleAside = async () => {
   isMinimized.value = !isMinimized.value
@@ -45,7 +65,6 @@ const toggleAside = async () => {
   setTimeout(() => {
     containerRef.value.updateContentLayout()
   }, 500)
-
 }
 
 const openRight = (options: any) => {
@@ -55,9 +74,15 @@ const closeRight = () => {
   containerRef.value.close()
 }
 
+// 监听外部minimized变化
+watch(() => props.minimized, (newVal) => {
+  isMinimized.value = newVal
+})
+
 defineExpose({
   open: openRight,
-  close: closeRight
+  close: closeRight,
+  toggleAside
 })
 </script>
 
@@ -73,7 +98,6 @@ defineExpose({
 
 .aside {
   border-radius: 8px;
-  width: 400px;
   transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   overflow: hidden;
   margin-right: 20px;

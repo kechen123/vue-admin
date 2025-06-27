@@ -45,6 +45,7 @@ declare module 'vue' {
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
     ElTag: typeof import('element-plus/es')['ElTag']
+    ElTree: typeof import('element-plus/es')['ElTree']
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Kc: typeof import('./../src/components/Kc/index.vue')['default']
     KcComponentsFormGenerator: typeof import('./../src/components/Kc/components/FormGenerator.vue')['default']
