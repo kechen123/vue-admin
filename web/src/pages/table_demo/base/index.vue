@@ -18,7 +18,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { getList, getDepartment, getPosition } from '@/api/test'
 import Detail from './_detail.vue'
-import BtnList from './_btnList.vue'
 import type { KcConfig, TableConfig, ColumnProps, ButtonConfig } from '@/components/Kc/types'
 
 // 选中的行数据
@@ -329,33 +328,16 @@ const openUserDetail = (rowId?: any, type?: string) => {
   containerRef.value.open({
     default: {
       component: Detail,
-      props: rowId ? {
-        _rowId: rowId,
-        _type: type,
-        _departmentList: departmentList.value,
-        _positionList: positionList.value
-      } : {
-        _departmentList: departmentList.value,
-        _positionList: positionList.value
+      data: {
+        // 统一传递所有数据
+        rowId,
+        type,
+        departmentList: departmentList.value,
+        positionList: positionList.value
       },
       width: 600,
       title: '用户详情',
       onClose: () => {
-        console.log('onclose')
-      }
-    },
-    footer: {
-      component: BtnList,
-      props: rowId ? {
-        _rowId: rowId,
-        _type: type,
-        _departmentList: departmentList.value,
-        _positionList: positionList.value
-      } : {
-        _departmentList: departmentList.value,
-        _positionList: positionList.value
-      },
-      onClick: () => {
         console.log('onclose')
       }
     }

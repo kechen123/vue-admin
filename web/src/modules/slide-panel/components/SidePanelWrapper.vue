@@ -18,9 +18,6 @@
     <div class="body">
       <slot />
     </div>
-    <div class="footer">
-      <slot name="footer" />
-    </div>
   </div>
 </template>
 
@@ -108,10 +105,6 @@ const onClose = () => close?.()
     overflow: auto;
     padding: 16px;
     border-bottom: 1px solid var(--el-border-color);
-  }
-
-  .footer {
-    padding: 16px;
   }
 }
 

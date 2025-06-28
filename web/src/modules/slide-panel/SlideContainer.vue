@@ -17,11 +17,6 @@
         <SidePanelWrapper :title="sidePanelState.title" v-loading="sidePanelState.isLoading">
           <component :is="sidePanelState.sideComponent" v-bind="sidePanelState.sideProps"
             :ref="(el: any) => (sidePanelState.sideRef = el)" />
-          <template #footer>
-            <component v-if="sidePanelState.footerComponent && !sidePanelState.isLoading"
-              :is="sidePanelState.footerComponent" v-bind="sidePanelState.footerProps"
-              :ref="(el: any) => (sidePanelState.footerRef = el)" />
-          </template>
         </SidePanelWrapper>
       </div>
     </transition>
@@ -51,15 +46,12 @@ const sidePanelState = reactive({
   title: '详情',
   sideComponent: shallowRef(),
   sideProps: {},
-  footerComponent: shallowRef(),
-  footerProps: {},
   sideRef: null as any,
-  footerRef: null as any,
   isLoading: false,
   pendingComponent: null as any,
   pendingProps: {},
   pendingMethod: '',
-  pendingFooter: null as any,
+  pendingData: {} as Record<string, any>,
 })
 
 
@@ -102,11 +94,7 @@ interface SideOpenOptions {
     title?: string
     onClose?: () => void
     onOpen?: () => void
-  }
-  footer?: {
-    component: any
-    props?: Record<string, any>
-    method?: string
+    data?: Record<string, any>
   }
 }
 
@@ -120,8 +108,8 @@ const open = async (params: SideOpenOptions) => {
       title = '详情',
       onClose,
       onOpen,
-    },
-    footer
+      data = {}
+    }
   } = params
 
   // 设置 loading 状态
@@ -131,20 +119,12 @@ const open = async (params: SideOpenOptions) => {
   sidePanelState.pendingComponent = component
   sidePanelState.pendingProps = props
   sidePanelState.pendingMethod = method
-  sidePanelState.pendingFooter = footer
+  sidePanelState.pendingData = data
 
   // 先设置基本状态，但不渲染组件
   sidePanelState.title = title
   sidePanelState.show = true
   onCloseCallback.value = onClose ?? null
-
-  if (footer) {
-    sidePanelState.footerComponent = footer.component
-    sidePanelState.footerProps = footer.props || {}
-  } else {
-    sidePanelState.footerComponent = null
-    sidePanelState.footerProps = {}
-  }
 
   layout.contentLayout.realTimeWidth = mainRect.width - width
   layout.rightLayout.realTimeWidth = width
@@ -219,23 +199,11 @@ watch(() => sidePanelState.sideRef, async (newRef) => {
     // 组件引用已设置且有待执行的方法，调用 init
     await nextTick()
     if (sidePanelState.sideRef?.[sidePanelState.pendingMethod]) {
-      await sidePanelState.sideRef[sidePanelState.pendingMethod](sidePanelState.pendingProps)
+      // 将所有数据通过 init 函数传递
+      await sidePanelState.sideRef[sidePanelState.pendingMethod](sidePanelState.pendingData)
       // 关闭 loading 状态
       sidePanelState.isLoading = false
     }
-
-  }
-}, { immediate: false })
-
-// 监听 footer 组件引用设置
-watch(() => sidePanelState.footerRef, (newRef) => {
-  if (newRef && sidePanelState.pendingFooter?.method && !sidePanelState.isLoading) {
-    // footer 组件引用已设置且有待执行的方法，调用 init
-    nextTick(() => {
-      if (sidePanelState.footerRef?.[sidePanelState.pendingFooter.method]) {
-        sidePanelState.footerRef[sidePanelState.pendingFooter.method](sidePanelState.pendingFooter.props || {})
-      }
-    })
   }
 }, { immediate: false })
 

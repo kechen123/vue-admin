@@ -1,22 +1,36 @@
 <template>
-  <div>
-    <KcForm ref="formRef" :config="formConfig" v-model="formData" @submit="onSubmit" @reset="onReset">
-      <!-- 自定义头像上传slot示例 -->
-      <template #avatar="{ field, model }">
-        <el-upload v-model:file-list="model[field.key]" list-type="picture-card">
-          <el-icon>
-            <Plus />
-          </el-icon>
-        </el-upload>
-      </template>
-    </KcForm>
+  <div class="detail-container">
+    <div class="content">
+      <KcForm ref="formRef" :config="formConfig" v-model="formData" @submit="onSubmit" @reset="onReset">
+        <!-- 自定义头像上传slot示例 -->
+        <template #avatar="{ field, model }">
+          <el-upload v-model:file-list="model[field.key]" list-type="picture-card">
+            <el-icon>
+              <Plus />
+            </el-icon>
+          </el-upload>
+        </template>
+      </KcForm>
+    </div>
+
+    <!-- 固定的 Footer -->
+    <div class="footer">
+      <div class="footer-actions">
+        <el-button @click="onReset">重置</el-button>
+        <el-button type="primary" @click="onSubmit(formData)">保存</el-button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Plus } from '@element-plus/icons-vue'
 import { getUser } from '@/api/test'
-import { toRaw } from 'vue'
+
+// 防止 props 暴露到 DOM 元素上
+defineOptions({
+  inheritAttrs: false
+})
 
 const formData = ref({
 
@@ -27,7 +41,6 @@ const formRef = ref()
 const departmentList = ref<any[]>([])
 const positionList = ref<any[]>([])
 
-// 将 formConfig 改为响应式对象
 const formConfig = reactive({
   fields: [
     { key: 'username', label: '用户名', type: 'input' as const, placeholder: '请输入用户名', width: 300, rules: [{ required: true, message: '必填' }] },
@@ -59,17 +72,45 @@ const onReset = () => {
 }
 
 
-const init = async ({ _rowId, _departmentList, _positionList }: any) => {
+const init = async (data: any) => {
+  // 从 init 函数参数中获取所有数据
+  const { rowId, departmentList: deptList, positionList: posList } = data
 
-  departmentList.value = _departmentList
-  positionList.value = _positionList
+  departmentList.value = deptList || []
+  positionList.value = posList || []
 
-  if (_rowId) {
-    const res = await getUser(_rowId)
-    const data = res.data
-    Object.assign(formData.value, data[0])
+  if (rowId) {
+    const res = await getUser(rowId)
+    const userData = res.data
+    Object.assign(formData.value, userData[0])
   }
 }
 
 defineExpose({ init })
 </script>
+
+<style scoped>
+.detail-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.content {
+  flex: 1;
+  overflow: auto;
+}
+
+.footer {
+  padding-top: 16px;
+  border-top: 1px solid var(--el-border-color);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+</style>
