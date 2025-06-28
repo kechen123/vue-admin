@@ -1,5 +1,9 @@
 import axios from '@/utils/http/axios'
 
+export const getUser = (id: string) => {
+  return axios.get('/rs/list/' + id)
+}
+
 export const getList = (params: any) => {
   return axios.get('/rs/list', { params })
 }

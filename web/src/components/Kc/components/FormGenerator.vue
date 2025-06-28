@@ -18,7 +18,6 @@
         :value="option.value" />
     </el-select>
   </el-form-item>
-
 </template>
 
 <script setup lang="ts">

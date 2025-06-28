@@ -6,8 +6,8 @@
         <el-avatar :size="50" shape="square" :src="row.avatar_url" />
       </template>
       <template #actions="{ row }">
-        <el-button type="primary" plain size="small" @click="openUserDetail(row.name)">编辑</el-button>
-        <el-button type="success" plain size="small" @click="openUserDetail(row.name)">查看详情</el-button>
+        <el-button type="primary" plain size="small" @click="openUserDetail(row.id)">编辑</el-button>
+        <el-button type="success" plain size="small" @click="openUserDetail(row.id, 'view')">查看详情</el-button>
         <el-button type="danger" plain size="small" @click="handleClick">删除</el-button>
       </template>
     </Kc>
@@ -216,7 +216,7 @@ const toolbarConfig = computed(() => ({
       onClick: (btn: ButtonConfig) => {
         console.log('新增按钮被点击', btn)
         // 这里可以添加新增用户的逻辑
-        openUserDetail('new')
+        openUserDetail()
       }
     },
     {
@@ -325,12 +325,16 @@ const kcConfig = computed<KcConfig>(() => ({
 
 const containerRef = ref()
 
-const openUserDetail = (userId: string) => {
+const openUserDetail = (rowId?: any, type?: string) => {
   containerRef.value.open({
     default: {
       component: Detail,
-      props: {
-        _userId: userId,
+      props: rowId ? {
+        _rowId: rowId,
+        _type: type,
+        _departmentList: departmentList.value,
+        _positionList: positionList.value
+      } : {
         _departmentList: departmentList.value,
         _positionList: positionList.value
       },
@@ -342,7 +346,15 @@ const openUserDetail = (userId: string) => {
     },
     footer: {
       component: BtnList,
-      props: { userId },
+      props: rowId ? {
+        _rowId: rowId,
+        _type: type,
+        _departmentList: departmentList.value,
+        _positionList: positionList.value
+      } : {
+        _departmentList: departmentList.value,
+        _positionList: positionList.value
+      },
       onClick: () => {
         console.log('onclose')
       }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <KcForm :config="formConfig" v-model="formData" @submit="onSubmit" @reset="onReset">
+    <KcForm ref="formRef" :config="formConfig" v-model="formData" @submit="onSubmit" @reset="onReset">
       <!-- 自定义头像上传slot示例 -->
       <template #avatar="{ field, model }">
         <el-upload v-model:file-list="model[field.key]" list-type="picture-card">
@@ -15,30 +15,23 @@
 
 <script setup lang="ts">
 import { Plus } from '@element-plus/icons-vue'
+import { getUser } from '@/api/test'
+import { toRaw } from 'vue'
 
 const formData = ref({
-  username: '',
-  avatar: [],
-  email: '',
-  gender: '',
-  status: 1,
-  position_id: '',
-  phone: '',
-  age: '',
-  department_id: '',
-  remark: '',
-  role: '',
-  is_verified: 0,
-  login_count: '',
+
 })
+
+const formRef = ref()
 
 const departmentList = ref<any[]>([])
 const positionList = ref<any[]>([])
 
-const formConfig = {
+// 将 formConfig 改为响应式对象
+const formConfig = reactive({
   fields: [
     { key: 'username', label: '用户名', type: 'input' as const, placeholder: '请输入用户名', width: 300, rules: [{ required: true, message: '必填' }] },
-    { key: 'avatar', label: '头像', type: 'input' as const, },
+    { key: 'avatar_url', label: '头像', type: 'input' as const, },
     { key: 'email', label: '邮箱', type: 'input' as const, placeholder: '请输入邮箱' },
     { key: 'gender', label: '性别', type: 'select' as const, options: [{ value: 0, label: '未知' }, { value: 1, label: '男' }, { value: 2, label: '女' }], placeholder: '请选择性别' },
     { key: 'status', label: '激活', type: 'select' as const, options: [{ value: 1, label: '已激活' }, { value: 0, label: '未激活' }], placeholder: '请选择激活状态' },
@@ -56,22 +49,26 @@ const formConfig = {
   },
   labelWidth: '80px',
   fieldWidth: 250,
-}
+})
 
-function onSubmit(data: any) {
+const onSubmit = (data: any) => {
   console.log('提交表单', data)
 }
-function onReset() {
+const onReset = () => {
   formData.value = { username: '', avatar: [], email: '', gender: '', status: 1, position_id: '', phone: '', age: '', department_id: '', remark: '', role: '', is_verified: 0, login_count: '' }
 }
 
 
-function init({ _userId, _departmentList, _positionList }: any) {
-  console.log('初始化数据，userId:', _userId)
-  console.log('初始化数据，departmentList:', _departmentList)
-  console.log('初始化数据，positionList:', _positionList)
+const init = async ({ _rowId, _departmentList, _positionList }: any) => {
+
   departmentList.value = _departmentList
   positionList.value = _positionList
+
+  if (_rowId) {
+    const res = await getUser(_rowId)
+    const data = res.data
+    Object.assign(formData.value, data[0])
+  }
 }
 
 defineExpose({ init })

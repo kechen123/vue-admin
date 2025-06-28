@@ -14,12 +14,13 @@
         userSelect: isDragging ? 'none' : 'auto'
       }">
         <div ref="rightLineRef" class="resizer" />
-        <SidePanelWrapper :title="sidePanelState.title">
+        <SidePanelWrapper :title="sidePanelState.title" v-loading="sidePanelState.isLoading">
           <component :is="sidePanelState.sideComponent" v-bind="sidePanelState.sideProps"
             :ref="(el: any) => (sidePanelState.sideRef = el)" />
           <template #footer>
-            <component v-if="sidePanelState.footerComponent" :is="sidePanelState.footerComponent"
-              v-bind="sidePanelState.footerProps" :ref="(el: any) => (sidePanelState.footerRef = el)" />
+            <component v-if="sidePanelState.footerComponent && !sidePanelState.isLoading"
+              :is="sidePanelState.footerComponent" v-bind="sidePanelState.footerProps"
+              :ref="(el: any) => (sidePanelState.footerRef = el)" />
           </template>
         </SidePanelWrapper>
       </div>
@@ -54,11 +55,17 @@ const sidePanelState = reactive({
   footerProps: {},
   sideRef: null as any,
   footerRef: null as any,
+  isLoading: false,
+  pendingComponent: null as any,
+  pendingProps: {},
+  pendingMethod: '',
+  pendingFooter: null as any,
 })
 
 
 const containerRef = ref()
 const onCloseCallback = ref<(() => void) | null>(null)
+const isUpdatingLayout = ref(false)
 
 const downRight = () => {
   isDragging.value = true
@@ -117,8 +124,16 @@ const open = async (params: SideOpenOptions) => {
     footer
   } = params
 
-  sidePanelState.sideComponent = component
-  sidePanelState.sideProps = props
+  // 设置 loading 状态
+  sidePanelState.isLoading = true
+
+  // 保存待渲染的组件信息
+  sidePanelState.pendingComponent = component
+  sidePanelState.pendingProps = props
+  sidePanelState.pendingMethod = method
+  sidePanelState.pendingFooter = footer
+
+  // 先设置基本状态，但不渲染组件
   sidePanelState.title = title
   sidePanelState.show = true
   onCloseCallback.value = onClose ?? null
@@ -130,21 +145,18 @@ const open = async (params: SideOpenOptions) => {
     sidePanelState.footerComponent = null
     sidePanelState.footerProps = {}
   }
+
   layout.contentLayout.realTimeWidth = mainRect.width - width
   layout.rightLayout.realTimeWidth = width
 
   await nextTick()
   addListener()
 
-  // 调用 exposed 方法
-  if (method && sidePanelState.sideRef?.[method]) {
-    sidePanelState.sideRef[method](props)
-  }
-
-  if (footer?.method && sidePanelState.footerRef?.[footer.method]) {
-    sidePanelState.footerRef[footer.method](footer.props || {})
-  }
-  onOpen?.()
+  // 延迟调用 onOpen 和布局更新
+  nextTick(() => {
+    onOpen?.()
+    updateContentLayout()
+  })
 }
 
 const close = async () => {
@@ -153,15 +165,29 @@ const close = async () => {
 }
 
 const onSlideInComplete = () => {
-  updateContentLayout()
+  nextTick(() => {
+    // 动画完成后，设置组件和属性
+    sidePanelState.sideComponent = sidePanelState.pendingComponent
+    sidePanelState.sideProps = sidePanelState.pendingProps
+
+
+
+    updateContentLayout()
+  })
 }
 
 const onSlideOutComplete = () => {
-  updateContentLayout()
+  nextTick(() => {
+    updateContentLayout()
+  })
 }
 
 const updateContentLayout = () => {
-  if (containerRef.value) {
+  if (isUpdatingLayout.value || !containerRef.value) return
+
+  isUpdatingLayout.value = true
+
+  try {
     const rect = containerRef.value.getBoundingClientRect()
     // console.log('updateContentLayout>>.', rect)
     const innerWidth = window.innerWidth
@@ -170,14 +196,48 @@ const updateContentLayout = () => {
     const height = innerHeight - rect.y - 20 - 2
     mainRect.width = width
     mainRect.height = height
-    layout.contentLayout.downWidth = width - (sidePanelState.show ? layout.rightLayout.realTimeWidth : 0)
-    layout.contentLayout.realTimeWidth = width - (sidePanelState.show ? layout.rightLayout.realTimeWidth : 0)
+
+    // 使用 nextTick 来避免递归更新
+    nextTick(() => {
+      layout.contentLayout.downWidth = width - (sidePanelState.show ? layout.rightLayout.realTimeWidth : 0)
+      layout.contentLayout.realTimeWidth = width - (sidePanelState.show ? layout.rightLayout.realTimeWidth : 0)
+      isUpdatingLayout.value = false
+    })
+  } catch (error) {
+    isUpdatingLayout.value = false
+    console.error('updateContentLayout error:', error)
   }
 }
 
 onMounted(() => {
   updateContentLayout()
 })
+
+// 监听组件引用设置，确保 init 方法被调用
+watch(() => sidePanelState.sideRef, async (newRef) => {
+  if (newRef && sidePanelState.pendingMethod && sidePanelState.isLoading) {
+    // 组件引用已设置且有待执行的方法，调用 init
+    await nextTick()
+    if (sidePanelState.sideRef?.[sidePanelState.pendingMethod]) {
+      await sidePanelState.sideRef[sidePanelState.pendingMethod](sidePanelState.pendingProps)
+      // 关闭 loading 状态
+      sidePanelState.isLoading = false
+    }
+
+  }
+}, { immediate: false })
+
+// 监听 footer 组件引用设置
+watch(() => sidePanelState.footerRef, (newRef) => {
+  if (newRef && sidePanelState.pendingFooter?.method && !sidePanelState.isLoading) {
+    // footer 组件引用已设置且有待执行的方法，调用 init
+    nextTick(() => {
+      if (sidePanelState.footerRef?.[sidePanelState.pendingFooter.method]) {
+        sidePanelState.footerRef[sidePanelState.pendingFooter.method](sidePanelState.pendingFooter.props || {})
+      }
+    })
+  }
+}, { immediate: false })
 
 defineExpose({ open, close, updateContentLayout })
 provide('slideClose', close)
@@ -278,5 +338,13 @@ provide('slideClose', close)
 .slide-enter-active,
 .slide-leave-active {
   transition: transform 0.3s ease;
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  width: 100%;
 }
 </style>

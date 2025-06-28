@@ -1,14 +1,24 @@
 <template>
-  <el-form ref="formRef" :model="formData" :rules="config.rules" :label-width="config.labelWidth || '100px'"
-    :inline="config.inline || false" class="kc-form">
-    <FormGenerator :fields="config.fields" v-model="formData" :field-width="config.fieldWidth"
-      @change="handleFieldChange" />
-  </el-form>
+  <div class="kc-form-container">
+    <!-- Loading 占位符 -->
+    <div v-show="!isReady" class="loading-placeholder">
+      <el-skeleton :rows="5" animated />
+    </div>
+
+    <!-- 实际表单内容 -->
+    <div v-show="isReady" class="form-content">
+      <el-form ref="formRef" :model="formData" :rules="config.rules" :label-width="config.labelWidth || '100px'"
+        :inline="config.inline || false" class="kc-form">
+        <FormGenerator :fields="config.fields" v-model="formData" :field-width="config.fieldWidth"
+          @change="handleFieldChange" />
+      </el-form>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { ElForm } from 'element-plus'
+import { ref, watch, onMounted } from 'vue'
+import { ElForm, ElSkeleton } from 'element-plus'
 import FormGenerator from '../components/FormGenerator.vue'
 import type { FormField } from '../types'
 
@@ -38,21 +48,53 @@ const emit = defineEmits<{
 
 const formRef = ref()
 const formData = ref<Record<string, any>>({ ...props.modelValue })
+const isReady = ref(false)
 
+// 组件挂载后设置 ready 状态
+onMounted(() => {
+  // 给一个最小显示时间，确保用户体验
+  setTimeout(() => {
+    isReady.value = true
+  }, 300)
+})
+
+// 简化的 watch，只在外部值真正变化时更新
 watch(() => props.modelValue, (val) => {
-  formData.value = { ...val }
-}, { deep: true })
-
-watch(formData, (val) => {
-  emit('update:modelValue', val)
+  // 避免直接赋值响应式对象
+  if (val && typeof val === 'object') {
+    formData.value = { ...val }
+  }
 }, { deep: true })
 
 const handleFieldChange = (key: string, value: any) => {
   emit('change', key, value)
+  // 手动触发 modelValue 更新
+  emit('update:modelValue', formData.value)
 }
+
+defineExpose({
+  formRef
+})
 </script>
 
 <style lang="less" scoped>
+.kc-form-container {
+  width: 100%;
+  position: relative;
+}
+
+.loading-placeholder {
+  padding: 20px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-content {
+  width: 100%;
+}
+
 .kc-form {
   width: 100%;
   display: flex;
