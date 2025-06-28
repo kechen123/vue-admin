@@ -37,7 +37,6 @@ const props = defineProps<Props>()
 
 // 配置解构
 const {
-  columns,
   data: staticData,
   request,
   responseAdapter,
@@ -46,6 +45,9 @@ const {
   showLoading = true,
   options = {}
 } = props.config
+
+// 使columns响应式
+const columns = computed(() => props.config.columns)
 
 // 表格事件
 const { tableEvents } = useTableEvents(options.events)

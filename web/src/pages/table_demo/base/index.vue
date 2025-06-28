@@ -1,23 +1,38 @@
 <template>
-  <SlideContainer ref="containerRef">
-
-    <Kc :config="kcConfig">
-      <template #avatar_url="{ row }">
-        <el-avatar :size="50" shape="square" :src="row.avatar_url" />
-      </template>
-      <template #actions="{ row }">
-        <el-button type="primary" plain size="small" @click="openUserDetail(row.id)">编辑</el-button>
-        <el-button type="success" plain size="small" @click="openUserDetail(row.id, 'view')">查看详情</el-button>
-        <el-button type="danger" plain size="small" @click="handleClick">删除</el-button>
-      </template>
-    </Kc>
-  </SlideContainer>
+  <TableWithSlidePanel :config="kcConfig" :column-display-config="columnDisplayConfig" ref="tableRef">
+    <template #avatar_url="{ row }">
+      <el-avatar :size="50" shape="square" :src="row.avatar_url" />
+    </template>
+    <template #actions="{ row }">
+      <el-button type="primary" plain size="small" @click="openUserDetail(row.id)">编辑</el-button>
+      <el-button type="success" plain size="small" @click="openUserDetail(row.id, 'view')">查看详情</el-button>
+      <el-button type="danger" plain size="small" @click="handleClick">删除</el-button>
+    </template>
+  </TableWithSlidePanel>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+/**
+ * 表格动态列显示功能说明：
+ *
+ * 当右侧栏目打开时，表格宽度会缩小，此时会自动隐藏一些列以优化显示效果。
+ *
+ * 使用方法：
+ * 1. 在 columnDisplayConfig.hiddenWhenPanelOpen 数组中添加需要在右侧栏目打开时隐藏的列名
+ * 2. 在 columnDisplayConfig.alwaysShow 数组中添加始终显示的列名（优先级高于隐藏列表）
+ * 3. 列名对应的是 ColumnProps 中的 prop 属性值
+ *
+ * 示例：
+ * - 隐藏手机号、邮箱等详细信息列
+ * - 保持姓名、头像、操作等核心列始终显示
+ *
+ * 当右侧栏目关闭时，所有列都会恢复正常显示。
+ */
+
+import { ref, computed, onMounted, watch, onUnmounted, nextTick } from 'vue'
 import { getList, getDepartment, getPosition } from '@/api/test'
 import Detail from './_detail.vue'
+import TableWithSlidePanel from '@/components/Kc/TableWithSlidePanel.vue'
 import type { KcConfig, TableConfig, ColumnProps, ButtonConfig } from '@/components/Kc/types'
 
 // 选中的行数据
@@ -26,7 +41,36 @@ const selectedRows = ref<any[]>([])
 const departmentList = ref<any[]>([])
 const positionList = ref<any[]>([])
 
-const columns: ColumnProps[] = [
+// 列显示配置
+const columnDisplayConfig = {
+  // 当右侧栏目打开时隐藏的列
+  hiddenWhenPanelOpen: [
+    'phone',        // 手机号
+    'email',        // 邮箱
+    'age',          // 年龄
+    'remark',       // 备注
+    'role',         // 角色
+    'is_verified',  // 是否已验证邮箱
+    'login_count',  // 登录次数
+    'last_login_time', // 最后登录时间
+    'actions'       // 操作列
+  ],
+  // 当右侧栏目打开时始终显示的列（优先级高于隐藏列表）
+  alwaysShow: [
+    'selection',    // 选择框
+    'index',        // 序号
+    'nickname',     // 姓名
+    'username',     // 英文名
+    'gender',       // 性别
+    'avatar_url',   // 头像
+    'status',       // 激活状态
+    'position_id',  // 职位
+    'department_id' // 部门
+  ]
+}
+
+// 基础列配置
+const baseColumns: ColumnProps[] = [
   {
     type: 'selection',
     show: true,
@@ -183,7 +227,7 @@ const columns: ColumnProps[] = [
 ]
 
 const tableConfig: TableConfig = {
-  columns: columns,
+  columns: baseColumns,
   request: getList,
   defaultPagination: { page: 1, size: 50 },
   showPagination: true,
@@ -204,61 +248,6 @@ const tableConfig: TableConfig = {
     }
   }
 }
-
-// 动态生成工具栏配置
-const toolbarConfig = computed(() => ({
-  leftButtons: [
-    {
-      key: 'add',
-      label: '新增',
-      type: 'primary' as const,
-      onClick: (btn: ButtonConfig) => {
-        console.log('新增按钮被点击', btn)
-        // 这里可以添加新增用户的逻辑
-        openUserDetail()
-      }
-    },
-    {
-      key: 'batchDelete',
-      label: `批量删除${selectedRows.value.length > 0 ? `(${selectedRows.value.length})` : ''}`,
-      type: 'danger' as const,
-      disabled: selectedRows.value.length === 0, // 根据选中状态动态设置
-      onClick: (btn: ButtonConfig) => {
-        console.log('批量删除按钮被点击', btn)
-        if (confirm(`确定要删除选中的 ${selectedRows.value.length} 个用户吗？`)) {
-          // 执行批量删除逻辑
-          console.log('执行批量删除', selectedRows.value)
-          // 这里可以调用API删除选中的用户
-          selectedRows.value = [] // 清空选中状态
-        }
-      }
-    }
-  ],
-  rightButtons: [
-    {
-      key: 'export',
-      label: '导出',
-      type: 'success' as const,
-      icon: 'Download',
-      onClick: (btn: ButtonConfig) => {
-        console.log('导出按钮被点击', btn)
-        // 导出逻辑
-        alert('导出功能')
-      }
-    },
-    {
-      key: 'refresh',
-      label: '刷新',
-      type: 'info' as const,
-      icon: 'Refresh',
-      onClick: (btn: ButtonConfig) => {
-        console.log('刷新按钮被点击', btn)
-        // 刷新表格数据
-        // 这里可以通过 ref 调用表格的刷新方法
-      }
-    }
-  ]
-}))
 
 const kcConfig = computed<KcConfig>(() => ({
   toolbar: toolbarConfig.value,
@@ -322,31 +311,80 @@ const kcConfig = computed<KcConfig>(() => ({
   table: tableConfig
 }))
 
-const containerRef = ref()
+const tableRef = ref()
 
 const openUserDetail = (rowId?: any, type?: string) => {
-  containerRef.value.open({
-    default: {
-      component: Detail,
-      data: {
-        // 统一传递所有数据
-        rowId,
-        type,
-        departmentList: departmentList.value,
-        positionList: positionList.value
-      },
-      width: 600,
-      title: '用户详情',
-      onClose: () => {
-        console.log('onclose')
-      }
-    }
+  tableRef.value.openPanel({
+    component: Detail,
+    data: {
+      rowId,
+      type,
+      departmentList: departmentList.value,
+      positionList: positionList.value
+    },
+    width: 600,
+    title: '用户详情'
   })
 }
 
 const handleClick = () => {
   console.log('click')
 }
+
+// 动态生成工具栏配置
+const toolbarConfig = computed(() => ({
+  leftButtons: [
+    {
+      key: 'add',
+      label: '新增',
+      type: 'primary' as const,
+      onClick: (btn: ButtonConfig) => {
+        console.log('新增按钮被点击', btn)
+        // 这里可以添加新增用户的逻辑
+        openUserDetail()
+      }
+    },
+    {
+      key: 'batchDelete',
+      label: `批量删除${selectedRows.value.length > 0 ? `(${selectedRows.value.length})` : ''}`,
+      type: 'danger' as const,
+      disabled: selectedRows.value.length === 0, // 根据选中状态动态设置
+      onClick: (btn: ButtonConfig) => {
+        console.log('批量删除按钮被点击', btn)
+        if (confirm(`确定要删除选中的 ${selectedRows.value.length} 个用户吗？`)) {
+          // 执行批量删除逻辑
+          console.log('执行批量删除', selectedRows.value)
+          // 这里可以调用API删除选中的用户
+          selectedRows.value = [] // 清空选中状态
+        }
+      }
+    }
+  ],
+  rightButtons: [
+    {
+      key: 'export',
+      label: '导出',
+      type: 'success' as const,
+      icon: 'Download',
+      onClick: (btn: ButtonConfig) => {
+        console.log('导出按钮被点击', btn)
+        // 导出逻辑
+        alert('导出功能')
+      }
+    },
+    {
+      key: 'refresh',
+      label: '刷新',
+      type: 'info' as const,
+      icon: 'Refresh',
+      onClick: (btn: ButtonConfig) => {
+        console.log('刷新按钮被点击', btn)
+        // 刷新表格数据
+        // 这里可以通过 ref 调用表格的刷新方法
+      }
+    }
+  ]
+}))
 
 onMounted(async () => {
   const res = await getDepartment()

@@ -62,6 +62,7 @@ declare module 'vue' {
     KcTableComponentsSearch: typeof import('./../src/components/Kc/Table/components/Search.vue')['default']
     KcTableComponentsTableKcTableToolbar: typeof import('./../src/components/KcTable/components/table/KcTableToolbar.vue')['default']
     KcTableComponentsToolbar: typeof import('./../src/components/KcTable/components/Toolbar.vue')['default']
+    KcTableWithSlidePanel: typeof import('./../src/components/Kc/TableWithSlidePanel.vue')['default']
     KcTest: typeof import('./../src/components/Kc/test.vue')['default']
     KcToolbar: typeof import('./../src/components/Kc/Toolbar/index.vue')['default']
     KcToolbarComponentsButtonGenerator: typeof import('./../src/components/Kc/Toolbar/components/ButtonGenerator.vue')['default']
