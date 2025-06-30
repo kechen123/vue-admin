@@ -2,16 +2,20 @@
   <div class="tags">
     <el-scrollbar>
       <div class="container">
-        <template v-for="item in tagsStore.tags">
-          <div class="item" :class="[item.name === tagsStore.active.name ? 'active' : '']" @click.stop="tagClick(item)">
-            <span class="name">
-              {{ item.name }}
-            </span>
-            <el-icon size="16" class="close" @click.stop="delPage(item.name)">
-              <MIcon iconName="Close" />
-            </el-icon>
-          </div>
-        </template>
+        <div
+          class="item"
+          v-for="item in tagsStore.tags"
+          :key="item.name"
+          :class="[item.name === tagsStore.active.name ? 'active' : '']"
+          @click.stop="tagClick(item)"
+        >
+          <span class="name">
+            {{ item.name }}
+          </span>
+          <el-icon size="16" class="close" @click.stop="delPage(item.name)">
+            <MIcon iconName="Close" />
+          </el-icon>
+        </div>
       </div>
     </el-scrollbar>
   </div>

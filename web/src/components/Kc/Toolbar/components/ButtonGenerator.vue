@@ -25,9 +25,6 @@ const emit = defineEmits<{
 const buttons = computed(() => props.config || [])
 
 const handleClick = (btn: ButtonConfig) => {
-  if (btn.onClick) {
-    btn.onClick(btn)
-  }
   emit('click', btn)
 }
 </script>

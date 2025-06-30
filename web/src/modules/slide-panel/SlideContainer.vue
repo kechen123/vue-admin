@@ -92,7 +92,7 @@ interface SideOpenOptions {
     method?: string
     width?: number
     title?: string
-    onClose?: () => void
+    onClose?: (val: any) => void
     onOpen?: () => void
     data?: Record<string, any>
   }
@@ -139,9 +139,9 @@ const open = async (params: SideOpenOptions) => {
   })
 }
 
-const close = async () => {
+  const close = async (val:any) => {
   sidePanelState.show = false
-  onCloseCallback.value?.()
+  onCloseCallback.value?.(val)
 }
 
 const onSlideInComplete = () => {

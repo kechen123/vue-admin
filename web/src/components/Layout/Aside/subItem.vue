@@ -1,19 +1,19 @@
 <template>
-  <el-sub-menu v-if="item.children && item.children.length > 0" :index="item.path">
+  <el-sub-menu v-if="item.children && item.children.length > 0" :index="item.route_name">
     <template #title>
       <el-icon v-if="item.icon">
         <MIcon :iconName="item.icon" />
       </el-icon>
-      <span>{{ item.name }}</span>
+      <span>{{ item.menu_name }}</span>
     </template>
     <sub-item :key="index" :item="item1" v-for="(item1, index) in item.children" />
   </el-sub-menu>
-  <el-menu-item v-else :index="item.path">
+  <el-menu-item v-else :index="item.route_name">
     <template #title>
       <el-icon v-if="item.icon">
         <MIcon :iconName="item.icon" />
       </el-icon>
-      <span>{{ item.name }}</span>
+      <span>{{ item.menu_name }}</span>
     </template>
   </el-menu-item>
 </template>
@@ -21,8 +21,9 @@
 <script setup lang="ts">
 interface Props {
   item: {
-    name: string
+    menu_name: string
     path: string
+    route_name: string
     icon?: string
     disabled?: boolean
     children?: Array<any>

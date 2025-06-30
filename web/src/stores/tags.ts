@@ -36,7 +36,7 @@ export const useTagsStore = defineStore(
           return node.path === routerVal.path
         }, menu)
         if (node) {
-          name = node.name
+          name = node.menu_name
           path = node.path
           key = node.path
         }
@@ -44,7 +44,7 @@ export const useTagsStore = defineStore(
       return {
         name,
         path,
-        key
+        key,
       }
     }
     const active = ref<Tag>(getActive())
@@ -57,13 +57,13 @@ export const useTagsStore = defineStore(
       let tag = {
         name: '404',
         path: '/404',
-        key: '/404'
+        key: '/404',
       }
       if (node) {
         tag = {
-          name: node.name,
+          name: node.menu_name,
           path: node.path,
-          key: node.path
+          key: node.path,
         }
       }
       if (tags.value.findIndex((item) => item.path === tag.path) === -1) {
@@ -91,7 +91,7 @@ export const useTagsStore = defineStore(
     }
 
     return { tags, active, addTag, changeTag, removeTag }
-  }
+  },
   // {
   //   persist: true
   // }

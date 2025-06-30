@@ -1,6 +1,6 @@
 <template>
   <SlideContainer ref="containerRef">
-    <Kc :config="kcConfig">
+    <Kc ref="kcRef" :config="kcConfig">
       <template v-for="(_, name) in $slots" #[name]="slotData">
         <slot :name="name" v-bind="slotData" />
       </template>
@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
 import SlideContainer from '@/modules/slide-panel/SlideContainer.vue'
 import Kc from './index.vue'
 import type { KcConfig } from './types'
@@ -68,6 +68,7 @@ const kcConfig = computed<KcConfig>(() => ({
 }))
 
 const containerRef = ref()
+const kcRef = ref()
 
 // 打开右侧栏目
 const openPanel = (options: {
@@ -75,7 +76,7 @@ const openPanel = (options: {
   data?: Record<string, any>
   width?: number
   title?: string
-  onClose?: () => void
+  onClose?: (val?: any) => void
 }) => {
   // 设置面板状态为打开
   panelState.value = true
@@ -86,25 +87,41 @@ const openPanel = (options: {
       data: options.data || {},
       width: options.width || 600,
       title: options.title || '详情',
-      onClose: () => {
+      onClose: (val?: any) => {
         // 关闭时重置面板状态
         panelState.value = false
-        options.onClose?.()
+        options.onClose?.(val)
       }
     }
   })
 }
 
 // 关闭右侧栏目
-const closePanel = () => {
+const closePanel = (val?: any) => {
   panelState.value = false
-  containerRef.value?.close()
+  containerRef.value?.close(val)
 }
 
 // 暴露方法
-defineExpose({
+const exposeObj = {
   openPanel,
   closePanel,
   panelState
+}
+
+// 合并Kc组件暴露的方法和属性
+const syncKcExpose = () => {
+  const kcExpose = kcRef.value
+  if (kcExpose) {
+    Object.assign(exposeObj, kcExpose)
+  }
+}
+
+watchEffect(() => {
+  if (kcRef.value) {
+    syncKcExpose()
+  }
 })
+
+defineExpose(exposeObj)
 </script>
