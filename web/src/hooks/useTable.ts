@@ -61,10 +61,14 @@ export function useTable<T = any>(options: UseTableOptions<T>): UseTableReturn<T
   const total = ref(0)
 
   // 分页参数
-  const pagination = reactive<PaginationParams>({
-    page: defaultPagination.page || 1,
-    size: defaultPagination.size || 10,
-  })
+  const pagination = reactive<any>(
+    Object.keys(defaultPagination).length > 0
+      ? {
+          page: defaultPagination.page,
+          size: defaultPagination.size,
+        }
+      : {},
+  )
 
   // 查询参数
   const searchParams = reactive<Record<string, any>>({ ...defaultParams })

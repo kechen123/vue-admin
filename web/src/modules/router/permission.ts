@@ -45,7 +45,7 @@ const setMenu: CheckFun = async ({ to, from }) => {
   if (!routerStore.roles || routerStore.roles.length === 0) {
     const res = await routerStore.initMenu()
     if (res.status != 200) {
-      console.log('/rs/auth 检查未通过')
+      console.log('/rs/menu 检查未通过')
       return { name: '/login' }
     }
   }

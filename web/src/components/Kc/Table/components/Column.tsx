@@ -2,6 +2,7 @@ import { ElTableColumn, ElTag, ElSwitch } from 'element-plus'
 import 'element-plus/es/components/table-column/style/css'
 import 'element-plus/es/components/tag/style/css'
 import 'element-plus/es/components/switch/style/css'
+import { getCurrentInstance } from 'vue'
 
 export default defineComponent({
   props: {
@@ -16,7 +17,6 @@ export default defineComponent({
       if (item.prop && slots[item.prop]) {
         return slots[item.prop]!(scope)
       }
-
       if (item.type === 'text') {
         if (item.formatter) {
           return item.formatter(scope.row, props.column, scope.row[item.prop], scope.$index)

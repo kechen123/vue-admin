@@ -4,6 +4,10 @@ export const getMenuList = (params: any) => {
   return axios.get('/rs/sys_menu', { params: { ...params, sort: 'order_num asc' } })
 }
 
+export const getMenuTree = (params: any) => {
+  return axios.post('/rs/menu', params)
+}
+
 export const getMenu = (id: string) => {
   return axios.get(`/rs/sys_menu/${id}`)
 }

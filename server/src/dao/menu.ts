@@ -83,6 +83,15 @@ import BaseDao from "../db/baseDao";
  * @returns 树结构
  */
 
+const sortTree = (nodes) => {
+  nodes.sort((a, b) => a.order_num - b.order_num);
+  nodes.forEach((node) => {
+    if (node.children && node.children.length > 0) {
+      sortTree(node.children);
+    }
+  });
+};
+
 const listToTree = (list) => {
   const map = {};
   const result = [];
@@ -101,6 +110,9 @@ const listToTree = (list) => {
     }
   });
 
+  // 递归对子节点排序
+  sortTree(result);
+
   return result;
 };
 
@@ -108,12 +120,18 @@ export default class Auth extends BaseDao {
   constructor(table: string) {
     super(table);
   }
-  async create(
-    params = {},
-    fields = [],
-    session = { userid: "" }
-  ): Promise<any> {
-    const menu = await new BaseDao("sys_menu").retrieve();
+  async create(params, fields = [], session = { userid: "" }): Promise<any> {
+    if (
+      !params ||
+      (typeof params === "object" && Object.keys(params).length === 0)
+    ) {
+      params = undefined;
+    }
+    const menu = await new BaseDao("sys_menu").retrieve(
+      params,
+      fields,
+      session
+    );
     const tree = listToTree(menu.data);
     return G.jsResponse(G.STCODES.SUCCESS, "", { data: tree });
   }

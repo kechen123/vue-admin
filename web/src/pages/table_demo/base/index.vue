@@ -229,7 +229,7 @@ const baseColumns: ColumnProps[] = [
 const tableConfig: TableConfig = {
   columns: baseColumns,
   request: getList,
-  defaultPagination: { page: 1, size: 50 },
+  defaultPagination: { page: 1, size: 2 },
   showPagination: true,
   showLoading: true,
   options: {

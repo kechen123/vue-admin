@@ -58,6 +58,8 @@ export interface ColumnProps {
   formatter?: (row: any, column: any, cellValue: any, index: number) => any
   showOverflowTooltip?: boolean
   children?: ColumnProps[]
+  // 树形主列prop名（如需自定义）
+  treeNodeColumn?: boolean
   [key: string]: any
 }
 

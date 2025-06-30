@@ -113,7 +113,7 @@ export const useRouterStore = defineStore(
   () => {
     const roles = ref([])
     const initMenu = async () => {
-      const res = await axios.post('/rs/auth')
+      const res = await axios.post('/rs/menu')
       if (res.status === 200) {
         roles.value = res.data
       }

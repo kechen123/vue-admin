@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { getMenuList } from '@/api/sys_menu'
+import { getMenuLis, getMenuTree } from '@/api/sys_menu'
 import Detail from './_detail.vue'
 import TableWithSlidePanel from '@/components/Kc/TableWithSlidePanel.vue'
 import { useRouterStore } from '@/stores/router'
@@ -44,16 +44,23 @@ const columnDisplayConfig = {
 
 // 基础列配置
 const baseColumns: ColumnProps[] = [
+
+  // {
+  //   type: 'index',
+  //   label: '序号',
+  //   prop: 'index',
+  //   show: true,
+  //   treeNodeColumn: true,
+  //   width: 80,
+  //   align: 'center',
+  // },
   {
-    type: 'selection',
+    type: 'text',
+    label: 'ID',
+    treeNodeColumn: true,
+    prop: 'id',
     show: true,
-    width: 55,
-  },
-  {
-    type: 'index',
-    label: '序号',
-    show: true,
-    width: 80,
+    width: 100,
     align: 'center',
   },
   {
@@ -148,8 +155,9 @@ const baseColumns: ColumnProps[] = [
 
 const tableConfig: TableConfig = {
   columns: baseColumns,
-  request: getMenuList,
-  defaultPagination: { page: 1, size: 10 },
+
+  request: getMenuTree,
+  // defaultPagination: { page: 1, size: 10 },
   beforeRequest: (params: any) => {
     console.log('beforeRequest', params)
     //判断是否搜索 params参数除了page和size之外的参数是否为空
@@ -160,11 +168,13 @@ const tableConfig: TableConfig = {
 
     return params
   },
-  showPagination: true,
+  showPagination: false,
   showLoading: true,
   options: {
     attributes: {
       border: false,
+      // 'row-key': 'id',
+      // 'tree-props': { children: 'children' },
       height: 'auto',
     },
     events: {
@@ -324,11 +334,5 @@ const openUserDetail = (rowId?: any, type?: string) => {
 const handleClick = () => {
   console.log('click')
 }
-
-
-
-onMounted(async () => {
-
-})
 
 </script>
