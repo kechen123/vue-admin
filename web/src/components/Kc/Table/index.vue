@@ -1,12 +1,12 @@
 <template>
   <div class="tableContainer">
     <div class="tableContent">
-
       <el-table :data="tableData" v-loading="loading && showLoading" class="table" v-bind="options.attributes"
-        v-on="tableEvents" row-key="id" :tree-props="{ children: 'children' }">
-        <!-- 主列用SFC slot渲染，支持树形展开 -->
-        <el-table-column v-if="treeNodeColumn" :property="treeNodeColumn.prop" :label="treeNodeColumn.label"
-          :type="treeNodeColumn.type" :width="treeNodeColumn.width" :align="treeNodeColumn.align" />
+        v-on="tableEvents">
+        <!-- 主列用SFC 渲染，支持树形展开 -->
+        <el-table-column v-if="treeNodeColumn" :prop="treeNodeColumn.prop" :label="treeNodeColumn.label"
+          :width="treeNodeColumn.width" :align="treeNodeColumn.align">
+        </el-table-column>
         <!-- 其它列用RenderColumn渲染 -->
         <template v-for="col in columns" :key="col.prop || col.label">
           <RenderColumn v-if="!col.treeNodeColumn" :column="col">

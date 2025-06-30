@@ -173,8 +173,8 @@ const tableConfig: TableConfig = {
   options: {
     attributes: {
       border: false,
-      // 'row-key': 'id',
-      // 'tree-props': { children: 'children' },
+      'row-key': 'id',
+      'tree-props': { children: 'children' },
       height: 'auto',
     },
     events: {
