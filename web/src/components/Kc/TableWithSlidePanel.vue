@@ -64,7 +64,7 @@ const kcConfig = computed<KcConfig>(() => ({
   table: {
     ...props.config.table,
     columns: dynamicColumns.value
-  }
+  },
 }))
 
 const containerRef = ref()
@@ -124,4 +124,6 @@ watchEffect(() => {
 })
 
 defineExpose(exposeObj)
+
+provide('panelState', panelState)
 </script>
