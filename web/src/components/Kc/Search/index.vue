@@ -15,11 +15,8 @@
             </el-icon>
             {{ isExpanded ? '收起' : '展开' }}
           </el-button>
-        </div>
-
-        <!-- 操作按钮 - 在最右侧 -->
-        <div class="search-actions">
-          <el-button v-if="config.showSearch !== false" type="primary" @click="handleSearch">
+          <!-- 操作按钮 - 在最右侧 -->
+          <el-button class="search-btn" v-if="config.showSearch !== false" type="primary" @click="handleSearch">
             搜索
           </el-button>
           <el-button v-if="config.showReset !== false" @click="handleReset">
@@ -143,6 +140,14 @@ const handleReset = () => {
               transform: rotate(180deg);
             }
           }
+        }
+
+        .search-btn {
+          margin-left: auto !important;
+        }
+
+        .el-button+.el-button {
+          margin-left: 0;
         }
       }
 
