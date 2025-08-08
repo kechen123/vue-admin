@@ -290,16 +290,16 @@ const kcConfig = computed<KcConfig>(() => ({
           { label: '禁用', value: '0' }
         ]
       },
-      {
-        key: 'visible',
-        label: '是否隐藏',
-        type: 'select' as const,
-        placeholder: '请选择',
-        options: [
-          { label: '显示', value: '0' },
-          { label: '隐藏', value: '1' }
-        ]
-      }
+      // {
+      //   key: 'visible',
+      //   label: '是否隐藏',
+      //   type: 'select' as const,
+      //   placeholder: '请选择',
+      //   options: [
+      //     { label: '显示', value: '0' },
+      //     { label: '隐藏', value: '1' }
+      //   ]
+      // }
     ],
     defaultCount: 2,
     fieldWidth: '250px',

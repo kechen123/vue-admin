@@ -194,6 +194,18 @@ if (!request && !staticData) {
         &::before {
           display: none;
         }
+
+        [class*="el-table__row--level-"]:not(.el-table__row--level-0) {
+          background-color: color-mix(in srgb,
+              var(--el-table-tr-bg-color) 80%,
+              rgba(0, 120, 255, 0.4) 20%);
+
+          td:first-child {
+            .cell {
+              display: flex;
+            }
+          }
+        }
       }
 
       :deep(.el-table__body-wrapper) {
