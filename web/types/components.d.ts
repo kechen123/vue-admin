@@ -8,11 +8,13 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Echarts: typeof import('./../src/components/Echarts/index.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
+    ElCol: typeof import('element-plus/es')['ElCol']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDatePicker: typeof import('element-plus/es')['ElDatePicker']
@@ -33,6 +35,7 @@ declare module 'vue' {
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
+    ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSelect: typeof import('element-plus/es')['ElSelect']
     ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
@@ -80,11 +83,11 @@ declare module 'vue' {
     LayoutHeaderNavigation: typeof import('./../src/components/Layout/Header/navigation.vue')['default']
     LayoutTable: typeof import('./../src/components/Layout/Table/index.vue')['default']
     LayoutTags: typeof import('./../src/components/Layout/Tags/index.vue')['default']
-    MIcon: typeof import('./../src/components/MIcon.vue')['default']
+    MIcon: typeof import('./../src/components/mIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SmartTable: typeof import('./../src/components/SmartTable/index.vue')['default']
-    TableSearch: typeof import('./../src/components/Table/search.vue')['default']
+    TableSearch: typeof import('./../src/components/table/search.vue')['default']
     Test: typeof import('./../src/components/test.vue')['default']
   }
   export interface GlobalDirectives {

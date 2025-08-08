@@ -19,9 +19,9 @@ const showLoading = () => {
   if (requestCount === 0 && !loading) {
     //加载中显示样式可以自行修改
     loading = ElLoading.service({
-      text: '拼命加载中，请稍后...',
-      background: 'rgba(0, 0, 0, 0.7)',
-      spinner: 'el-icon-loading',
+      text: '加载中...',
+      background: 'rgba(255, 255, 255, 0.6)',
+      customClass: 'custom-loading',
     })
   }
   requestCount++
@@ -41,7 +41,8 @@ const getToken = () => {
 // 请求拦截
 service.interceptors.request.use(
   (config) => {
-    showLoading()
+    // showLoading()
+
     // 是否需要设置 token放在请求头
     config.headers['token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     // get请求映射params参数
@@ -78,7 +79,7 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (res: any) => {
-    hideLoading()
+    // hideLoading()
     // 未设置状态码则默认成功状态
     const code = res.data['status'] || 200
     // 获取错误信息
@@ -99,7 +100,7 @@ service.interceptors.response.use(
   },
   (error) => {
     console.log('err' + error)
-    hideLoading()
+    // hideLoading()
     let { message } = error
     if (message == 'Network Error') {
       message = '后端接口连接异常'
